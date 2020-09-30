@@ -5,12 +5,14 @@ let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
 
+let humanModel;
+
 let myId = 0;
 let SOCKET_LIST = [];
 let socket = io();
 socket.emit('helloWorld');
 
-socket.on('idGranted',function(data){
+socket.on('idGranted', function (data) {
     myId = data;
     console.log(myId);
 });
@@ -18,33 +20,37 @@ socket.on('idGranted',function(data){
 function sendNewPosition() {
     var pack = [];
     pack.push({
-        x:posX,
-        y:posY,
-        z:posZ
-        })
-    socket.emit('newPosition',pack)
+        x: posX,
+        y: posY,
+        z: posZ
+    })
+    socket.emit('newPosition', pack)
 }
 
-socket.on('newPositions',function(data){
+socket.on('newPositions', function (data) {
     SOCKET_LIST = data;
 });
 
 function drawPlayers() {
-    for(var i = 0 ; i < SOCKET_LIST.length; i++){
-        if (SOCKET_LIST[i].id != myId){
-        push();
-        stroke(0, 0, 0);
-        fill("RED");
-        translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z+75));
-        box(80, 80, 250);
-        pop();
-    }}
+    for (var i = 0; i < SOCKET_LIST.length; i++) {
+        if (SOCKET_LIST[i].id != myId) {
+            push();
+            stroke(0, 0, 0);
+            fill("RED");
+            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 75));
+            box(80, 80, 250);
+            pop();
+        }
+    }
+}
+
+function preload() {
+    humanModel = loadModel('./client/assets/FinalBaseMesh.obj');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
 
-    // frameRate(60);
     // frameRate(60);
 }
 
@@ -53,7 +59,7 @@ function draw() {
     ambientLight(128, 128, 128);
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
 
-    // print(frameRate());
+    print(frameRate());
 
     // push();
     // textSize(32);
@@ -210,6 +216,17 @@ function draw() {
     fill("#FF00E5");
     translate(0, -160, -200);
     box(500, 20, 420);
+    pop();
+
+    // Human
+    push();
+    stroke(0, 0, 0);
+    fill("#FF00E5");
+    translate(0, -400, 0);
+    scale(30);
+    rotateX(-HALF_PI);
+    rotateY(frameCount * 0.01);
+    model(humanModel);
     pop();
 
     if (SOCKET_LIST.length > 0) drawPlayers();
