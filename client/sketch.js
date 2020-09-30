@@ -54,7 +54,6 @@ function drawPlayers() {
     }
 }
 
-
 var Platform = function (x, y, z, d, w, h, color) {
     var self = {
         x: x,
