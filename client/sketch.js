@@ -45,6 +45,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
 
     // frameRate(60);
+    // frameRate(60);
 }
 
 function draw() {
