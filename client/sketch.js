@@ -22,7 +22,9 @@ function sendNewPosition() {
     pack.push({
         x: posX,
         y: posY,
-        z: posZ
+        z: posZ,
+        lX: lookX,
+        lY: lookY
     })
     socket.emit('newPosition', pack)
 }

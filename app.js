@@ -37,6 +37,8 @@ io.sockets.on('connection', function(socket){
         socket.x = data[0].x;
         socket.y = data[0].y;
         socket.z = data[0].z;
+        socket.lX = data[0].lX;
+        socket.lY = data[0].lY;
         console.log('x: ' + socket.x + ' y: ' + socket.y + ' z: ' + socket.z);
     });
 
@@ -54,7 +56,9 @@ setInterval(function(){
             id:socket.id,
             x:socket.x,
             y:socket.y,
-            z:socket.z
+            z:socket.z,
+            lX:socket.lX,
+            lY:socket.lY
         });
     }
     for(var i in SOCKET_LIST){
