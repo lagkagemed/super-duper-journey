@@ -5,6 +5,9 @@ let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
 
+let oldSumOfAll = 0;
+let sumOfAll = 0;
+
 let humanModel;
 
 let myId = 0;
@@ -27,6 +30,7 @@ function sendNewPosition() {
         lY: lookY
     })
     socket.emit('newPosition', pack)
+    oldSumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
 }
 
 socket.on('newPositions', function (data) {
@@ -111,12 +115,10 @@ function draw() {
     if (walk && !walkRun) {
         posX += dirV.x * spdWalk;
         posY += dirV.y * spdWalk;
-        sendNewPosition();
     }
     if (walk && walkRun) {
         posX += dirV.x * spdRun;
         posY += dirV.y * spdRun;
-        sendNewPosition();
     }
 
     // Look Direction
@@ -232,6 +234,10 @@ function draw() {
     rotateY(frameCount * 0.01);
     model(humanModel);
     pop();
+
+    sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
+
+    if (sumOfAll != oldSumOfAll) sendNewPosition();
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 }
