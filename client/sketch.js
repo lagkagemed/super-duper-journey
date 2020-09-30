@@ -41,7 +41,7 @@ function drawPlayers() {
     for (var i = 0; i < SOCKET_LIST.length; i++) {
         if (SOCKET_LIST[i].id != myId) {
             push();
-            stroke(0, 0, 0);
+            noStroke();
             fill("RED");
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 200));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
@@ -49,7 +49,6 @@ function drawPlayers() {
             rotateX(-HALF_PI);
             rotateY(playerDir.heading());
             model(humanModel);
-            box(80, 80, 250);
             pop();
         }
     }
