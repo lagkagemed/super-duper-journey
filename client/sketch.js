@@ -47,7 +47,7 @@ function drawPlayers() {
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
             scale(30);
             rotateX(-HALF_PI);
-            rotateY(playerDir.heading());
+            rotateY(-playerDir.heading());
             model(humanModel);
             pop();
         }
