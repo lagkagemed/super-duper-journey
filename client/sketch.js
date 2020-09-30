@@ -220,7 +220,7 @@ function draw() {
 
     // Human
     push();
-    stroke(0, 0, 0);
+    noStroke();
     fill("#FF00E5");
     translate(0, -400, 0);
     scale(30);
