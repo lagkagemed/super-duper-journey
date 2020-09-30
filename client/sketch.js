@@ -39,9 +39,12 @@ function drawPlayers() {
             push();
             stroke(0, 0, 0);
             fill("RED");
-            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 75));
+            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 200));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
+            scale(30);
+            rotateX(-HALF_PI);
             rotateY(playerDir.heading());
+            model(humanModel);
             box(80, 80, 250);
             pop();
         }
@@ -49,7 +52,7 @@ function drawPlayers() {
 }
 
 function preload() {
-    humanModel = loadModel('./client/assets/FinalBaseMesh.obj');
+    humanModel = loadModel('./client/assets/HumanModel.obj');
 }
 
 function setup() {
