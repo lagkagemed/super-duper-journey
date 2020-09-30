@@ -54,6 +54,30 @@ function drawPlayers() {
     }
 }
 
+
+var Platform = function(x, y, z, d, w, h, color){
+    var self = {
+        x:x,
+        y:y,
+        z:z,
+        depth:d,
+        width:w,
+        height:h,
+        color:color,
+    }
+    self.draw = function(){
+        push();
+        stroke(0, 0, 0);
+        fill(color);
+        translate(x, y, z);
+        box(d, w, h);
+        pop();
+    }
+    return self;
+}
+
+var ground = Platform(0, 0, 10, 5000, 2000, 20, "GREY");
+
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
 }
@@ -225,6 +249,8 @@ function draw() {
     translate(0, -160, -200);
     box(500, 20, 420);
     pop();
+
+    ground.draw();
 
     // Human
     push();
