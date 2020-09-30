@@ -38,6 +38,8 @@ function drawPlayers() {
             stroke(0, 0, 0);
             fill("RED");
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 75));
+            let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
+            rotateY(playerDir.heading());
             box(80, 80, 250);
             pop();
         }
@@ -59,7 +61,7 @@ function draw() {
     ambientLight(128, 128, 128);
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
 
-    print(frameRate());
+    // print(frameRate());
 
     // push();
     // textSize(32);
