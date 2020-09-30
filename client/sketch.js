@@ -55,17 +55,17 @@ function drawPlayers() {
 }
 
 
-var Platform = function(x, y, z, d, w, h, color){
+var Platform = function (x, y, z, d, w, h, color) {
     var self = {
-        x:x,
-        y:y,
-        z:z,
-        depth:d,
-        width:w,
-        height:h,
-        color:color,
+        x: x,
+        y: y,
+        z: z,
+        depth: d,
+        width: w,
+        height: h,
+        color: color,
     }
-    self.draw = function(){
+    self.draw = function () {
         push();
         stroke(0, 0, 0);
         fill(color);
@@ -95,14 +95,6 @@ function draw() {
 
     // print(frameRate());
 
-    // push();
-    // textSize(32);
-    // stroke(0, 0, 0);
-    // fill(0, 0, 0);
-    // text('Move: W A S D', 10, 30);
-    // text('Look: Up Down Left Right', 10, 50);
-    // pop();
-
     // Movement
     let walkForward = keyIsDown(87); // W
     let walkBack = keyIsDown(83); // S
@@ -113,38 +105,39 @@ function draw() {
     let spdRun = 10;
 
     let walk = false;
-    let dirV = createVector(lookX, lookY);
+    let walkDirV = createVector(lookX, lookY);
     if (walkForward && !walkBack && !walkLeft && !walkRight) {
         walk = true;
     } else if (!walkForward && walkBack && !walkLeft && !walkRight) {
-        dirV = dirV.rotate(PI);
+        walkDirV = walkDirV.rotate(PI);
         walk = true;
     } else if (!walkForward && !walkBack && walkLeft && !walkRight) {
-        dirV = dirV.rotate(HALF_PI);
+        walkDirV = walkDirV.rotate(HALF_PI);
         walk = true;
     } else if (!walkForward && !walkBack && !walkLeft && walkRight) {
-        dirV = dirV.rotate(-HALF_PI);
+        walkDirV = walkDirV.rotate(-HALF_PI);
         walk = true;
     } else if (walkForward && !walkBack && walkLeft && !walkRight) {
-        dirV = dirV.rotate(QUARTER_PI);
+        walkDirV = walkDirV.rotate(QUARTER_PI);
         walk = true;
     } else if (walkForward && !walkBack && !walkLeft && walkRight) {
-        dirV = dirV.rotate(-QUARTER_PI);
+        walkDirV = walkDirV.rotate(-QUARTER_PI);
         walk = true;
     } else if (!walkForward && walkBack && walkLeft && !walkRight) {
-        dirV = dirV.rotate(QUARTER_PI + HALF_PI);
+        walkDirV = walkDirV.rotate(QUARTER_PI + HALF_PI);
         walk = true;
     } else if (!walkForward && walkBack && !walkLeft && walkRight) {
-        dirV = dirV.rotate(-QUARTER_PI - HALF_PI);
+        walkDirV = walkDirV.rotate(-QUARTER_PI - HALF_PI);
         walk = true;
     }
-    if (walk && !walkRun) {
-        posX += dirV.x * spdWalk;
-        posY += dirV.y * spdWalk;
-    }
-    if (walk && walkRun) {
-        posX += dirV.x * spdRun;
-        posY += dirV.y * spdRun;
+    if (walk) {
+        if (!walkRun) {
+            posX += walkDirV.x * spdWalk;
+            posY += walkDirV.y * spdWalk;
+        } else {
+            posX += walkDirV.x * spdRun;
+            posY += walkDirV.y * spdRun;
+        }
     }
 
     // Look Direction
@@ -153,16 +146,16 @@ function draw() {
     let lookLeft = keyIsDown(LEFT_ARROW);
     let lookRight = keyIsDown(RIGHT_ARROW);
 
-    dirV = createVector(lookX, lookY);
+    let lookDirV = createVector(lookX, lookY);
     if (lookLeft) {
-        dirV = dirV.rotate(0.02);
-        lookX = dirV.x;
-        lookY = dirV.y;
+        lookDirV = lookDirV.rotate(0.02);
+        lookX = lookDirV.x;
+        lookY = lookDirV.y;
     }
     if (lookRight) {
-        dirV = dirV.rotate(-0.02);
-        lookX = dirV.x;
-        lookY = dirV.y;
+        lookDirV = lookDirV.rotate(-0.02);
+        lookX = lookDirV.x;
+        lookY = lookDirV.y;
     }
     // print("x: " + lookX + ", y: " + lookY);
 
@@ -176,19 +169,11 @@ function draw() {
         if (lookZ > HALF_PI - 0.1)
             lookZ = HALF_PI - 0.1;
     }
-    dirV = createVector(lookX, lookY);
-    dirV = dirV.mult(cos(abs(lookZ)));
-    // print("dirV.x: " + dirV.x + ", dirV.y: " + dirV.y + ", lookZ: " + lookZ);
+    lookDirV = lookDirV.mult(cos(abs(lookZ)));
+    // print("lookDirV.x: " + lookDirV.x + ", lookDirV.y: " + lookDirV.y + ", lookZ: " + lookZ);
 
     // Draw Camera
-    camera(posX, posY, posZ, posX + dirV.x, posY + dirV.y, posZ + sin(lookZ), 0, 0, 1);
-
-    // push();
-    // stroke(0, 0, 0);
-    // fill(255, 0, 0);
-    // translate((posX + dirV.x) * 1000, (posY + dirV.y) * 1000, (posZ + sin(lookZ)) * 1000);
-    // sphere(10);
-    // pop();
+    camera(posX, posY, posZ, posX + lookDirV.x, posY + lookDirV.y, posZ + sin(lookZ), 0, 0, 1);
 
     // Green Box
     push();
@@ -255,11 +240,12 @@ function draw() {
     // Human
     push();
     noStroke();
-    fill("#FF00E5");
+    fill("RED");
     translate(0, -400, 0);
+    let playerDir = createVector(lookX, lookY);
     scale(30);
     rotateX(-HALF_PI);
-    rotateY(frameCount * 0.01);
+    rotateY(-playerDir.heading());
     model(humanModel);
     pop();
 
