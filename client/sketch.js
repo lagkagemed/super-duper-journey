@@ -1,3 +1,5 @@
+// Spil på: http://super-duper-journey.herokuapp.com/
+
 let posX = -500;
 let posY = 0;
 let posZ = -200;
