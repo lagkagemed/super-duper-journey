@@ -26,6 +26,7 @@ function updateZVel() {
 
 
 
+
 let oldSumOfAll = 0;
 let sumOfAll = 0;
 
@@ -75,6 +76,8 @@ function drawPlayers() {
     }
 }
 
+let PLATFORM_LIST = [];
+
 var Platform = function (x, y, z, d, w, h, color) {
     var self = {
         x: x,
@@ -93,6 +96,7 @@ var Platform = function (x, y, z, d, w, h, color) {
         box(d, w, h);
         pop();
     }
+    PLATFORM_LIST.push(self);
     return self;
 }
 
