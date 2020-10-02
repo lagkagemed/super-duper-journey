@@ -66,7 +66,7 @@ function drawPlayers() {
             fill("RED");
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 200));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
-            scale(30);
+            scale(23);
             rotateX(-HALF_PI);
             rotateY(-playerDir.heading());
             model(humanModel);
@@ -268,9 +268,10 @@ function draw() {
     fill("RED");
     translate(0, -400, 0);
     let playerDir = createVector(lookX, lookY);
-    scale(30);
+    scale(23);
     rotateX(-HALF_PI);
-    rotateY(-playerDir.heading());
+    //rotateY(-playerDir.heading());
+    rotateY(-PI);
     model(humanModel);
     pop();
 
