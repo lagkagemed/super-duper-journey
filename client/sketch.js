@@ -7,6 +7,25 @@ let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
 
+// gravity + jump
+let physGravity = 2;
+let physZVel = 0;
+let physZVelMax = 20;
+let physJump = -30;
+let standing = true;
+
+function updateZVel() {
+    physZVel += physGravity;
+    if (physZVel > physZVelMax) physZVel = physZVelMax;
+    posZ += physZVel;
+    if (posZ > -200) {
+        posZ = -200;
+        standing = true;
+    } 
+}
+
+
+
 let oldSumOfAll = 0;
 let sumOfAll = 0;
 
@@ -77,7 +96,7 @@ var Platform = function (x, y, z, d, w, h, color) {
     return self;
 }
 
-var ground = Platform(0, 0, 10, 5000, 2000, 20, "GREY");
+var ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
 
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
@@ -101,9 +120,10 @@ function draw() {
     let walkBack = keyIsDown(83); // S
     let walkLeft = keyIsDown(65); // A
     let walkRight = keyIsDown(68); // D
-    let walkRun = keyIsDown(16); // Shift)
-    let spdWalk = 4;
-    let spdRun = 10;
+    let walkRun = keyIsDown(16); // Shift
+    let jump = keyIsDown(32); // Shift
+    let spdWalk = 6;
+    let spdRun = 15;
 
     let walk = false;
     let walkDirV = createVector(lookX, lookY);
@@ -139,6 +159,10 @@ function draw() {
             posX += walkDirV.x * spdRun;
             posY += walkDirV.y * spdRun;
         }
+    }
+    if (jump && standing) {
+        physZVel = physJump;
+        standing = false;
     }
 
     // Look Direction
@@ -250,9 +274,13 @@ function draw() {
     model(humanModel);
     pop();
 
+
+    updateZVel();
+
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
 
     if (sumOfAll != oldSumOfAll) sendNewPosition();
 
     if (SOCKET_LIST.length > 0) drawPlayers();
+
 }
