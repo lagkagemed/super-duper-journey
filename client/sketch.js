@@ -125,7 +125,7 @@ function draw() {
     let walkLeft = keyIsDown(65); // A
     let walkRight = keyIsDown(68); // D
     let walkRun = keyIsDown(16); // Shift
-    let jump = keyIsDown(32); // Shift
+    let jump = keyIsDown(32); // Space
     let spdWalk = 6;
     let spdRun = 15;
 
@@ -200,9 +200,6 @@ function draw() {
     }
     lookDirV = lookDirV.mult(cos(abs(lookZ)));
     // print("lookDirV.x: " + lookDirV.x + ", lookDirV.y: " + lookDirV.y + ", lookZ: " + lookZ);
-
-    // Draw Camera
-    camera(posX, posY, posZ, posX + lookDirV.x, posY + lookDirV.y, posZ + sin(lookZ), 0, 0, 1);
 
     // Green Box
     push();
@@ -288,4 +285,6 @@ function draw() {
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
+    // Draw Camera (player position) after position is calculated (movement, collisions, jump etc.). 
+    camera(posX, posY, posZ, posX + lookDirV.x, posY + lookDirV.y, posZ + sin(lookZ), 0, 0, 1);
 }
