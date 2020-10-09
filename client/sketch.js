@@ -3,6 +3,7 @@
 let controls;
 
 let humanModel;
+let sm64treeTexture;
 let arrowsTexture;
 let polyTexture;
 let buttonATexture;
@@ -110,6 +111,7 @@ let ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
 
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
+    sm64treeTexture = loadImage('./client/assets/sm64tree.png');
     arrowsTexture = loadImage('./client/assets/Arrows.png');
     polyTexture = loadImage('./client/assets/Poly.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
@@ -291,12 +293,12 @@ function drawTestObjects() {
     pop();
 
     push();
-    texture(arrowsTexture);
-    translate(0, 600, -250);
+    texture(sm64treeTexture);
+    translate(0, 600, -200);
     let playerDir = createVector(lookX, lookY);
-    rotateX(-HALF_PI);
-    rotateY(HALF_PI + PI - playerDir.heading());
-    plane(500, 500);
+    rotateX(HALF_PI);
+    rotateY(HALF_PI + PI + playerDir.heading());
+    plane(200, 400);
     pop();
 
     push();
