@@ -4,6 +4,7 @@ let controls;
 
 let humanModel;
 let arrowsTexture;
+let polyTexture;
 let buttonATexture;
 let buttonBTexture;
 
@@ -110,6 +111,7 @@ let ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
     arrowsTexture = loadImage('./client/assets/Arrows.png');
+    polyTexture = loadImage('./client/assets/Poly.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
@@ -295,6 +297,15 @@ function drawTestObjects() {
     rotateX(-HALF_PI);
     rotateY(HALF_PI + PI - playerDir.heading());
     plane(500, 500);
+    pop();
+
+    push();
+    texture(polyTexture);
+    translate(500, 800, -250);
+    playerDir = createVector(lookX, lookY);
+    rotateX(HALF_PI);
+    rotateY(HALF_PI + PI + playerDir.heading());
+    plane(1000, 1000);
     pop();
 }
 
