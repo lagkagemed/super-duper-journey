@@ -292,7 +292,7 @@ function drawTestObjects() {
 
     push();
     texture(sm64treeTexture);
-    translate(0, 600, -250);
+    translate(0, 600, -200);
     let playerDir = createVector(lookX, lookY);
     rotateX(HALF_PI);
     rotateY(HALF_PI + PI + playerDir.heading());
