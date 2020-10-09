@@ -1,17 +1,29 @@
 // Spil på: http://super-duper-journey.herokuapp.com/
 
+let controls;
+
+let humanModel;
+let arrowsTexture;
+let buttonATexture;
+let buttonBTexture;
+
 let posX = -500;
 let posY = 0;
 let posZ = -200;
 let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
+let lookXScaled = 0;
+let lookYScaled = 0;
+
+const spdWalk = 6;
+const spdRun = 15;
 
 // gravity + jump
-let physGravity = 2;
+const physGravity = 2;
 let physZVel = 0;
-let physZVelMax = 20;
-let physJump = -30;
+const physZVelMax = 20;
+const physJump = -30;
 let standing = true;
 
 function updateZVel() {
@@ -21,29 +33,24 @@ function updateZVel() {
     if (posZ > -200) {
         posZ = -200;
         standing = true;
-    } 
+    }
 }
-
-
-
 
 let oldSumOfAll = 0;
 let sumOfAll = 0;
 
-let humanModel;
-
 let myId = 0;
 let SOCKET_LIST = [];
 let socket = io();
-socket.emit('helloWorld');
+// socket.emit('helloWorld');
 
 socket.on('idGranted', function (data) {
     myId = data;
-    console.log(myId);
+    // console.log(myId);
 });
 
 function sendNewPosition() {
-    var pack = [];
+    let pack = [];
     pack.push({
         x: posX,
         y: posY,
@@ -60,10 +67,9 @@ socket.on('newPositions', function (data) {
 });
 
 function drawPlayers() {
-    for (var i = 0; i < SOCKET_LIST.length; i++) {
+    for (let i = 0; i < SOCKET_LIST.length; i++) {
         if (SOCKET_LIST[i].id != myId) {
             push();
-            noStroke();
             fill("RED");
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 200));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
@@ -78,19 +84,18 @@ function drawPlayers() {
 
 let PLATFORM_LIST = [];
 
-var Platform = function (x, y, z, d, w, h, color) {
-    var self = {
+let Platform = function (x, y, z, d, w, h, color) {
+    let self = {
         x: x,
         y: y,
         z: z,
         depth: d,
         width: w,
         height: h,
-        color: color,
+        color: color
     }
     self.draw = function () {
         push();
-        stroke(0, 0, 0);
         fill(color);
         translate(x, y, z);
         box(d, w, h);
@@ -100,34 +105,34 @@ var Platform = function (x, y, z, d, w, h, color) {
     return self;
 }
 
-var ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
+let ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
 
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
+    arrowsTexture = loadImage('./client/assets/Arrows.png');
+    buttonATexture = loadImage('./client/assets/ButtonA.png');
+    buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+    controls = new Controls();
 
     // frameRate(60);
 }
 
-function draw() {
-    background(200);
-    ambientLight(128, 128, 128);
-    directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
-
+function update() {
     // print(frameRate());
 
+    controls.update();
+
     // Movement
-    let walkForward = keyIsDown(87); // W
-    let walkBack = keyIsDown(83); // S
-    let walkLeft = keyIsDown(65); // A
-    let walkRight = keyIsDown(68); // D
-    let walkRun = keyIsDown(16); // Shift
-    let jump = keyIsDown(32); // Space
-    let spdWalk = 6;
-    let spdRun = 15;
+    let walkForward = controls.moveForward;
+    let walkBack = controls.moveBack;
+    let walkLeft = controls.moveLeft;
+    let walkRight = controls.moveRight;
+    let walkRun = controls.run;
+    let jump = controls.jump;
 
     let walk = false;
     let walkDirV = createVector(lookX, lookY);
@@ -169,48 +174,66 @@ function draw() {
         standing = false;
     }
 
+    updateZVel();
+
     // Look Direction
-    let lookUp = keyIsDown(UP_ARROW);
-    let lookDown = keyIsDown(DOWN_ARROW);
-    let lookLeft = keyIsDown(LEFT_ARROW);
-    let lookRight = keyIsDown(RIGHT_ARROW);
+    let lookUpDown = controls.lookUpDown;
+    let lookLeftRight = controls.lookLeftRight;
 
     let lookDirV = createVector(lookX, lookY);
-    if (lookLeft) {
-        lookDirV = lookDirV.rotate(0.02);
+
+    if (lookLeftRight != 0) {
+        lookDirV = lookDirV.rotate(lookLeftRight);
         lookX = lookDirV.x;
         lookY = lookDirV.y;
     }
-    if (lookRight) {
-        lookDirV = lookDirV.rotate(-0.02);
-        lookX = lookDirV.x;
-        lookY = lookDirV.y;
-    }
-    // print("x: " + lookX + ", y: " + lookY);
 
-    if (lookUp) {
-        lookZ -= 0.02;
-        if (lookZ < -HALF_PI + 0.1)
-            lookZ = -HALF_PI + 0.1;
+    if (lookUpDown != 0) {
+        lookZ += lookUpDown;
+        if (lookZ > 0.9)
+            lookZ = 0.9;
+        else if (lookZ < -0.9)
+            lookZ = -0.9;
     }
-    if (lookDown) {
-        lookZ += 0.02;
-        if (lookZ > HALF_PI - 0.1)
-            lookZ = HALF_PI - 0.1;
-    }
-    lookDirV = lookDirV.mult(cos(abs(lookZ)));
-    // print("lookDirV.x: " + lookDirV.x + ", lookDirV.y: " + lookDirV.y + ", lookZ: " + lookZ);
 
+    let lookScale = cos(abs(lookZ * HALF_PI));
+    lookXScaled = lookX * lookScale;
+    lookYScaled = lookY * lookScale;
+
+    // Send new position.
+    sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
+    if (sumOfAll != oldSumOfAll) sendNewPosition();
+}
+
+function draw() {
+    update();
+
+    noStroke();
+
+    background(200, 200, 200);
+    ambientLight(128, 128, 128);
+    directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
+
+    camera(posX, posY, posZ, posX + lookXScaled, posY + lookYScaled, posZ + sin(lookZ * HALF_PI), 0, 0, 1);
+
+    ground.draw();
+
+    if (SOCKET_LIST.length > 0) drawPlayers();
+
+    drawTestObjects();
+
+    controls.draw(posX, posY, posZ, lookXScaled, lookYScaled, lookZ);
+}
+
+function drawTestObjects() {
     // Green Box
     push();
-    stroke(0, 0, 0);
     fill(0, 255, 0);
-    translate(0, -100);
+    translate(0, -100, 0);
     box(500, 100, 20);
     pop();
 
     push();
-    stroke(0, 0, 0);
     fill(0, 255, 0);
     translate(0, -100, -400);
     box(500, 100, 20);
@@ -218,14 +241,12 @@ function draw() {
 
     // Yellow Box
     push();
-    stroke(0, 0, 0);
     fill(255, 255, 0);
-    translate(0, 0);
+    translate(0, 0, 0);
     box(500, 100, 20);
     pop();
 
     push();
-    stroke(0, 0, 0);
     fill(255, 255, 0);
     translate(0, 0, -400);
     box(500, 100, 20);
@@ -233,14 +254,12 @@ function draw() {
 
     // Blue Box
     push();
-    stroke(0, 0, 0);
     fill(0, 0, 255);
-    translate(0, 100);
+    translate(0, 100, 0);
     box(500, 100, 20);
     pop();
 
     push();
-    stroke(0, 0, 0);
     fill(0, 0, 255);
     translate(0, 100, -400);
     box(500, 100, 20);
@@ -248,43 +267,52 @@ function draw() {
 
     // Purple Box
     push();
-    stroke(0, 0, 0);
     fill("#FF00E5");
     translate(0, 160, -200);
     box(500, 20, 420);
     pop();
 
     push();
-    stroke(0, 0, 0);
     fill("#FF00E5");
     translate(0, -160, -200);
     box(500, 20, 420);
     pop();
 
-    ground.draw();
-
     // Human
     push();
-    noStroke();
     fill("RED");
     translate(0, -400, 0);
-    let playerDir = createVector(lookX, lookY);
     scale(23);
     rotateX(-HALF_PI);
-    //rotateY(-playerDir.heading());
     rotateY(-PI);
     model(humanModel);
     pop();
 
+    push();
+    texture(arrowsTexture);
+    translate(0, 600, -250);
+    rotateY(HALF_PI);
+    plane(500, 500);
+    pop();
+}
 
-    updateZVel();
+function touchStarted() {
+    // console.log(touches);
+    // socket.emit('log', touches);
+    controls.handleTouchStarted();
+    return false;
+}
 
-    sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
+function touchMoved() {
+    // console.log(touches);
+    // socket.emit('log', touches);
+    controls.handleTouchMoved();
+    return false;
+}
 
-    if (sumOfAll != oldSumOfAll) sendNewPosition();
-
-    if (SOCKET_LIST.length > 0) drawPlayers();
-
-    // Draw Camera (player position) after position is calculated (movement, collisions, jump etc.). 
-    camera(posX, posY, posZ, posX + lookDirV.x, posY + lookDirV.y, posZ + sin(lookZ), 0, 0, 1);
+function touchEnded() {
+    // console.log(touches);
+    // socket.emit('log', touches);
+    controls.handleTouchEnded();
+    return false;
 }

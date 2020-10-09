@@ -33,13 +33,17 @@ io.sockets.on('connection', function (socket) {
         console.log('Hello World!');
     });
 
+    socket.on('log', function (log) {
+        console.log(log);
+    });
+
     socket.on('newPosition', function (data) {
         socket.x = data[0].x;
         socket.y = data[0].y;
         socket.z = data[0].z;
         socket.lX = data[0].lX;
         socket.lY = data[0].lY;
-        console.log('x: ' + socket.x + ' y: ' + socket.y + ' z: ' + socket.z);
+        // console.log('x: ' + socket.x + ' y: ' + socket.y + ' z: ' + socket.z);
     });
 
     socket.on('disconnect', function () {
