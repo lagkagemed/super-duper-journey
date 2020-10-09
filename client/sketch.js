@@ -291,7 +291,9 @@ function drawTestObjects() {
     push();
     texture(arrowsTexture);
     translate(0, 600, -250);
-    rotateY(HALF_PI);
+    let playerDir = createVector(lookX, lookY);
+    rotateX(-HALF_PI);
+    rotateY(HALF_PI + PI - playerDir.heading());
     plane(500, 500);
     pop();
 }
