@@ -27,7 +27,7 @@ class Controls {
         this.touchLookUpDown = 0;
         this.touchLookLeftRight = 0;
 
-        const touchLookSteps = windowHeight / 1.5;
+        const touchLookSteps = windowHeight;
         this.touchLookSteps = touchLookSteps;
 
         const lookSpeedKeys = 0.02;
