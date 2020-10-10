@@ -6,8 +6,11 @@ let humanModel;
 let sm64treeTexture;
 let arrowsTexture;
 let polyTexture;
+let grassTexture;
 let buttonATexture;
 let buttonBTexture;
+
+let ground;
 
 let posX = -500;
 let posY = 0;
@@ -86,36 +89,12 @@ function drawPlayers() {
     }
 }
 
-let PLATFORM_LIST = [];
-
-let Platform = function (x, y, z, d, w, h, color) {
-    let self = {
-        x: x,
-        y: y,
-        z: z,
-        depth: d,
-        width: w,
-        height: h,
-        color: color
-    }
-    self.draw = function () {
-        push();
-        fill(color);
-        translate(x, y, z);
-        box(d, w, h);
-        pop();
-    }
-    PLATFORM_LIST.push(self);
-    return self;
-}
-
-let ground = Platform(0, 0, 13, 5000, 2000, 5, "GREY");
-
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
     arrowsTexture = loadImage('./client/assets/Arrows.png');
     polyTexture = loadImage('./client/assets/Poly.png');
+    grassTexture = loadImage('./client/assets/Grass.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
@@ -123,6 +102,8 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     controls = new Controls();
+    
+    ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
 
     // frameRate(60);
 }
