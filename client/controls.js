@@ -2,10 +2,8 @@ class Controls {
     constructor() {
         // Move
         this.touchMoveId = -1;
-        this.touchMoveForward = false;
-        this.touchMoveBack = false;
-        this.touchMoveLeft = false;
-        this.touchMoveRight = false;
+        this.touchMoveV = createVector(0, 0);
+        this.touchIsMoving = false;
 
         this.touchButtonAId = -1;
         this.touchButtonADown = false;
@@ -13,8 +11,14 @@ class Controls {
         this.touchButtonBId = -1;
         this.touchButtonBDown = false;
 
-        const touchButtonSteps = windowHeight / 64;
-        this.touchButtonSteps = touchButtonSteps;
+        // const touchButtonSteps = 770.5 / 109.5;
+        // this.touchButtonSteps = touchButtonSteps;
+        // console.log(touchButtonSteps);
+
+        // socket.emit('log', "Window width: " + (windowWidth / 2));
+        // socket.emit('log', "Window height: " + (windowHeight / 2));
+        // socket.emit('log', "Pixel density: " + (pixelDensity()));
+        // socket.emit('log', "Display density: " + (displayDensity()));
 
         // Look
         this.touchLookId = -1;
@@ -30,7 +34,18 @@ class Controls {
         this.lookSpeedKeys = lookSpeedKeys;
     }
 
+    // printTouch() {
+    //     let touchMoveCenterX = (windowWidth / 2);
+    //     let touchMoveCenterY = (windowHeight / 2);
+    //     let distTouchMoveCenter = floor(dist(touchMoveCenterX, touchMoveCenterY, mouseX, mouseY));
+    //     let distX = floor(mouseX - touchMoveCenterX);
+    //     let distY = floor(mouseY - touchMoveCenterY);
+    //     socket.emit('log', "Dist: " + distTouchMoveCenter + ", X: " + distX + ", Y: " + distY);
+    // }
+
     handleTouchStarted() {
+        // this.printTouch();
+
         if (touches.length > 0 && (this.touchMoveId === -1 || this.touchButtonAId === -1 || this.touchButtonBId === -1 || this.touchLookId === -1)) {
             for (let i = 0; i < touches.length; i++) {
                 let id = touches[i].id;
@@ -43,51 +58,95 @@ class Controls {
                 else if (id === this.touchLookId)
                     continue;
 
+                let x = touches[i].x;
+                let y = touches[i].y;
+
+                // Move
                 if (this.touchMoveId === -1) {
-                    this.touchMoveId = id;
-                    socket.emit('log', "Started touchMoveId: " + id);
-                    break;
-                } else if (this.touchButtonAId === -1) {
-                    this.touchButtonAId = id;
-                    socket.emit('log', "Started touchButtonAId: " + id);
-                    break;
-                } else if (this.touchButtonBId === -1) {
-                    this.touchButtonBId = id;
-                    socket.emit('log', "Started touchButtonBId: " + id);
-                    break;
-                } else if (this.touchLookId === -1) {
-                    this.touchLookId = id;
-                    this.touchLookXLast = touches[i].x;
-                    this.touchLookYLast = touches[i].y;
-                    socket.emit('log', "Started touchLookId: " + id);
-                    break;
+                    if (x > 0 &&
+                        x < (windowWidth / 2) &&
+                        y > (windowHeight / 2) &&
+                        y < windowHeight) {
+                        this.touchMoveId = id;
+
+                        this.touchIsMoving = true;
+                        this.touchMoveV.set(x - (windowWidth / 4), y - ((windowHeight / 2) + (windowHeight / 4)));
+
+                        // socket.emit('log', "Started touchMoveId: " + id);
+                        break;
+                    }
+                }
+
+                // A
+                if (this.touchButtonAId === -1) {
+                    if (x > (windowWidth / 2) &&
+                        x < (windowWidth / 2) + (windowWidth / 4) &&
+                        y > (windowHeight / 2) &&
+                        y < windowHeight) {
+                        this.touchButtonAId = id;
+                        this.touchButtonADown = true;
+                        // socket.emit('log', "Started touchButtonAId: " + id);
+                        break;
+                    }
+                }
+
+                // B
+                if (this.touchButtonBId === -1) {
+                    if (x > (windowWidth / 2) + (windowWidth / 4) &&
+                        x < windowWidth &&
+                        y > (windowHeight / 2) &&
+                        y < windowHeight) {
+                        this.touchButtonBId = id;
+                        this.touchButtonBDown = true;
+                        // socket.emit('log', "Started touchButtonBId: " + id);
+                        break;
+                    }
+                }
+
+                // Look
+                if (this.touchLookId === -1) {
+                    if (x > 0 &&
+                        x < windowWidth &&
+                        y > 0 &&
+                        y < (windowHeight / 2)) {
+                        this.touchLookId = id;
+                        this.touchLookXLast = touches[i].x;
+                        this.touchLookYLast = touches[i].y;
+                        // socket.emit('log', "Started touchLookId: " + id);
+                        break;
+                    }
                 }
             }
         }
     }
 
     handleTouchMoved() {
+        // this.printTouch();
+
         if (touches.length > 0) {
             for (let i = 0; i < touches.length; i++) {
                 let id = touches[i].id;
+                let x = touches[i].x;
+                let y = touches[i].y;
                 if (this.touchMoveId === id) {
-                    // TODO BB 2020-10-09. Implement.
-                } else if (this.touchButtonAId === id) {
-                    // TODO BB 2020-10-09. Implement.
-                } else if (this.touchButtonBId === id) {
-                    // TODO BB 2020-10-09. Implement.
+                    // Move
+                    this.touchMoveV.set((windowWidth / 4) - x, y - ((windowHeight / 2) + (windowHeight / 4)));
                 } else if (this.touchLookId === id) {
-                    this.touchLookUpDown = touches[i].y - this.touchLookYLast;
-                    this.touchLookYLast = touches[i].y;
-                    this.touchLookLeftRight = this.touchLookXLast - touches[i].x;
-                    this.touchLookXLast = touches[i].x;
+                    // Look
+                    this.touchLookUpDown = y - this.touchLookYLast;
+                    this.touchLookYLast = y;
+                    this.touchLookLeftRight = this.touchLookXLast - x;
+                    this.touchLookXLast = x;
                 }
             }
         }
     }
 
     handleTouchEnded() {
+        // this.printTouch();
+
         if (touches.length > 0) {
+            // Move
             if (this.touchMoveId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
@@ -98,10 +157,12 @@ class Controls {
                 }
                 if (!found) {
                     this.touchMoveId = -1;
-                    socket.emit('log', "Stopped touchMoveId");
+                    this.touchIsMoving = false;
+                    // socket.emit('log', "Stopped touchMoveId");
                 }
             }
 
+            // A
             if (this.touchButtonAId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
@@ -112,10 +173,12 @@ class Controls {
                 }
                 if (!found) {
                     this.touchButtonAId = -1;
-                    socket.emit('log', "Stopped touchButtonAId");
+                    this.touchButtonADown = false;
+                    // socket.emit('log', "Stopped touchButtonAId");
                 }
             }
 
+            // B
             if (this.touchButtonBId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
@@ -126,10 +189,11 @@ class Controls {
                 }
                 if (!found) {
                     this.touchButtonBId = -1;
-                    socket.emit('log', "Stopped touchButtonBId");
+                    // socket.emit('log', "Stopped touchButtonBId");
                 }
             }
 
+            // Look
             if (this.touchLookId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
@@ -140,44 +204,68 @@ class Controls {
                 }
                 if (!found) {
                     this.touchLookId = -1;
-                    socket.emit('log', "Stopped touchLookId");
+                    // socket.emit('log', "Stopped touchLookId");
                 }
             }
         } else {
             this.touchMoveId = -1;
+            this.touchIsMoving = false;
             this.touchButtonAId = -1;
+            this.touchButtonADown = false;
             this.touchButtonBId = -1;
             this.touchLookId = -1;
-            socket.emit('log', "Stopped all ids");
+            // socket.emit('log', "Stopped all ids");
         }
     }
 
-    update() {
+    // update() {
+    // }
 
-    }
-
-    get moveForward() {
-        return this.touchMoveForward || keyIsDown(87); // W
-    }
-
-    get moveBack() {
-        return this.touchMoveBack || keyIsDown(83); // S
-    }
-
-    get moveLeft() {
-        return this.touchMoveLeft || keyIsDown(65); // A
-    }
-
-    get moveRight() {
-        return this.touchMoveRight || keyIsDown(68); // D
+    get move() {
+        if (this.touchIsMoving) {
+            return { isMoving: true, heading: this.touchMoveV.heading() + HALF_PI };
+        } else {
+            let walkForward = keyIsDown(87); // W
+            let walkBack = keyIsDown(83); // S
+            let walkLeft = keyIsDown(65); // A
+            let walkRight = keyIsDown(68); // D
+            if (walkForward && !walkBack && !walkLeft && !walkRight) {
+                return { isMoving: true, heading: 0 };
+            } else if (!walkForward && walkBack && !walkLeft && !walkRight) {
+                return { isMoving: true, heading: PI };
+            } else if (!walkForward && !walkBack && walkLeft && !walkRight) {
+                return { isMoving: true, heading: HALF_PI };
+            } else if (!walkForward && !walkBack && !walkLeft && walkRight) {
+                return { isMoving: true, heading: -HALF_PI };
+            } else if (walkForward && !walkBack && walkLeft && !walkRight) {
+                return { isMoving: true, heading: QUARTER_PI };
+            } else if (walkForward && !walkBack && !walkLeft && walkRight) {
+                return { isMoving: true, heading: -QUARTER_PI };
+            } else if (!walkForward && walkBack && walkLeft && !walkRight) {
+                return { isMoving: true, heading: QUARTER_PI + HALF_PI };
+            } else if (!walkForward && walkBack && !walkLeft && walkRight) {
+                return { isMoving: true, heading: -QUARTER_PI - HALF_PI };
+            } else {
+                return { isMoving: false, heading: 0 };
+            }
+        }
     }
 
     get run() {
-        return keyIsDown(16); // Shift
+        if (this.touchButtonADown) {
+            return true;
+        } else {
+            return keyIsDown(16); // Shift
+        }
     }
 
     get jump() {
-        return keyIsDown(32); // Space
+        if (this.touchButtonBDown) {
+            this.touchButtonBDown = false;
+            return true;
+        } else {
+            return keyIsDown(32); // Space
+        }
     }
 
     get lookUpDown() {
@@ -210,31 +298,38 @@ class Controls {
         }
     }
 
-    draw(posX, posY, posZ, dirX, dirY, dirZ) {
-        push();
+    // draw(posX, posY, posZ, dirX, dirY, dirZ) {
+    //     push();
 
-        translate(posX + (dirX * 90), posY + (dirY * 90), posZ + (sin(dirZ * HALF_PI) * 90));
-        let vXY = createVector(dirX, dirY);
-        rotateZ(vXY.heading());
-        rotateY((PI + HALF_PI) - (dirZ * HALF_PI));
+    //     translate(posX + (dirX * 90), posY + (dirY * 90), posZ + (sin(dirZ * HALF_PI) * 90));
+    //     let vXY = createVector(dirX, dirY);
+    //     rotateZ(vXY.heading());
+    //     rotateY((PI + HALF_PI) - (dirZ * HALF_PI));
 
-        rotateZ(-HALF_PI);
+    //     rotateZ(-HALF_PI);
 
-        // Arrows
-        texture(arrowsTexture);
-        translate(-48, 32, 0);
-        plane(32, 32);
+    //     // texture(arrowsTexture);
+    //     // plane(32, 32);
 
-        // Button A
-        translate(80, 8, 0);
-        texture(buttonATexture);
-        plane(16, 16);
+    //     // texture(arrowsTexture);
+    //     // translate(-50 * 2, 0, 0);
+    //     // plane(32, 32);
 
-        // Button B
-        translate(24, -16, 0);
-        texture(buttonBTexture);
-        plane(16, 16);
+    //     // Arrows
+    //     texture(arrowsTexture);
+    //     translate(-48, 32, 0);
+    //     plane(32, 32);
 
-        pop();
-    }
+    //     // Button A
+    //     translate(80, 8, 0);
+    //     texture(buttonATexture);
+    //     plane(16, 16);
+
+    //     // Button B
+    //     translate(24, -16, 0);
+    //     texture(buttonBTexture);
+    //     plane(16, 16);
+
+    //     pop();
+    // }
 }

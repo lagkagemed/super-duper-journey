@@ -120,6 +120,7 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
+
     controls = new Controls();
 
     // frameRate(60);
@@ -128,44 +129,17 @@ function setup() {
 function update() {
     // print(frameRate());
 
-    controls.update();
+    // controls.update();
 
     // Movement
-    let walkForward = controls.moveForward;
-    let walkBack = controls.moveBack;
-    let walkLeft = controls.moveLeft;
-    let walkRight = controls.moveRight;
-    let walkRun = controls.run;
+    let move = controls.move;
+    let run = controls.run;
     let jump = controls.jump;
 
-    let walk = false;
     let walkDirV = createVector(lookX, lookY);
-    if (walkForward && !walkBack && !walkLeft && !walkRight) {
-        walk = true;
-    } else if (!walkForward && walkBack && !walkLeft && !walkRight) {
-        walkDirV = walkDirV.rotate(PI);
-        walk = true;
-    } else if (!walkForward && !walkBack && walkLeft && !walkRight) {
-        walkDirV = walkDirV.rotate(HALF_PI);
-        walk = true;
-    } else if (!walkForward && !walkBack && !walkLeft && walkRight) {
-        walkDirV = walkDirV.rotate(-HALF_PI);
-        walk = true;
-    } else if (walkForward && !walkBack && walkLeft && !walkRight) {
-        walkDirV = walkDirV.rotate(QUARTER_PI);
-        walk = true;
-    } else if (walkForward && !walkBack && !walkLeft && walkRight) {
-        walkDirV = walkDirV.rotate(-QUARTER_PI);
-        walk = true;
-    } else if (!walkForward && walkBack && walkLeft && !walkRight) {
-        walkDirV = walkDirV.rotate(QUARTER_PI + HALF_PI);
-        walk = true;
-    } else if (!walkForward && walkBack && !walkLeft && walkRight) {
-        walkDirV = walkDirV.rotate(-QUARTER_PI - HALF_PI);
-        walk = true;
-    }
-    if (walk) {
-        if (!walkRun) {
+    if (move.isMoving) {
+        walkDirV.rotate(move.heading);
+        if (!run) {
             posX += walkDirV.x * spdWalk;
             posY += walkDirV.y * spdWalk;
         } else {
@@ -226,7 +200,7 @@ function draw() {
 
     drawTestObjects();
 
-    controls.draw(posX, posY, posZ, lookXScaled, lookYScaled, lookZ);
+    // controls.draw(posX, posY, posZ, lookXScaled, lookYScaled, lookZ);
 }
 
 function drawTestObjects() {
@@ -294,11 +268,11 @@ function drawTestObjects() {
 
     push();
     texture(sm64treeTexture);
-    translate(0, 600, -200);
+    translate(0, 600, -320);
     let playerDir = createVector(lookX, lookY);
     rotateX(HALF_PI);
     rotateY(HALF_PI + PI + playerDir.heading());
-    plane(200, 400);
+    plane(350, 700);
     pop();
 
     push();
