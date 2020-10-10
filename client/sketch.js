@@ -18,7 +18,7 @@ let lookZ = 0;
 let lookXScaled = 0;
 let lookYScaled = 0;
 
-var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 const spdWalk = 6;
 const spdRun = 15;
