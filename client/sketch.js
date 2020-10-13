@@ -180,9 +180,34 @@ function draw() {
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
+    drawTestGrass();
     drawTestObjects();
 
     // controls.draw(posX, posY, posZ, lookXScaled, lookYScaled, lookZ);
+}
+
+function drawTestGrass() {
+    push();
+
+    texture(grassTexture);
+
+    textureWrap(REPEAT);
+
+    translate(0, -2200, 0);
+
+    rotateY(PI);
+
+    let u = 128 * 20;
+    let v = 128 * 20;
+
+    beginShape();
+    vertex(1000, 1000, 0, 0, 0);
+    vertex(1000, -1000, 0, u, 0);
+    vertex(-1000, -1000, 0, u, v);
+    vertex(-1000, 1000, 0, 0, v);
+    endShape(CLOSE);
+
+    pop();
 }
 
 function drawTestObjects() {
