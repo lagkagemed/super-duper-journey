@@ -5,4 +5,29 @@ html, body {
 
 canvas {
     display: block;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#touch-controls {
+    visibility: hidden;
+}
+
+#d-pad {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#button-a {
+    position: absolute;
+    left: 100px;
+    top: 0px;
+}
+
+#button-b {
+    position: absolute;
+    left: 200px;
+    top: 0px;
 }

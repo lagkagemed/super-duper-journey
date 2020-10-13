@@ -4,7 +4,6 @@ let controls;
 
 let humanModel;
 let sm64treeTexture;
-let arrowsTexture;
 let polyTexture;
 let grassTexture;
 let buttonATexture;
@@ -92,7 +91,6 @@ function drawPlayers() {
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
-    arrowsTexture = loadImage('./client/assets/Arrows.png');
     polyTexture = loadImage('./client/assets/Poly.png');
     grassTexture = loadImage('./client/assets/Grass.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
@@ -100,10 +98,11 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(windowWidth, windowHeight, WEBGL);
+    let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+    canvas.parent('sketch-holder');
 
     controls = new Controls();
-    
+
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
 
     // frameRate(60);

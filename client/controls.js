@@ -1,5 +1,30 @@
 class Controls {
     constructor() {
+        let touchControls = document.getElementById("touch-controls");
+        if (!isMobile) {
+            touchControls.remove();
+        } else {
+            let dPad = document.getElementById("d-pad");
+            dPad.style.left = 0 + "px";
+            dPad.style.top = (windowHeight / 2) + "px";
+            dPad.style.width = (windowWidth / 2) + "px";
+            dPad.style.height = (windowHeight / 2) + "px";
+
+            let buttonA = document.getElementById("button-a");
+            buttonA.style.left = (windowWidth / 2) + "px";
+            buttonA.style.top = (windowHeight / 2) + "px";
+            buttonA.style.width = (windowWidth / 4) + "px";
+            buttonA.style.height = (windowHeight / 2) + "px";
+
+            let buttonB = document.getElementById("button-b");
+            buttonB.style.left = ((windowWidth / 2) + (windowWidth / 4)) + "px";
+            buttonB.style.top = (windowHeight / 2) + "px";
+            buttonB.style.width = (windowWidth / 4) + "px";
+            buttonB.style.height = (windowHeight / 2) + "px";
+
+            touchControls.style.visibility = "visible";
+        }
+
         // Move
         this.touchMoveId = -1;
         this.touchMoveV = createVector(0, 0);
