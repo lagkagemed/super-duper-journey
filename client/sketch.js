@@ -100,12 +100,18 @@ function preload() {
 function setup() {
     let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
     canvas.parent('sketch-holder');
-
+    
     controls = new Controls();
 
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
 
     // frameRate(60);
+}
+
+function windowResized() {
+    // socket.emit('log', "After resize: width: " + windowWidth + ", height: " + windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
+    controls = new Controls();
 }
 
 function update() {
@@ -293,6 +299,12 @@ function drawTestObjects() {
 function touchStarted() {
     // console.log(touches);
     // socket.emit('log', touches);
+
+    if (!fullscreen()) {
+        // socket.emit('log', "Before fullscreen width: " + windowWidth + ", height: " + windowHeight);
+        fullscreen(true);
+    }
+
     controls.handleTouchStarted();
     return false;
 }
