@@ -1,26 +1,47 @@
 class Controls {
     constructor() {
+        const dpadR = min(windowWidth / 4, windowHeight / 4);
+        const dpadX = dpadR + (dpadR / 4);
+        const dpadY = windowHeight - (dpadR + (dpadR / 4));
+        this.dpadR = dpadR;
+        this.dpadX = dpadX;
+        this.dpadY = dpadY;
+
+        const buttonAR = min(windowWidth / 6, windowHeight / 6);
+        const buttonAX = windowWidth - (buttonAR * 3);
+        const ButtonAY = windowHeight - (buttonAR + (buttonAR / 4));
+        this.buttonAR = buttonAR;
+        this.buttonAX = buttonAX;
+        this.ButtonAY = ButtonAY;
+
+        const buttonBR = min(windowWidth / 6, windowHeight / 6);
+        const buttonBX = windowWidth - (buttonBR + (buttonBR / 4));
+        const ButtonBY = windowHeight - (buttonBR * 3);
+        this.buttonBR = buttonBR;
+        this.buttonBX = buttonBX;
+        this.ButtonBY = ButtonBY;
+
         let touchControls = document.getElementById("touch-controls");
         if (!isMobile) {
             touchControls.remove();
         } else {
             let dPad = document.getElementById("d-pad");
-            dPad.style.left = 0 + "px";
-            dPad.style.top = (windowHeight / 2) + "px";
-            dPad.style.width = (windowWidth / 2) + "px";
-            dPad.style.height = (windowHeight / 2) + "px";
+            dPad.style.left = dpadX - dpadR + "px";
+            dPad.style.top = dpadY - dpadR + "px";
+            dPad.style.width = (dpadR * 2) + "px";
+            dPad.style.height = (dpadR * 2) + "px";
 
             let buttonA = document.getElementById("button-a");
-            buttonA.style.left = (windowWidth / 2) + "px";
-            buttonA.style.top = (windowHeight / 2) + "px";
-            buttonA.style.width = (windowWidth / 4) + "px";
-            buttonA.style.height = (windowHeight / 2) + "px";
+            buttonA.style.left = buttonAX - buttonAR + "px";
+            buttonA.style.top = ButtonAY - buttonAR + "px";
+            buttonA.style.width = (buttonAR * 2) + "px";
+            buttonA.style.height = (buttonAR * 2) + "px";
 
             let buttonB = document.getElementById("button-b");
-            buttonB.style.left = ((windowWidth / 2) + (windowWidth / 4)) + "px";
-            buttonB.style.top = (windowHeight / 2) + "px";
-            buttonB.style.width = (windowWidth / 4) + "px";
-            buttonB.style.height = (windowHeight / 2) + "px";
+            buttonB.style.left = buttonBX - buttonBR + "px";
+            buttonB.style.top = ButtonBY - buttonBR + "px";
+            buttonB.style.width = (buttonBR * 2) + "px";
+            buttonB.style.height = (buttonBR * 2) + "px";
 
             touchControls.style.visibility = "visible";
         }
@@ -36,10 +57,6 @@ class Controls {
         this.touchButtonBId = -1;
         this.touchButtonBDown = false;
 
-        // const touchButtonSteps = 770.5 / 109.5;
-        // this.touchButtonSteps = touchButtonSteps;
-        // console.log(touchButtonSteps);
-
         // socket.emit('log', "Window width: " + (windowWidth / 2));
         // socket.emit('log', "Window height: " + (windowHeight / 2));
         // socket.emit('log', "Pixel density: " + (pixelDensity()));
@@ -52,7 +69,7 @@ class Controls {
         this.touchLookUpDown = 0;
         this.touchLookLeftRight = 0;
 
-        const touchLookSteps = windowHeight;
+        const touchLookSteps = min(windowWidth, windowHeight) / 2;
         this.touchLookSteps = touchLookSteps;
 
         const lookSpeedKeys = 0.02;
@@ -88,15 +105,10 @@ class Controls {
 
                 // Move
                 if (this.touchMoveId === -1) {
-                    if (x > 0 &&
-                        x < (windowWidth / 2) &&
-                        y > (windowHeight / 2) &&
-                        y < windowHeight) {
+                    if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
                         this.touchMoveId = id;
-
                         this.touchIsMoving = true;
-                        this.touchMoveV.set(x - (windowWidth / 4), y - ((windowHeight / 2) + (windowHeight / 4)));
-
+                        this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
                         // socket.emit('log', "Started touchMoveId: " + id);
                         break;
                     }
@@ -104,10 +116,7 @@ class Controls {
 
                 // A
                 if (this.touchButtonAId === -1) {
-                    if (x > (windowWidth / 2) &&
-                        x < (windowWidth / 2) + (windowWidth / 4) &&
-                        y > (windowHeight / 2) &&
-                        y < windowHeight) {
+                    if (dist(x, y, this.buttonAX, this.ButtonAY) <= this.buttonAR) {
                         this.touchButtonAId = id;
                         this.touchButtonADown = true;
                         // socket.emit('log', "Started touchButtonAId: " + id);
@@ -117,10 +126,7 @@ class Controls {
 
                 // B
                 if (this.touchButtonBId === -1) {
-                    if (x > (windowWidth / 2) + (windowWidth / 4) &&
-                        x < windowWidth &&
-                        y > (windowHeight / 2) &&
-                        y < windowHeight) {
+                    if (dist(x, y, this.buttonBX, this.ButtonBY) <= this.buttonBR) {
                         this.touchButtonBId = id;
                         this.touchButtonBDown = true;
                         // socket.emit('log', "Started touchButtonBId: " + id);
@@ -130,16 +136,11 @@ class Controls {
 
                 // Look
                 if (this.touchLookId === -1) {
-                    if (x > 0 &&
-                        x < windowWidth &&
-                        y > 0 &&
-                        y < (windowHeight / 2)) {
-                        this.touchLookId = id;
-                        this.touchLookXLast = touches[i].x;
-                        this.touchLookYLast = touches[i].y;
-                        // socket.emit('log', "Started touchLookId: " + id);
-                        break;
-                    }
+                    this.touchLookId = id;
+                    this.touchLookXLast = touches[i].x;
+                    this.touchLookYLast = touches[i].y;
+                    // socket.emit('log', "Started touchLookId: " + id);
+                    break;
                 }
             }
         }
@@ -155,8 +156,9 @@ class Controls {
                 let y = touches[i].y;
                 if (this.touchMoveId === id) {
                     // Move
-                    this.touchMoveV.set((windowWidth / 4) - x, y - ((windowHeight / 2) + (windowHeight / 4)));
+                    this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
                 } else if (this.touchLookId === id) {
+                    // TODO BB 2020-10-14. Find out why looking can be choppy if moving two fingers at once.
                     // Look
                     this.touchLookUpDown = y - this.touchLookYLast;
                     this.touchLookYLast = y;

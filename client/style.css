@@ -18,16 +18,19 @@ canvas {
     position: absolute;
     left: 0px;
     top: 0px;
+    opacity: 0.7;
 }
 
 #button-a {
     position: absolute;
     left: 100px;
     top: 0px;
+    opacity: 0.7;
 }
 
 #button-b {
     position: absolute;
     left: 200px;
     top: 0px;
+    opacity: 0.7;
 }
