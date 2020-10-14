@@ -13,7 +13,7 @@ let ground;
 
 let posX = -500;
 let posY = 0;
-let posZ = -200;
+let posZ = 0;
 let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
@@ -32,12 +32,17 @@ const physZVelMax = 20;
 const physJump = -30;
 let standing = true;
 
+// Duck
+const playerHeightStand = 200;
+const playerHeightDuck = 100;
+playerHeight = playerHeightStand;
+
 function updateZVel() {
     physZVel += physGravity;
     if (physZVel > physZVelMax) physZVel = physZVelMax;
     posZ += physZVel;
-    if (posZ > -200) {
-        posZ = -200;
+    if (posZ > 0) {
+        posZ = 0;
         standing = true;
     }
 }
@@ -77,7 +82,7 @@ function drawPlayers() {
         if (SOCKET_LIST[i].id != myId) {
             push();
             fill("RED");
-            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z + 200));
+            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
             scale(23);
             rotateX(-HALF_PI);
@@ -100,7 +105,7 @@ function preload() {
 function setup() {
     let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
     canvas.parent('sketch-holder');
-    
+
     controls = new Controls();
 
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
@@ -122,6 +127,7 @@ function update() {
     // Movement
     let move = controls.move;
     let jump = controls.jump;
+    let duck = controls.duck;
     let walkDirV = createVector(lookX, lookY);
     if (move.isMoving) {
         walkDirV.rotate(move.heading);
@@ -137,6 +143,7 @@ function update() {
         physZVel = physJump;
         standing = false;
     }
+    playerHeight = duck ? playerHeightDuck : playerHeightStand;
 
     updateZVel();
 
@@ -178,7 +185,7 @@ function draw() {
     ambientLight(128, 128, 128);
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
 
-    camera(posX, posY, posZ, posX + lookXScaled, posY + lookYScaled, posZ + sin(lookZ * HALF_PI), 0, 0, 1);
+    camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
 
     ground.draw();
 
@@ -186,8 +193,6 @@ function draw() {
 
     drawTestGrass();
     drawTestObjects();
-
-    // controls.draw(posX, posY, posZ, lookXScaled, lookYScaled, lookZ);
 }
 
 function drawTestGrass() {
@@ -296,6 +301,18 @@ function drawTestObjects() {
     pop();
 }
 
+function keyPressed() {
+    return false; // prevent any default behaviour.
+}
+
+function keyReleased() {
+    return false; // prevent any default behavior.
+}
+
+function keyTyped() {
+    return false; // prevent any default behaviour.
+}
+
 function touchStarted() {
     // console.log(touches);
     // socket.emit('log', touches);
@@ -306,18 +323,18 @@ function touchStarted() {
     }
 
     controls.handleTouchStarted();
-    return false;
+    return false; // prevent any default behaviour.
 }
 
 function touchMoved() {
     // console.log(touches);
     // socket.emit('log', touches);
-    return false;
+    return false; // prevent any default behaviour.
 }
 
 function touchEnded() {
     // console.log(touches);
     // socket.emit('log', touches);
     controls.handleTouchEnded();
-    return false;
+    return false; // prevent any default behaviour.
 }

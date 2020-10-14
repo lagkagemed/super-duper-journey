@@ -323,14 +323,13 @@ class Controls {
         }
     }
 
-    // TODO BB 2020-10-14. Implement ducking.
-    // get duck() {
-    //     if (this.touchButtonBDown) {
-    //         return true;
-    //     } else {
-    //         return keyIsDown(16); // Shift
-    //     }
-    // }
+    get duck() {
+        if (this.touchButtonBDown) {
+            return true;
+        } else {
+            return keyIsDown(17); // Control
+        }
+    }
 
     get lookUpDown() {
         if (this.touchLookUpDown != 0) {
