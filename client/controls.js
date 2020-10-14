@@ -76,18 +76,7 @@ class Controls {
         this.lookSpeedKeys = lookSpeedKeys;
     }
 
-    // printTouch() {
-    //     let touchMoveCenterX = (windowWidth / 2);
-    //     let touchMoveCenterY = (windowHeight / 2);
-    //     let distTouchMoveCenter = floor(dist(touchMoveCenterX, touchMoveCenterY, mouseX, mouseY));
-    //     let distX = floor(mouseX - touchMoveCenterX);
-    //     let distY = floor(mouseY - touchMoveCenterY);
-    //     socket.emit('log', "Dist: " + distTouchMoveCenter + ", X: " + distX + ", Y: " + distY);
-    // }
-
     handleTouchStarted() {
-        // this.printTouch();
-
         if (touches.length > 0 && (this.touchMoveId === -1 || this.touchButtonAId === -1 || this.touchButtonBId === -1 || this.touchLookId === -1)) {
             for (let i = 0; i < touches.length; i++) {
                 let id = touches[i].id;
@@ -108,7 +97,7 @@ class Controls {
                     if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
                         this.touchMoveId = id;
                         this.touchIsMoving = true;
-                        this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
+                        this.setTouchDPadVector(x, y);
                         // socket.emit('log', "Started touchMoveId: " + id);
                         break;
                     }
@@ -146,32 +135,7 @@ class Controls {
         }
     }
 
-    handleTouchMoved() {
-        // this.printTouch();
-
-        if (touches.length > 0) {
-            for (let i = 0; i < touches.length; i++) {
-                let id = touches[i].id;
-                let x = touches[i].x;
-                let y = touches[i].y;
-                if (this.touchMoveId === id) {
-                    // Move
-                    this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
-                } else if (this.touchLookId === id) {
-                    // TODO BB 2020-10-14. Find out why looking can be choppy if moving two fingers at once.
-                    // Look
-                    this.touchLookUpDown = y - this.touchLookYLast;
-                    this.touchLookYLast = y;
-                    this.touchLookLeftRight = this.touchLookXLast - x;
-                    this.touchLookXLast = x;
-                }
-            }
-        }
-    }
-
     handleTouchEnded() {
-        // this.printTouch();
-
         if (touches.length > 0) {
             // Move
             if (this.touchMoveId != -1) {
@@ -237,16 +201,40 @@ class Controls {
         } else {
             this.touchMoveId = -1;
             this.touchIsMoving = false;
+
             this.touchButtonAId = -1;
             this.touchButtonADown = false;
+
             this.touchButtonBId = -1;
             this.touchLookId = -1;
             // socket.emit('log', "Stopped all ids");
         }
     }
 
-    // update() {
-    // }
+    setTouchDPadVector(x, y) {
+        this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
+    }
+
+    update() {
+        // Touch moved
+        if (touches.length > 0) {
+            for (let i = 0; i < touches.length; i++) {
+                let id = touches[i].id;
+                let x = touches[i].x;
+                let y = touches[i].y;
+                if (this.touchMoveId === id) {
+                    // Move
+                    this.setTouchDPadVector(x, y);
+                } else if (this.touchLookId === id) {
+                    // Look
+                    this.touchLookUpDown = y - this.touchLookYLast;
+                    this.touchLookYLast = y;
+                    this.touchLookLeftRight = this.touchLookXLast - x;
+                    this.touchLookXLast = x;
+                }
+            }
+        }
+    }
 
     get move() {
         if (this.touchIsMoving) {

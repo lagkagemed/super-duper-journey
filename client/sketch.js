@@ -111,7 +111,7 @@ function setup() {
 function update() {
     // print(frameRate());
 
-    // controls.update();
+    controls.update();
 
     // Movement
     let move = controls.move;
@@ -302,7 +302,6 @@ function touchStarted() {
 function touchMoved() {
     // console.log(touches);
     // socket.emit('log', touches);
-    controls.handleTouchMoved();
     return false;
 }
 
