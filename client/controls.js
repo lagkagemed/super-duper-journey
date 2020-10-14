@@ -7,7 +7,7 @@ class Controls {
         this.dpadX = dpadX;
         this.dpadY = dpadY;
 
-        const buttonAR = min(windowWidth / 6, windowHeight / 6);
+        const buttonAR = min(windowWidth / 5, windowHeight / 5);
         const buttonAX = windowWidth - (buttonAR * 3);
         const ButtonAY = windowHeight - (buttonAR + (buttonAR / 4));
         this.buttonAR = buttonAR;
@@ -50,6 +50,8 @@ class Controls {
         this.touchDPadId = -1;
         this.touchDPadV = createVector(0, 0);
         this.touchIsMoving = false;
+        this.touchDPadDoubleTapTimeLast = 0;
+        this.touchIsRunning = false;
 
         this.touchButtonAId = -1;
         this.touchButtonADown = false;
@@ -97,7 +99,18 @@ class Controls {
                     if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
                         this.touchDPadId = id;
                         this.touchIsMoving = true;
-                        this.setTouchDPadVector(x, y);
+
+                        let timeNow = millis();
+                        if (timeNow - this.touchDPadDoubleTapTimeLast < 350) {
+                            // Run
+                            this.touchIsRunning = true;
+                        } else {
+                            // Walk
+                            this.touchIsRunning = false;
+                            this.setTouchDPadVector(x, y);
+                        }
+                        this.touchDPadDoubleTapTimeLast = timeNow;
+
                         // socket.emit('log', "Started touchDPadId: " + id);
                         break;
                     }
@@ -149,6 +162,7 @@ class Controls {
                 if (!found) {
                     this.touchDPadId = -1;
                     this.touchIsMoving = false;
+                    this.touchIsRunning = false;
                     // socket.emit('log', "Stopped touchDPadId");
                 }
             }
@@ -180,6 +194,7 @@ class Controls {
                 }
                 if (!found) {
                     this.touchButtonBId = -1;
+                    this.touchButtonBDown = false;
                     // socket.emit('log', "Stopped touchButtonBId");
                 }
             }
@@ -201,11 +216,14 @@ class Controls {
         } else {
             this.touchDPadId = -1;
             this.touchIsMoving = false;
+            this.touchIsRunning = false;
 
             this.touchButtonAId = -1;
             this.touchButtonADown = false;
 
             this.touchButtonBId = -1;
+            this.touchButtonBDown = false;
+
             this.touchLookId = -1;
             // socket.emit('log', "Stopped all ids");
         }
@@ -236,7 +254,9 @@ class Controls {
                 let y = touches[i].y;
                 if (this.touchDPadId === id) {
                     // Move
-                    this.setTouchDPadVector(x, y);
+                    if (!this.touchIsRunning) {
+                        this.setTouchDPadVector(x, y);
+                    }
                 } else if (this.touchLookId === id) {
                     // Look
                     this.touchLookUpDown = y - this.touchLookYLast;
@@ -249,51 +269,68 @@ class Controls {
     }
 
     get move() {
-        if (this.touchIsMoving) {
-            return { isMoving: true, heading: this.touchDPadV.heading() + HALF_PI };
+        let isMoving = false;
+        let isRunning = false;
+        let heading = 0;
+
+        if (this.touchIsRunning || keyIsDown(16)) { // Shift
+            isMoving = true;
+            isRunning = true;
+            heading = 0;
+        } else if (this.touchIsMoving) {
+            isMoving = true;
+            heading = this.touchDPadV.heading() + HALF_PI;
         } else {
             let walkForward = keyIsDown(87); // W
             let walkBack = keyIsDown(83); // S
             let walkLeft = keyIsDown(65); // A
             let walkRight = keyIsDown(68); // D
             if (walkForward && !walkBack && !walkLeft && !walkRight) {
-                return { isMoving: true, heading: 0 };
+                isMoving = true;
+                heading = 0;
             } else if (!walkForward && walkBack && !walkLeft && !walkRight) {
-                return { isMoving: true, heading: PI };
+                isMoving = true;
+                heading = PI;
             } else if (!walkForward && !walkBack && walkLeft && !walkRight) {
-                return { isMoving: true, heading: HALF_PI };
+                isMoving = true;
+                heading = HALF_PI;
             } else if (!walkForward && !walkBack && !walkLeft && walkRight) {
-                return { isMoving: true, heading: -HALF_PI };
+                isMoving = true;
+                heading = -HALF_PI;
             } else if (walkForward && !walkBack && walkLeft && !walkRight) {
-                return { isMoving: true, heading: QUARTER_PI };
+                isMoving = true;
+                heading = QUARTER_PI;
             } else if (walkForward && !walkBack && !walkLeft && walkRight) {
-                return { isMoving: true, heading: -QUARTER_PI };
+                isMoving = true;
+                heading = -QUARTER_PI;
             } else if (!walkForward && walkBack && walkLeft && !walkRight) {
-                return { isMoving: true, heading: QUARTER_PI + HALF_PI };
+                isMoving = true;
+                heading = QUARTER_PI + HALF_PI;
             } else if (!walkForward && walkBack && !walkLeft && walkRight) {
-                return { isMoving: true, heading: -QUARTER_PI - HALF_PI };
-            } else {
-                return { isMoving: false, heading: 0 };
+                isMoving = true;
+                heading = -QUARTER_PI - HALF_PI;
             }
         }
-    }
 
-    get run() {
-        if (this.touchButtonADown) {
-            return true;
-        } else {
-            return keyIsDown(16); // Shift
-        }
+        return { isMoving: isMoving, isRunning: isRunning, heading: heading };
     }
 
     get jump() {
-        if (this.touchButtonBDown) {
-            this.touchButtonBDown = false;
+        if (this.touchButtonADown) {
             return true;
         } else {
             return keyIsDown(32); // Space
         }
     }
+
+    // TODO BB 2020-10-14. Implement ducking.
+    // get duck() {
+    //     if (this.touchButtonBDown) {
+    //         return true;
+    //     } else {
+    //         return keyIsDown(16); // Shift
+    //     }
+    // }
 
     get lookUpDown() {
         if (this.touchLookUpDown != 0) {

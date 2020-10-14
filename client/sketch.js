@@ -115,13 +115,11 @@ function update() {
 
     // Movement
     let move = controls.move;
-    let run = controls.run;
     let jump = controls.jump;
-
     let walkDirV = createVector(lookX, lookY);
     if (move.isMoving) {
         walkDirV.rotate(move.heading);
-        if (!run) {
+        if (!move.isRunning) {
             posX += walkDirV.x * spdWalk;
             posY += walkDirV.y * spdWalk;
         } else {
