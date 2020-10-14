@@ -213,6 +213,18 @@ class Controls {
 
     setTouchDPadVector(x, y) {
         this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
+
+        // TODO BB 2020-10-14. Implement restrict to 8 direction movement.
+        // let heading = this.touchMoveV.heading();
+        // if (heading >= 0 && heading < QUARTER_PI) {
+        // } else if (heading >= QUARTER_PI && heading < HALF_PI) {
+        // } else if (heading >= HALF_PI && heading < HALF_PI + QUARTER_PI) {
+        // } else if (heading >= HALF_PI + QUARTER_PI && heading < PI) {
+        // } else if (heading >= PI && heading < PI + QUARTER_PI) {
+        // } else if (heading >= PI + QUARTER_PI && heading < PI + HALF_PI) {
+        // } else if (heading >= PI + HALF_PI && heading < PI + HALF_PI + QUARTER_PI) {
+        // } else if (heading >= PI + HALF_PI + QUARTER_PI && heading < PI + PI) {
+        // }
     }
 
     update() {
