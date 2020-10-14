@@ -47,8 +47,8 @@ class Controls {
         }
 
         // Move
-        this.touchMoveId = -1;
-        this.touchMoveV = createVector(0, 0);
+        this.touchDPadId = -1;
+        this.touchDPadV = createVector(0, 0);
         this.touchIsMoving = false;
 
         this.touchButtonAId = -1;
@@ -77,10 +77,10 @@ class Controls {
     }
 
     handleTouchStarted() {
-        if (touches.length > 0 && (this.touchMoveId === -1 || this.touchButtonAId === -1 || this.touchButtonBId === -1 || this.touchLookId === -1)) {
+        if (touches.length > 0 && (this.touchDPadId === -1 || this.touchButtonAId === -1 || this.touchButtonBId === -1 || this.touchLookId === -1)) {
             for (let i = 0; i < touches.length; i++) {
                 let id = touches[i].id;
-                if (id === this.touchMoveId)
+                if (id === this.touchDPadId)
                     continue;
                 if (id === this.touchButtonAId)
                     continue;
@@ -93,12 +93,12 @@ class Controls {
                 let y = touches[i].y;
 
                 // Move
-                if (this.touchMoveId === -1) {
+                if (this.touchDPadId === -1) {
                     if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
-                        this.touchMoveId = id;
+                        this.touchDPadId = id;
                         this.touchIsMoving = true;
                         this.setTouchDPadVector(x, y);
-                        // socket.emit('log', "Started touchMoveId: " + id);
+                        // socket.emit('log', "Started touchDPadId: " + id);
                         break;
                     }
                 }
@@ -138,18 +138,18 @@ class Controls {
     handleTouchEnded() {
         if (touches.length > 0) {
             // Move
-            if (this.touchMoveId != -1) {
+            if (this.touchDPadId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchMoveId) {
+                    if (touches[i].id === this.touchDPadId) {
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    this.touchMoveId = -1;
+                    this.touchDPadId = -1;
                     this.touchIsMoving = false;
-                    // socket.emit('log', "Stopped touchMoveId");
+                    // socket.emit('log', "Stopped touchDPadId");
                 }
             }
 
@@ -199,7 +199,7 @@ class Controls {
                 }
             }
         } else {
-            this.touchMoveId = -1;
+            this.touchDPadId = -1;
             this.touchIsMoving = false;
 
             this.touchButtonAId = -1;
@@ -212,10 +212,10 @@ class Controls {
     }
 
     setTouchDPadVector(x, y) {
-        this.touchMoveV.set(this.dpadX - x, y - this.dpadY);
+        this.touchDPadV.set(this.dpadX - x, y - this.dpadY);
 
         // TODO BB 2020-10-14. Implement restrict to 8 direction movement.
-        // let heading = this.touchMoveV.heading();
+        // let heading = this.touchDPadV.heading();
         // if (heading >= 0 && heading < QUARTER_PI) {
         // } else if (heading >= QUARTER_PI && heading < HALF_PI) {
         // } else if (heading >= HALF_PI && heading < HALF_PI + QUARTER_PI) {
@@ -234,7 +234,7 @@ class Controls {
                 let id = touches[i].id;
                 let x = touches[i].x;
                 let y = touches[i].y;
-                if (this.touchMoveId === id) {
+                if (this.touchDPadId === id) {
                     // Move
                     this.setTouchDPadVector(x, y);
                 } else if (this.touchLookId === id) {
@@ -250,7 +250,7 @@ class Controls {
 
     get move() {
         if (this.touchIsMoving) {
-            return { isMoving: true, heading: this.touchMoveV.heading() + HALF_PI };
+            return { isMoving: true, heading: this.touchDPadV.heading() + HALF_PI };
         } else {
             let walkForward = keyIsDown(87); // W
             let walkBack = keyIsDown(83); // S
