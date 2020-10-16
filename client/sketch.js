@@ -6,10 +6,13 @@ let humanModel;
 let sm64treeTexture;
 let polyTexture;
 let grassTexture;
+let testTexture;
 let buttonATexture;
 let buttonBTexture;
 
 let ground;
+
+let drawTest;
 
 let posX = -500;
 let posY = 0;
@@ -98,6 +101,7 @@ function preload() {
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
     polyTexture = loadImage('./client/assets/Poly.png');
     grassTexture = loadImage('./client/assets/Grass.png');
+    testTexture = loadImage('./client/assets/TestTexture.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
@@ -109,6 +113,12 @@ function setup() {
     controls = new Controls();
 
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
+
+    drawTest = new DrawTest();
+
+    textureWrap(REPEAT); // REPEAT, CLAMP
+    noStroke();
+    // noFill();
 
     // frameRate(60);
 }
@@ -179,8 +189,6 @@ function update() {
 function draw() {
     update();
 
-    noStroke();
-
     background(200, 200, 200);
     ambientLight(128, 128, 128);
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
@@ -191,32 +199,9 @@ function draw() {
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
-    drawTestGrass();
+    drawTest.draw();
+
     drawTestObjects();
-}
-
-function drawTestGrass() {
-    push();
-
-    texture(grassTexture);
-
-    textureWrap(REPEAT);
-
-    translate(0, -2200, 0);
-
-    rotateY(PI);
-
-    let u = 128 * 20;
-    let v = 128 * 20;
-
-    beginShape();
-    vertex(1000, 1000, 0, 0, 0);
-    vertex(1000, -1000, 0, u, 0);
-    vertex(-1000, -1000, 0, u, v);
-    vertex(-1000, 1000, 0, 0, v);
-    endShape(CLOSE);
-
-    pop();
 }
 
 function drawTestObjects() {

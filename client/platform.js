@@ -14,7 +14,6 @@ let Platform = function (x, y, z, w, h, d, color, tex) {
     self.draw = function () {
         push();
         texture(this.tex);
-        textureWrap(CLAMP);
         translate(this.x, this.y, this.z);
         box(this.width, this.height, this.depth);
         pop();

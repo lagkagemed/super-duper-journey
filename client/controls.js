@@ -23,7 +23,8 @@ class Controls {
 
         let touchControls = document.getElementById("touch-controls");
         if (!isMobile) {
-            touchControls.remove();
+            if (touchControls != null)
+                touchControls.remove();
         } else {
             let dPad = document.getElementById("d-pad");
             dPad.style.left = dpadX - dpadR + "px";
