@@ -270,10 +270,6 @@ class Controls {
         let isMoving = false;
         let isRunning = false;
         let heading = 0;
-
-        if (this.touchIsRunning || keyIsDown(16)) { // Shift
-            isRunning = true;
-        }
         
         if (this.touchIsMoving) {
             isMoving = true;
@@ -310,7 +306,13 @@ class Controls {
             }
         }
 
-
+        if (this.touchIsRunning || keyIsDown(16)) { // Shift
+            if (heading >= -QUARTER_PI && heading <= QUARTER_PI) {
+                isRunning = true;
+            } else {
+                this.touchIsRunning = false;
+            }
+        }
 
         return { isMoving: isMoving, isRunning: isRunning, heading: heading };
     }
