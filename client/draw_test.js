@@ -2,8 +2,8 @@ class DrawTest {
     constructor() {
         this.drawTestArray = [];
 
-        let floor = new Floor(0, 0, 0, 0, 0, 0, 0, 0, -50, 0);
-        this.drawTestArray.push(floor);
+        this.drawTestArray.push(new Floor(50, 50, 50, -50, -50, 50, -50, -50, -50, testTexture));
+        this.drawTestArray.push(new Floor(50, 50, 50, -50, -50, 50, -50, -50, -300, testTexture));
     }
 
     draw() {
@@ -14,15 +14,9 @@ class DrawTest {
 }
 
 class Floor {
-    constructor(xTopLeft, yTopLeft, xTopRight, yTopRight, xBottomLeft, yBottomLeft, xBottomRight, yBottomRight, z, textureHeading) {
-        // static const TEXTURE_HEADING_X_MINUS = PI;
-        // static const TEXTURE_HEADING_X_PLUS = 0;
-        // static const TEXTURE_HEADING_Y_MINUS = HALF_PI;
-        // static const TEXTURE_HEADING_Y_PLUS = -HALF_PI;
+    // TODO BB 2020-10-16. Does not look right when it is a ceiling. Look into class inheritance.
 
-        // if (textureHeading === null)
-        //     textureHeading = TEXTURE_HEADING_X_PLUS;
-
+    constructor(xTopLeft, yTopLeft, xTopRight, yTopRight, xBottomLeft, yBottomLeft, xBottomRight, yBottomRight, z, texture) {
         this.xTopLeft = xTopLeft;
         this.yTopLeft = yTopLeft;
         this.xTopRight = xTopRight;
@@ -32,7 +26,7 @@ class Floor {
         this.xBottomRight = xBottomRight;
         this.yBottomRight = yBottomRight;
         this.z = z;
-        this.textureHeading = textureHeading;
+        this.texture = texture;
     }
 
     draw() {
@@ -40,24 +34,37 @@ class Floor {
 
         texture(testTexture);
 
-        translate(this.xTopLeft, this.yTopLeft, this.z);
+        translate(0, 0, this.z);
 
         rotateX(PI);
-        rotateZ(this.textureHeading);
 
-        let texSize = 128 * 2;
+        let textureSize = 128 * 2;
+
+        // Shape
+        // ( 100, 100) -- ( 100,-100)
+        // |            /           |
+        // |           /            |
+        // (-100, 100) -- (-100,-100)
 
         beginShape(TRIANGLES);
-        vertex(100, 100, 0, texSize, 0);
-        vertex(100, -100, 0, 0, 0);
-        vertex(-100, 100, 0, texSize, texSize);
+        vertex(this.xTopLeft, this.yTopLeft, 0, textureSize, 0);
+        vertex(this.xTopRight, this.yTopRight, 0, 0, 0);
+        vertex(this.xBottomLeft, this.yBottomLeft, 0, textureSize, textureSize);
 
-        vertex(-100, 100, 0, texSize, texSize);
-        vertex(100, -100, 0, 0, 0);
-        vertex(-100, -100, 0, 0, texSize);
+        vertex(this.xBottomLeft, this.yBottomLeft, 0, textureSize, textureSize);
+        vertex(this.xTopRight, this.yTopRight, 0, 0, 0);
+        vertex(this.xBottomRight, this.yBottomRight, 0, 0, textureSize);
         endShape();
 
-        
+        // beginShape(TRIANGLES);
+        // vertex(100, 100, 0, textureSize, 0);
+        // vertex(100, -100, 0, 0, 0);
+        // vertex(-100, 100, 0, textureSize, textureSize);
+
+        // vertex(-100, 100, 0, textureSize, textureSize);
+        // vertex(100, -100, 0, 0, 0);
+        // vertex(-100, -100, 0, 0, textureSize);
+        // endShape();
 
         pop();
     }
