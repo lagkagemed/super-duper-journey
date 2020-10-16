@@ -41,10 +41,10 @@ class Floor {
         let textureSize = 128 * 2;
 
         // Shape
-        // ( 100, 100) -- ( 100,-100)
-        // |            /           |
-        // |           /            |
-        // (-100, 100) -- (-100,-100)
+        // ( 1, 1) -- ( 1,-1)
+        // |        /       |
+        // |       /        |
+        // (-1, 1) -- (-1,-1)
 
         beginShape(TRIANGLES);
         vertex(this.xTopLeft, this.yTopLeft, 0, textureSize, 0);
