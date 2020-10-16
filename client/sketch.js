@@ -38,7 +38,8 @@ let standing = true;
 // Duck
 const playerHeightStand = 200;
 const playerHeightDuck = 100;
-playerHeight = playerHeightStand;
+let playerHeight = playerHeightStand;
+let playerIsDucking = false;
 
 function updateZVel() {
     physZVel += physGravity;
@@ -153,7 +154,15 @@ function update() {
         physZVel = physJump;
         standing = false;
     }
-    playerHeight = duck ? playerHeightDuck : playerHeightStand;
+    if (!playerIsDucking && duck) {
+        playerHeight = playerHeightDuck;
+        posZ -= playerHeightStand - playerHeightDuck;
+        playerIsDucking = true;
+    } else if (playerIsDucking && !duck) {
+        playerHeight = playerHeightStand;
+        posZ += playerHeightStand - playerHeightDuck;
+        playerIsDucking = false;
+    }
 
     updateZVel();
 
