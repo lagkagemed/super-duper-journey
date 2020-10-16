@@ -108,8 +108,8 @@ class Controls {
                         } else {
                             // Walk
                             this.touchIsRunning = false;
-                            this.setTouchDPadVector(x, y);
                         }
+                        this.setTouchDPadVector(x, y);
                         this.touchDPadDoubleTapTimeLast = timeNow;
 
                         // socket.emit('log', "Started touchDPadId: " + id);
@@ -255,9 +255,7 @@ class Controls {
                 let y = touches[i].y;
                 if (this.touchDPadId === id) {
                     // Move
-                    if (!this.touchIsRunning) {
-                        this.setTouchDPadVector(x, y);
-                    }
+                    this.setTouchDPadVector(x, y);
                 } else if (this.touchLookId === id) {
                     // Look
                     this.touchLookUpDown = y - this.touchLookYLast;
