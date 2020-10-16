@@ -275,10 +275,10 @@ class Controls {
         let heading = 0;
 
         if (this.touchIsRunning || keyIsDown(16)) { // Shift
-            isMoving = true;
             isRunning = true;
-            heading = 0;
-        } else if (this.touchIsMoving) {
+        }
+        
+        if (this.touchIsMoving) {
             isMoving = true;
             heading = this.touchDPadV.heading() + HALF_PI;
         } else {
@@ -312,6 +312,8 @@ class Controls {
                 heading = -QUARTER_PI - HALF_PI;
             }
         }
+
+
 
         return { isMoving: isMoving, isRunning: isRunning, heading: heading };
     }
