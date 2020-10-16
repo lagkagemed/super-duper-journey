@@ -1,9 +1,11 @@
 class Controls {
     constructor() {
         const dpadR = min(windowWidth / 4, windowHeight / 4);
+        const dpadDeadzoneR = dpadR / 4;
         const dpadX = dpadR + (dpadR / 4);
         const dpadY = windowHeight - (dpadR + (dpadR / 4));
         this.dpadR = dpadR;
+        this.dpadDeadzoneR = dpadDeadzoneR;
         this.dpadX = dpadX;
         this.dpadY = dpadY;
 
@@ -30,6 +32,12 @@ class Controls {
             dPad.style.top = dpadY - dpadR + "px";
             dPad.style.width = (dpadR * 2) + "px";
             dPad.style.height = (dpadR * 2) + "px";
+
+            let dPadDeadzone = document.getElementById("d-pad-deadzone");
+            dPadDeadzone.style.left = dpadX - dpadDeadzoneR + "px";
+            dPadDeadzone.style.top = dpadY - dpadDeadzoneR + "px";
+            dPadDeadzone.style.width = (dpadDeadzoneR * 2) + "px";
+            dPadDeadzone.style.height = (dpadDeadzoneR * 2) + "px";
 
             let buttonA = document.getElementById("button-a");
             buttonA.style.left = buttonAX - buttonAR + "px";
@@ -270,10 +278,14 @@ class Controls {
         let isMoving = false;
         let isRunning = false;
         let heading = 0;
-        
+
         if (this.touchIsMoving) {
-            isMoving = true;
             heading = this.touchDPadV.heading() + HALF_PI;
+            if (this.touchDPadV.mag() > this.dpadDeadzoneR) {
+                isMoving = true;
+            } else if (heading >= -QUARTER_PI && heading <= QUARTER_PI) {
+                isMoving = true;
+            }
         } else {
             let walkForward = keyIsDown(87); // W
             let walkBack = keyIsDown(83); // S

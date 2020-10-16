@@ -14,11 +14,20 @@ canvas {
     visibility: hidden;
 }
 
+#d-pad-div {
+    opacity: 0.7;
+}
+
 #d-pad {
     position: absolute;
     left: 0px;
     top: 0px;
-    opacity: 0.7;
+}
+
+#d-pad-deadzone {
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
 
 #button-a {
