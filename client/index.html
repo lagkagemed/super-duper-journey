@@ -21,13 +21,16 @@
 <body>
     <div id="sketch-holder"></div>
     <div id="touch-controls">
-        <!-- TODO BB 2020-10-16. Spørg Kennet om det løser problemet med dobbeltklik på billede, på iOS, at sætte tom onClick event -->
+        <!-- TODO BB 2020-10-16. Spørg Kennet om det løser problemet med "drag" billede på iOS. -->
         <div id="d-pad-div">
-            <img id="d-pad" src="./client/assets/DPad.png" alt="D-Pad" onclick="">
-            <img id="d-pad-deadzone" src="./client/assets/DPadDeadzone.png" alt="D-Pad Deadzone" onclick="">
+            <img id="d-pad" src="./client/assets/DPad.png" alt="D-Pad" draggable="false" ondragstart="return false;">
+            <img id="d-pad-deadzone" src="./client/assets/DPadDeadzone.png" alt="D-Pad Deadzone" draggable="false"
+                ondragstart="return false;">
         </div>
-        <img id="button-a" src="./client/assets/ButtonA.png" alt="A Button" onclick="">
-        <img id="button-b" src="./client/assets/ButtonB.png" alt="B Button" onclick="">
+        <img id="button-a" src="./client/assets/ButtonA.png" alt="A Button" draggable="false"
+            ondragstart="return false;">
+        <img id="button-b" src="./client/assets/ButtonB.png" alt="B Button" draggable="false"
+            ondragstart="return false;">
     </div>
 </body>
 
