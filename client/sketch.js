@@ -46,10 +46,6 @@ function updateZVel() {
     physZVel += physGravity;
     if (physZVel > physZVelMax) physZVel = physZVelMax;
     posZ += physZVel;
-    if (posZ > 0) {
-        posZ = 0;
-        standing = true;
-    }
 }
 
 let oldSumOfAll = 0;
@@ -98,6 +94,27 @@ function drawPlayers() {
     }
 }
 
+function testColPlayer(object){
+    if (posZ > (object.z - (object.height)) && (posZ - 50) < (object.z + (object.height)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))){
+        posZ = (object.z - (object.height));
+        standing = true;
+    }
+}
+
+function testColPlayerList(list){
+    for(let i in list){
+        let object = list[i];
+        testColPlayer(object);
+    }
+}
+
+function drawAllObjectsInList(list){
+    for(let i in list){
+    let object = list[i];
+    object.draw();
+    }
+}
+
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
@@ -116,6 +133,12 @@ function setup() {
     controls = new Controls();
 
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
+
+    plat1 = Platform(0, 1300, 13, 200, 200, 5, "GREEN", grassTexture);
+
+    plat2 = Platform(0, 1700, 13, 200, 200, 5, "GREEN", grassTexture);
+
+    plat3 = Platform(0, 2100, 13, 200, 200, 5, "GREEN", grassTexture);
 
     drawTest = new DrawTest();
 
@@ -158,15 +181,17 @@ function update() {
     }
     if (!playerIsDucking && duck) {
         playerHeight = playerHeightDuck;
-        posZ -= playerHeightStand - playerHeightDuck;
+        //posZ -= playerHeightStand - playerHeightDuck;
         playerIsDucking = true;
     } else if (playerIsDucking && !duck) {
         playerHeight = playerHeightStand;
-        posZ += playerHeightStand - playerHeightDuck;
+        //posZ += playerHeightStand - playerHeightDuck;
         playerIsDucking = false;
     }
 
     updateZVel();
+    testColPlayerList(PLATFORM_LIST);
+
 
     // Look Direction
     let lookUpDown = controls.lookUpDown;
@@ -206,7 +231,8 @@ function draw() {
 
     camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
 
-    ground.draw();
+    drawAllObjectsInList(PLATFORM_LIST);
+    //ground.draw();
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
