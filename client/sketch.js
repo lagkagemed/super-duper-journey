@@ -1,60 +1,10 @@
 // Spil på: http://super-duper-journey.herokuapp.com/
 
-let controls;
-
-let humanModel;
-let sm64treeTexture;
-let polyTexture;
-let grassTexture;
-let testTexture;
-let testTexture2;
-let buttonATexture;
-let buttonBTexture;
-
-let ground;
-
-let drawTest;
-
-let posX = -500;
-let posY = 0;
-let posZ = 0;
-let lookX = 1;
-let lookY = 0;
-let lookZ = 0;
-let lookXScaled = 0;
-let lookYScaled = 0;
-
-let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-const spdWalk = 6;
-const spdRun = 15;
-
-// gravity + jump
-const physGravity = 2;
-let physZVel = 0;
-const physZVelMax = 20;
-const physJump = -30;
-let standing = true;
-
-// Duck
-const playerHeightStand = 200;
-const playerHeightDuck = 100;
-let playerHeight = playerHeightStand;
-let playerIsDucking = false;
-
 function updateZVel() {
     physZVel += physGravity;
     if (physZVel > physZVelMax) physZVel = physZVelMax;
     posZ += physZVel;
 }
-
-let oldSumOfAll = 0;
-let sumOfAll = 0;
-
-let myId = 0;
-let SOCKET_LIST = [];
-let socket = io();
-// socket.emit('helloWorld');
 
 socket.on('idGranted', function (data) {
     myId = data;
