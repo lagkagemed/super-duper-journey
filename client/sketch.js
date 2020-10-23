@@ -292,6 +292,7 @@ function touchStarted() {
     if (!fullscreen()) {
         // socket.emit('log', "Before fullscreen width: " + windowWidth + ", height: " + windowHeight);
         fullscreen(true);
+        requestPointerLock();
     }
 
     controls.handleTouchStarted();

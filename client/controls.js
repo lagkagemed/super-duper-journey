@@ -240,7 +240,7 @@ class Controls {
     setTouchDPadVector(x, y) {
         this.touchDPadV.set(this.dpadX - x, y - this.dpadY);
 
-        // TODO BB 2020-10-14. Implement restrict to 8 direction movement.
+        // TODO BB 2020-10-14. Maybe implement restrict to 8 direction movement.
         // let heading = this.touchDPadV.heading();
         // if (heading >= 0 && heading < QUARTER_PI) {
         // } else if (heading >= QUARTER_PI && heading < HALF_PI) {
@@ -346,33 +346,39 @@ class Controls {
     }
 
     get lookUpDown() {
+        let look = 0;
+
         if (this.touchLookUpDown != 0) {
-            let look = this.touchLookUpDown / this.touchLookSteps;
+            look = this.touchLookUpDown / this.touchLookSteps;
             this.touchLookUpDown = 0;
-            return look;
-        } else {
-            if (keyIsDown(UP_ARROW))
-                return -this.lookSpeedKeys;
-            else if (keyIsDown(DOWN_ARROW))
-                return this.lookSpeedKeys;
-            else
-                return 0;
+        } else if (keyIsDown(UP_ARROW)) {
+            look = -this.lookSpeedKeys;
+        } else if (keyIsDown(DOWN_ARROW)) {
+            look = this.lookSpeedKeys;
+        } else if (!isMobile && fullscreen()) {
+            look = movedY / this.touchLookSteps;
+            mouseY = windowHeight / 2;
         }
+
+            return look;
     }
 
     get lookLeftRight() {
+        let look = 0;
+
         if (this.touchLookLeftRight != 0) {
-            let look = this.touchLookLeftRight / this.touchLookSteps;
+            look = this.touchLookLeftRight / this.touchLookSteps;
             this.touchLookLeftRight = 0;
-            return look;
-        } else {
-            if (keyIsDown(LEFT_ARROW))
-                return this.lookSpeedKeys;
-            else if (keyIsDown(RIGHT_ARROW))
-                return -this.lookSpeedKeys;
-            else
-                return 0;
+        } else if (keyIsDown(LEFT_ARROW)) {
+            look = this.lookSpeedKeys;
+        } else if (keyIsDown(RIGHT_ARROW)) {
+            look = -this.lookSpeedKeys;
+        } else if (!isMobile && fullscreen()) {
+            look = -movedX / this.touchLookSteps;
+            mouseX = windowWidth / 2;
         }
+
+            return look;
     }
 
     // draw(posX, posY, posZ, dirX, dirY, dirZ) {
