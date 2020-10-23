@@ -13,7 +13,7 @@ let Platform = function (x, y, z, w, d, h, color, tex) {
     }
     self.draw = function () {
         push();
-        texture(this.tex);
+        fill(this.color);
         translate(this.x, this.y, this.z);
         box(this.width, this.depth, this.height);
         pop();

@@ -19,7 +19,7 @@ const spdWalk = 6;
 const spdRun = 15;
 
 // gravity + jump
-const physGravity = 2;
+const physGravity = 1.5;
 let physZVel = 0;
 const physZVelMax = 20;
 const physJump = -30;
@@ -44,8 +44,6 @@ let buttonATexture;
 let buttonBTexture;
 
 let drawTest;
-
-let ground;
 
 // Netowrking
 let oldSumOfAll = 0;

@@ -58,6 +58,17 @@ function testColPlayerList(list) {
     }
 }
 
+function respawn(){
+    posX = -500;
+    posY = 0;
+    posZ = 0;
+    lookX = 1;
+    lookY = 0;
+    lookZ = 0;
+    lookXScaled = 0;
+    lookYScaled = 0;
+}
+
 function drawAllObjectsInList(list) {
     for (let i in list) {
     let object = list[i];
@@ -85,13 +96,7 @@ function setup() {
 
     controls = new Controls();
 
-    ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
-
-    plat1 = Platform(0, 1300, 13, 200, 200, 5, "GREEN", grassTexture);
-
-    plat2 = Platform(0, 1700, 13, 200, 200, 5, "GREEN", grassTexture);
-
-    plat3 = Platform(0, 2100, 13, 200, 200, 5, "GREEN", grassTexture);
+    initTestBoxes();
 
     drawTest = new DrawTest();
 
@@ -144,6 +149,7 @@ function update() {
 
     updateZVel();
     testColPlayerList(PLATFORM_LIST);
+    if (posZ > 3000) respawn();
 
     // camera.setPosition(posX, posY, posZ - playerHeight);
 
@@ -189,95 +195,12 @@ function draw() {
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
 
     drawAllObjectsInList(PLATFORM_LIST);
-    //ground.draw();
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
     //drawTest.draw();
 
     drawTestObjects();
-}
-
-function drawTestObjects() {
-    // Green Box
-    push();
-    fill(0, 255, 0);
-    translate(0, -100, 0);
-    box(500, 100, 20);
-    pop();
-
-    push();
-    fill(0, 255, 0);
-    translate(0, -100, -400);
-    box(500, 100, 20);
-    pop();
-
-    // Yellow Box
-    push();
-    fill(255, 255, 0);
-    translate(0, 0, 0);
-    box(500, 100, 20);
-    pop();
-
-    push();
-    fill(255, 255, 0);
-    translate(0, 0, -400);
-    box(500, 100, 20);
-    pop();
-
-    // Blue Box
-    push();
-    fill(0, 0, 255);
-    translate(0, 100, 0);
-    box(500, 100, 20);
-    pop();
-
-    push();
-    fill(0, 0, 255);
-    translate(0, 100, -400);
-    box(500, 100, 20);
-    pop();
-
-    // Purple Box
-    push();
-    fill("#FF00E5");
-    translate(0, 160, -200);
-    box(500, 20, 420);
-    pop();
-
-    push();
-    fill("#FF00E5");
-    translate(0, -160, -200);
-    box(500, 20, 420);
-    pop();
-
-    // Human
-    push();
-    fill("RED");
-    translate(0, -400, 0);
-    scale(23);
-    rotateX(-HALF_PI);
-    rotateY(-PI);
-    model(humanModel);
-    pop();
-
-    push();
-    texture(sm64treeTexture);
-    translate(0, 600, -320);
-    let playerDir = createVector(lookX, lookY);
-    rotateX(HALF_PI);
-    rotateY(HALF_PI + PI + playerDir.heading());
-    plane(350, 700);
-    pop();
-
-    push();
-    texture(polyTexture);
-    translate(500, 800, -250);
-    playerDir = createVector(lookX, lookY);
-    rotateX(HALF_PI);
-    rotateY(HALF_PI + PI + playerDir.heading());
-    plane(1000, 1000);
-    pop();
 }
 
 function keyPressed() {
