@@ -7,6 +7,7 @@ let sm64treeTexture;
 let polyTexture;
 let grassTexture;
 let testTexture;
+let testTexture2;
 let buttonATexture;
 let buttonBTexture;
 
@@ -103,6 +104,7 @@ function preload() {
     polyTexture = loadImage('./client/assets/Poly.png');
     grassTexture = loadImage('./client/assets/Grass.png');
     testTexture = loadImage('./client/assets/TestTexture.png');
+    testTexture2 = loadImage('./client/assets/TestTexture2.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
@@ -208,7 +210,7 @@ function draw() {
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
-    drawTest.draw();
+    //drawTest.draw();
 
     drawTestObjects();
 }
