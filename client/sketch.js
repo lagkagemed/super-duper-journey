@@ -44,22 +44,22 @@ function drawPlayers() {
     }
 }
 
-function testColPlayer(object){
-    if (posZ > (object.z - (object.height)) && (posZ - 50) < (object.z + (object.height)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))){
+function testColPlayer(object) {
+    if (posZ > (object.z - (object.height)) && (posZ - 50) < (object.z + (object.height)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))) {
         posZ = (object.z - (object.height));
         standing = true;
     }
 }
 
-function testColPlayerList(list){
-    for(let i in list){
+function testColPlayerList(list) {
+    for (let i in list) {
         let object = list[i];
         testColPlayer(object);
     }
 }
 
-function drawAllObjectsInList(list){
-    for(let i in list){
+function drawAllObjectsInList(list) {
+    for (let i in list) {
     let object = list[i];
     object.draw();
     }
@@ -79,6 +79,9 @@ function preload() {
 function setup() {
     let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
     canvas.parent('sketch-holder');
+
+    // camera = createCamera();
+    // setCamera(camera);
 
     controls = new Controls();
 
@@ -142,6 +145,7 @@ function update() {
     updateZVel();
     testColPlayerList(PLATFORM_LIST);
 
+    // camera.setPosition(posX, posY, posZ - playerHeight);
 
     // Look Direction
     let lookUpDown = controls.lookUpDown;
@@ -163,9 +167,14 @@ function update() {
             lookZ = -0.9;
     }
 
+    // camera.tilt(lookUpDown);
+    // camera.pan(lookLeftRight);
+
     let lookScale = cos(abs(lookZ * HALF_PI));
     lookXScaled = lookX * lookScale;
     lookYScaled = lookY * lookScale;
+
+    camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
 
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
@@ -178,8 +187,6 @@ function draw() {
     background(200, 200, 200);
     ambientLight(128, 128, 128);
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
-
-    camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
 
     drawAllObjectsInList(PLATFORM_LIST);
     //ground.draw();
