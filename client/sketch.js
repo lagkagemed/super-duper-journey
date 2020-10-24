@@ -91,9 +91,6 @@ function setup() {
     let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
     canvas.parent('sketch-holder');
 
-    // camera = createCamera();
-    // setCamera(camera);
-
     controls = new Controls();
 
     initTestBoxes();
@@ -151,8 +148,6 @@ function update() {
     testColPlayerList(PLATFORM_LIST);
     if (posZ > 3000) respawn();
 
-    // camera.setPosition(posX, posY, posZ - playerHeight);
-
     // Look Direction
     let lookUpDown = controls.lookUpDown;
     let lookLeftRight = controls.lookLeftRight;
@@ -172,9 +167,6 @@ function update() {
         else if (lookZ < -0.9)
             lookZ = -0.9;
     }
-
-    // camera.tilt(lookUpDown);
-    // camera.pan(lookLeftRight);
 
     let lookScale = cos(abs(lookZ * HALF_PI));
     lookXScaled = lookX * lookScale;

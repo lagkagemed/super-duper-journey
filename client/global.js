@@ -1,7 +1,5 @@
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-// let camera; // BB 2020-10-23. Testing easier camera.
-
 let controls;
 
 // Position + camera
