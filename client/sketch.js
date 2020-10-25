@@ -58,7 +58,7 @@ function testColPlayerList(list) {
     }
 }
 
-function respawn(){
+function respawn() {
     posX = -500;
     posY = 0;
     posZ = 0;
@@ -71,8 +71,8 @@ function respawn(){
 
 function drawAllObjectsInList(list) {
     for (let i in list) {
-    let object = list[i];
-    object.draw();
+        let object = list[i];
+        object.draw();
     }
 }
 
@@ -87,11 +87,32 @@ function preload() {
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
 }
 
+function setGameSize() {
+    gameWidth = windowWidth / gameScale;
+    gameHeight = windowHeight / gameScale;
+}
+
+function canvasFillScreen() {
+    let canvasElement = document.getElementById(canvas.elt.id);
+    canvasElement.style.width = windowWidth + "px";
+    canvasElement.style.height = windowHeight + "px";
+}
+
 function setup() {
-    let canvas = createCanvas(windowWidth, windowHeight, WEBGL);
+    setGameSize();
+    canvas = createCanvas(gameWidth, gameHeight, WEBGL);
     canvas.parent('sketch-holder');
+    canvasFillScreen();
 
     controls = new Controls();
+
+    camera = createCamera();
+    // camera.defaultCameraNear *= gameScale;
+    // camera.defaultCameraFar *= gameScale;
+    camera.defaultCameraNear = 10;
+    camera.defaultCameraFar = 10000;
+    camera.perspective(camera.defaultCameraFOV, camera.defaultAspectRatio, camera.defaultCameraNear, camera.defaultCameraFar);
+    setCamera(camera);
 
     initTestBoxes();
 
@@ -105,8 +126,11 @@ function setup() {
 }
 
 function windowResized() {
-    // socket.emit('log', "After resize: width: " + windowWidth + ", height: " + windowHeight);
-    resizeCanvas(windowWidth, windowHeight);
+    // socket.emit('log', "After resize: width: " + gameWidth + ", height: " + gameHeight);
+    setGameSize();
+    resizeCanvas(gameWidth, gameHeight);
+    canvasFillScreen();
+
     controls = new Controls();
 }
 
@@ -172,7 +196,7 @@ function update() {
     lookXScaled = lookX * lookScale;
     lookYScaled = lookY * lookScale;
 
-    camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
+    camera.camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
 
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
@@ -212,7 +236,7 @@ function touchStarted() {
     // socket.emit('log', touches);
 
     if (!fullscreen()) {
-        // socket.emit('log', "Before fullscreen width: " + windowWidth + ", height: " + windowHeight);
+        // socket.emit('log', "Before fullscreen width: " + gameWidth + ", height: " + gameHeight);
         fullscreen(true);
         requestPointerLock();
     }

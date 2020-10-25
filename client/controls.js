@@ -1,55 +1,71 @@
 class Controls {
     constructor() {
-        const dpadR = min(windowWidth / 4, windowHeight / 4);
+        // Real values
+        const dpadRReal = min(windowWidth / 4, windowHeight / 4);
+        const dpadDeadzoneRReal = dpadRReal / 4;
+        const dpadXReal = dpadRReal + (dpadRReal / 4);
+        const dpadYReal = windowHeight - (dpadRReal + (dpadRReal / 4));
+
+        const buttonARReal = min(windowWidth / 5, windowHeight / 5);
+        const buttonAXReal = windowWidth - (buttonARReal * 3);
+        const ButtonAYReal = windowHeight - (buttonARReal + (buttonARReal / 4));
+
+        const buttonBRReal = min(windowWidth / 6, windowHeight / 6);
+        const buttonBXReal = windowWidth - (buttonBRReal + (buttonBRReal / 4));
+        const ButtonBYReal = windowHeight - (buttonBRReal * 3);
+
+        // Scaled values
+        const dpadR = min(gameWidth / 4, gameHeight / 4);
         const dpadDeadzoneR = dpadR / 4;
         const dpadX = dpadR + (dpadR / 4);
-        const dpadY = windowHeight - (dpadR + (dpadR / 4));
+        const dpadY = gameHeight - (dpadR + (dpadR / 4));
         this.dpadR = dpadR;
         this.dpadDeadzoneR = dpadDeadzoneR;
         this.dpadX = dpadX;
         this.dpadY = dpadY;
 
-        const buttonAR = min(windowWidth / 5, windowHeight / 5);
-        const buttonAX = windowWidth - (buttonAR * 3);
-        const ButtonAY = windowHeight - (buttonAR + (buttonAR / 4));
+        const buttonAR = min(gameWidth / 5, gameHeight / 5);
+        const buttonAX = gameWidth - (buttonAR * 3);
+        const ButtonAY = gameHeight - (buttonAR + (buttonAR / 4));
         this.buttonAR = buttonAR;
         this.buttonAX = buttonAX;
         this.ButtonAY = ButtonAY;
 
-        const buttonBR = min(windowWidth / 6, windowHeight / 6);
-        const buttonBX = windowWidth - (buttonBR + (buttonBR / 4));
-        const ButtonBY = windowHeight - (buttonBR * 3);
+        const buttonBR = min(gameWidth / 6, gameHeight / 6);
+        const buttonBX = gameWidth - (buttonBR + (buttonBR / 4));
+        const ButtonBY = gameHeight - (buttonBR * 3);
         this.buttonBR = buttonBR;
         this.buttonBX = buttonBX;
         this.ButtonBY = ButtonBY;
 
+        // Display controls at real values
         let touchControls = document.getElementById("touch-controls");
         if (!isMobile) {
             touchControls.style.visibility = "hidden";
         } else {
             let dPad = document.getElementById("d-pad");
-            dPad.style.left = dpadX - dpadR + "px";
-            dPad.style.top = dpadY - dpadR + "px";
-            dPad.style.width = (dpadR * 2) + "px";
-            dPad.style.height = (dpadR * 2) + "px";
+            dPad.style.left = dpadXReal - dpadRReal + "px";
+            dPad.style.top = dpadYReal - dpadRReal + "px";
+            dPad.style.width = (dpadRReal * 2) + "px";
+            dPad.style.height = (dpadRReal * 2) + "px";
 
             let dPadDeadzone = document.getElementById("d-pad-deadzone");
-            dPadDeadzone.style.left = dpadX - dpadDeadzoneR + "px";
-            dPadDeadzone.style.top = dpadY - dpadDeadzoneR + "px";
-            dPadDeadzone.style.width = (dpadDeadzoneR * 2) + "px";
-            dPadDeadzone.style.height = (dpadDeadzoneR * 2) + "px";
+            dPadDeadzone.style.left = dpadXReal - dpadDeadzoneRReal + "px";
+            dPadDeadzone.style.top = dpadYReal - dpadDeadzoneRReal + "px";
+            dPadDeadzone.style.width = (dpadDeadzoneRReal * 2) + "px";
+            dPadDeadzone.style.height = (dpadDeadzoneRReal * 2) + "px";
 
             let buttonA = document.getElementById("button-a");
-            buttonA.style.left = buttonAX - buttonAR + "px";
-            buttonA.style.top = ButtonAY - buttonAR + "px";
-            buttonA.style.width = (buttonAR * 2) + "px";
-            buttonA.style.height = (buttonAR * 2) + "px";
+            buttonA.style.left = buttonAXReal - buttonARReal + "px";
+            buttonA.style.top = ButtonAYReal - buttonARReal + "px";
+            buttonA.style.width = (buttonARReal * 2) + "px";
+            buttonA.style.height = (buttonARReal * 2) + "px";
 
             let buttonB = document.getElementById("button-b");
-            buttonB.style.left = buttonBX - buttonBR + "px";
-            buttonB.style.top = ButtonBY - buttonBR + "px";
-            buttonB.style.width = (buttonBR * 2) + "px";
-            buttonB.style.height = (buttonBR * 2) + "px";
+            buttonB.style.left = buttonBXReal - buttonBRReal + "px";
+            buttonB.style.top = ButtonBYReal - buttonBRReal + "px";
+            buttonB.style.width = (buttonBRReal * 2) + "px";
+            buttonB.style.height = (buttonBRReal * 2) + "px";
 
             touchControls.style.visibility = "visible";
         }
@@ -82,7 +98,7 @@ class Controls {
         const touchLookSteps = min(windowWidth, windowHeight) / 2;
         this.touchLookSteps = touchLookSteps;
 
-        const lookSpeedKeys = 0.02;
+        const lookSpeedKeys = 0.04;
         this.lookSpeedKeys = lookSpeedKeys;
     }
 
@@ -265,9 +281,9 @@ class Controls {
                     this.setTouchDPadVector(x, y);
                 } else if (this.touchLookId === id) {
                     // Look
-                    this.touchLookUpDown = y - this.touchLookYLast;
+                    this.touchLookUpDown = (y - this.touchLookYLast) * gameScale;
                     this.touchLookYLast = y;
-                    this.touchLookLeftRight = this.touchLookXLast - x;
+                    this.touchLookLeftRight = (this.touchLookXLast - x) * gameScale;
                     this.touchLookXLast = x;
                 }
             }
@@ -357,10 +373,9 @@ class Controls {
             look = this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
             look = movedY / this.touchLookSteps;
-            mouseY = windowHeight / 2;
         }
 
-            return look;
+        return look;
     }
 
     get lookLeftRight() {
@@ -375,10 +390,9 @@ class Controls {
             look = -this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
             look = -movedX / this.touchLookSteps;
-            mouseX = windowWidth / 2;
         }
 
-            return look;
+        return look;
     }
 
     // draw(posX, posY, posZ, dirX, dirY, dirZ) {

@@ -1,6 +1,14 @@
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+let gameScale = 2; // 1 = Original. Bigger number = lower resolution.
+let gameWidth = 0;
+let gameHeight = 0;
+
+let canvas;
+
 let controls;
+
+let camera;
 
 // Position + camera
 let posX = -500;
