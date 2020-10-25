@@ -2,12 +2,12 @@ class DrawTest {
     constructor() {
         this.drawTestArray = [];
 
-        this.drawTestArray.push(new Floor(100, 200, -200, -200, -50, 100, testTexture));
-        this.drawTestArray.push(new Floor(100, 200, -200, -200, -300, 100, testTexture));
+        this.drawTestArray.push(new Floor(1000, 200, 700, -200, -50, 100, testTexture));
+        this.drawTestArray.push(new Floor(1000, 200, 700, -200, -300, 100, testTexture));
 
-        this.drawTestArray.push(new Wall(100, 200, 100, -200, -50, 250, testTexture));
-        this.drawTestArray.push(new Wall(100, -200, -200, -300, -50, 250, testTexture));
-        this.drawTestArray.push(new Wall(-200, 300, 100, 200, -50, 250, testTexture));
+        this.drawTestArray.push(new Wall(1000, 200, 1000, -200, -50, 250, testTexture));
+        this.drawTestArray.push(new Wall(1000, -200, 700, -300, -50, 250, testTexture));
+        this.drawTestArray.push(new Wall(700, 300, 1000, 200, -50, 250, testTexture));
     }
 
     draw() {
