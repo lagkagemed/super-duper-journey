@@ -116,6 +116,8 @@ function setup() {
 
     initTestBoxes();
 
+    initTestSprites();
+
     drawTest = new DrawTest();
 
     textureWrap(REPEAT); // REPEAT, CLAMP
@@ -201,6 +203,8 @@ function update() {
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
     if (sumOfAll != oldSumOfAll) sendNewPosition();
+
+    updateTestSprites();
 }
 
 function draw() {
@@ -217,6 +221,8 @@ function draw() {
     //drawTest.draw();
 
     drawTestObjects();
+
+    drawTestSprites();
 }
 
 function keyPressed() {

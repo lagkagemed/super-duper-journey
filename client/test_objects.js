@@ -39,21 +39,21 @@ function drawTestObjects() {
     model(humanModel);
     pop();
 
-    push();
-    texture(sm64treeTexture);
-    translate(0, 600, -320);
-    let playerDir = createVector(lookX, lookY);
-    rotateX(HALF_PI);
-    rotateY(HALF_PI + PI + playerDir.heading());
-    plane(350, 700);
-    pop();
+    // push();
+    // texture(sm64treeTexture);
+    // translate(0, 600, -320);
+    // let playerDir = createVector(lookX, lookY);
+    // rotateX(HALF_PI);
+    // rotateY(HALF_PI + PI + playerDir.heading());
+    // plane(350, 700);
+    // pop();
 
-    push();
-    texture(polyTexture);
-    translate(500, 800, -250);
-    playerDir = createVector(lookX, lookY);
-    rotateX(HALF_PI);
-    rotateY(HALF_PI + PI + playerDir.heading());
-    plane(1000, 1000);
-    pop();
+    // push();
+    // texture(polyTexture);
+    // translate(500, 800, -250);
+    // playerDir = createVector(lookX, lookY);
+    // rotateX(HALF_PI);
+    // rotateY(HALF_PI + PI + playerDir.heading());
+    // plane(1000, 1000);
+    // pop();
 }
