@@ -44,20 +44,6 @@ function drawPlayers() {
     }
 }
 
-function testColPlayer(object) {
-    if (posZ > (object.z - (object.height / 2)) && (posZ - 50) < (object.z + (object.height / 2)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))) {
-        posZ = (object.z - (object.height / 2));
-        standing = true;
-    }
-}
-
-function testColPlayerList(list) {
-    for (let i in list) {
-        let object = list[i];
-        testColPlayer(object);
-    }
-}
-
 function respawn() {
     posX = -500;
     posY = 0;
@@ -172,6 +158,7 @@ function update() {
     }
 
     updateZVel();
+    standing = false;
     testColPlayerList(PLATFORM_LIST);
     if (posZ > 3000) respawn();
 
