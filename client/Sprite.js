@@ -1,20 +1,22 @@
 function initTestSprites() {
-    spriteArray.push(new Sprite(0, 600, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(500, 800, -500, 500, 1000, 250, polyTexture, true, false));
+    spriteArray.push(new Sprite(0, 600, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(500, 800, 0, polyTexture));
 
-    spriteArray.push(new Sprite(1000, 600, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(1000, 200, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(1000, -200, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(1000, -600, -350, 350, 700, 30, sm64treeTexture, true, false));
+    spriteArray.push(new Sprite(1000, 600, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(1000, 200, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(1000, -200, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(1000, -600, 0, sm64treeTexture));
 
-    spriteArray.push(new Sprite(1500, 600, -500, 500, 1000, 250, polyTexture, true, false));
-    spriteArray.push(new Sprite(1500, 0, -500, 500, 1000, 250, polyTexture, true, false));
-    spriteArray.push(new Sprite(1500, -600, -500, 500, 1000, 250, polyTexture, true, false));
+    spriteArray.push(new Sprite(1500, 600, 0, polyTexture));
+    spriteArray.push(new Sprite(1500, 0, 0, polyTexture));
+    spriteArray.push(new Sprite(1500, -600, 0, polyTexture));
 
-    spriteArray.push(new Sprite(2000, 600, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(2000, 200, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(2000, -200, -350, 350, 700, 30, sm64treeTexture, true, false));
-    spriteArray.push(new Sprite(2000, -600, -350, 350, 700, 30, sm64treeTexture, true, false));
+    spriteArray.push(new Sprite(2000, 600, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(2000, 200, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(2000, -200, 0, sm64treeTexture));
+    spriteArray.push(new Sprite(2000, -600, 0, sm64treeTexture));
+
+    spriteArray.push(new Sprite(1200, 400, 0, rabbitSprite));
 }
 
 function updateTestSprites() {
@@ -33,16 +35,41 @@ function drawTestSprites() {
 }
 
 class Sprite {
-    constructor(x, y, z, width, height, offsetZ, texture, followLeftRight, followUpDown) {
+    constructor(x, y, z, texture) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.width = width;
-        this.height = height;
-        this.offsetZ = offsetZ;
         this.texture = texture;
-        this.followLeftRight = followLeftRight;
-        this.followUpDown = followUpDown;
+
+        switch (texture) {
+            case sm64treeTexture:
+                this.width = 250;
+                this.height = 500;
+                this.offsetZ = -230;
+                this.followLeftRight = true;
+                this.followUpDown = false;
+                break;
+            case polyTexture:
+                this.width = 500;
+                this.height = 1000;
+                this.offsetZ = -250;
+                this.followLeftRight = true;
+                this.followUpDown = false;
+                break;
+            case rabbitSprite:
+                this.width = 100;
+                this.height = 100;
+                this.offsetZ = -35;
+                this.followLeftRight = true;
+                this.followUpDown = false;
+                break;
+            default:
+                this.width = 0;
+                this.height = 0;
+                this.offsetZ = 0;
+                this.followLeftRight = false;
+                this.followUpDown = false;
+        }
 
         this.headingLeftRight = 0;
         this.headingUpDown = 0;

@@ -85,6 +85,7 @@ function preload() {
     testTexture2 = loadImage('./client/assets/TestTexture2.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
+    rabbitSprite = loadImage('./client/assets/Rabbit.png');
 }
 
 function setGameSize() {

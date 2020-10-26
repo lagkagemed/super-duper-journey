@@ -48,6 +48,7 @@ let testTexture;
 let testTexture2;
 let buttonATexture;
 let buttonBTexture;
+let rabbitSprite;
 
 let drawTest;
 
