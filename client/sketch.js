@@ -45,8 +45,8 @@ function drawPlayers() {
 }
 
 function testColPlayer(object) {
-    if (posZ > (object.z - (object.height)) && (posZ - 50) < (object.z + (object.height)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))) {
-        posZ = (object.z - (object.height));
+    if (posZ > (object.z - (object.height / 2)) && (posZ - 50) < (object.z + (object.height / 2)) && (posX + 50) > (object.x - (object.width / 2)) && (posX - 50) < (object.x + (object.width / 2)) && (posY + 50) > (object.y - (object.depth / 2)) && (posY - 50) < (object.y + (object.depth / 2))) {
+        posZ = (object.z - (object.height / 2));
         standing = true;
     }
 }
@@ -162,11 +162,11 @@ function update() {
     }
     if (!playerIsDucking && duck) {
         playerHeight = playerHeightDuck;
-        //posZ -= playerHeightStand - playerHeightDuck;
+        // posZ -= playerHeightStand - playerHeightDuck;
         playerIsDucking = true;
     } else if (playerIsDucking && !duck) {
         playerHeight = playerHeightStand;
-        //posZ += playerHeightStand - playerHeightDuck;
+        // posZ += playerHeightStand - playerHeightDuck;
         playerIsDucking = false;
     }
 
