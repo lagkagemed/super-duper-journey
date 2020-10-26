@@ -54,7 +54,7 @@ class Sprite {
         this.headingLeftRight = headingLeftRight;
         this.headingUpDown = headingUpDown;
 
-        this.distToPlayer = dist(this.x, this.y, this.z, posX, posY, posZ - playerHeight);
+        this.distToPlayer = dist(this.x, this.y, this.z + this.offsetZ, posX, posY, posZ - playerHeight);
     }
 
     draw() {
