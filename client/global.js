@@ -39,6 +39,7 @@ const playerHeightStand = 200;
 const playerHeightDuck = 100;
 let playerHeight = playerHeightStand;
 let playerIsDucking = false;
+let unduck = 3;
 
 // 3D Models
 let humanModel;

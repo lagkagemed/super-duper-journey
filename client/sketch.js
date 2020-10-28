@@ -126,9 +126,7 @@ function windowResized() {
 function update() {
     // print(frameRate());
 
-    oldPosX = posX;
-    oldPosY = posY;
-    oldPosZ = posZ;
+    setOldPos();
 
     controls.update();
 
@@ -153,12 +151,15 @@ function update() {
     }
     if (!playerIsDucking && duck) {
         playerHeight = playerHeightDuck;
-        // posZ -= playerHeightStand - playerHeightDuck;
+        posZ -= playerHeightStand - playerHeightDuck;
         playerIsDucking = true;
     } else if (playerIsDucking && !duck) {
-        playerHeight = playerHeightStand;
-        // posZ += playerHeightStand - playerHeightDuck;
-        playerIsDucking = false;
+        testColPlayerList(PLATFORM_LIST);
+        if (unduck < 0) {
+            playerHeight = playerHeightStand;
+            posZ += playerHeightStand - playerHeightDuck;
+            playerIsDucking = false;
+            }
     }
 
     updateZVel();

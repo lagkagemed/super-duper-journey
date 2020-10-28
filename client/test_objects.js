@@ -6,6 +6,8 @@ function initTestBoxes(){
     plat2 = Platform(0, 1700, 13, 200, 200, 5, "GREEN", grassTexture);
 
     plat3 = Platform(0, 2100, 13, 200, 200, 5, "GREEN", grassTexture);
+
+    plat4 = Platform(0, 300, -100, 200, 200, 5, "Orange", grassTexture);
     
     // Green Box
     box1 = Platform(0, -100, 0, 500, 100, 20, "LightGreen", grassTexture);

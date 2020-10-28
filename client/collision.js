@@ -45,6 +45,17 @@ function testColPlayer(object) {
     if (changeY) posY = oldPosY;
     if (changeZ) posZ = oldPosZ;
 
+    // check unduck
+    if (unduck > -10) unduck--;
+    if ((posX + colBoxSize) > (object.x - (object.width / 2))
+    && (posX - colBoxSize) < (object.x + (object.width / 2))
+    && (posY + colBoxSize) > (object.y - (object.depth / 2))
+    && (posY - colBoxSize) < (object.y + (object.depth / 2))
+    && (posZ) > (object.z - (object.height / 2))
+    && (posZ - playerHeightStand) < (object.z + (object.height / 2))) {
+        unduck = 20;
+    }
+
     /*
     // check head colliding
     if ((posZ - (playerHeight - 50)) > (object.z + (object.height / 2))
@@ -117,4 +128,10 @@ function testColPlayerList(list) {
         let object = list[i];
         testColPlayer(object);
     }
+}
+
+function setOldPos(){
+    oldPosX = posX;
+    oldPosY = posY;
+    oldPosZ = posZ;
 }
