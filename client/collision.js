@@ -1,4 +1,51 @@
 function testColPlayer(object) {
+
+    // check if colliding
+    colBoxSize = 25;
+    changeX = false;
+    changeY = false;
+    changeZ = false;
+
+    if ((posX + colBoxSize) > (object.x - (object.width / 2))
+    && (posX - colBoxSize) < (object.x + (object.width / 2))
+    && (posY + colBoxSize) > (object.y - (object.depth / 2))
+    && (posY - colBoxSize) < (object.y + (object.depth / 2))
+    && posZ > (object.z - (object.height / 2))
+    && (posZ - playerHeight) < (object.z + (object.height / 2))) {
+        
+        // check if posX is the problem
+        if ((posX + colBoxSize) > (object.x - (object.width / 2))
+        && (posX - colBoxSize) < (object.x + (object.width / 2))
+        && (oldPosY + colBoxSize) > (object.y - (object.depth / 2))
+        && (oldPosY - colBoxSize) < (object.y + (object.depth / 2))
+        && oldPosZ > (object.z - (object.height / 2))
+        && (oldPosZ - playerHeight) < (object.z + (object.height / 2))) changeX = true;
+
+        // check if posY is the problem
+        if ((oldPosX + colBoxSize) > (object.x - (object.width / 2))
+        && (oldPosX - colBoxSize) < (object.x + (object.width / 2))
+        && (posY + colBoxSize) > (object.y - (object.depth / 2))
+        && (posY - colBoxSize) < (object.y + (object.depth / 2))
+        && oldPosZ > (object.z - (object.height / 2))
+        && (oldPosZ - playerHeight) < (object.z + (object.height / 2))) changeY = true;
+
+        // check if posZ is the problem
+        if ((oldPosX + colBoxSize) > (object.x - (object.width / 2))
+        && (oldPosX - colBoxSize) < (object.x + (object.width / 2))
+        && (oldPosY + colBoxSize) > (object.y - (object.depth / 2))
+        && (oldPosY - colBoxSize) < (object.y + (object.depth / 2))
+        && posZ > (object.z - (object.height / 2))
+        && (posZ - playerHeight) < (object.z + (object.height / 2))) {
+            changeZ = true;
+            standing = true;
+            physZVel = 0;
+            }
+        }
+    if (changeX) posX = oldPosX;
+    if (changeY) posY = oldPosY;
+    if (changeZ) posZ = oldPosZ;
+
+    /*
     // check head colliding
     if ((posZ - (playerHeight - 50)) > (object.z + (object.height / 2))
     && (posZ - playerHeight) < (object.z - (object.height / 2))
@@ -60,6 +107,9 @@ function testColPlayer(object) {
         posZ = (object.z - (object.height / 2));
         standing = true;
     }
+    */
+
+
 }
 
 function testColPlayerList(list) {

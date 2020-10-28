@@ -13,12 +13,15 @@ let camera;
 // Position + camera
 let posX = -500;
 let posY = 0;
-let posZ = 0;
+let posZ = -50;
 let lookX = 1;
 let lookY = 0;
 let lookZ = 0;
 let lookXScaled = 0;
 let lookYScaled = 0;
+let oldPosX = -700;
+let oldPosY = -200;
+let oldPosZ = -100;
 
 // Walk
 const spdWalk = 6;

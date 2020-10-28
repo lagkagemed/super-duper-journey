@@ -126,6 +126,10 @@ function windowResized() {
 function update() {
     // print(frameRate());
 
+    oldPosX = posX;
+    oldPosY = posY;
+    oldPosZ = posZ;
+
     controls.update();
 
     // Movement
