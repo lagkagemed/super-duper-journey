@@ -1,11 +1,14 @@
+let COLLISION_LIST = [];
+
 function testColPlayer(object) {
 
-    // check if colliding
+
     colBoxSize = 25;
     changeX = false;
     changeY = false;
     changeZ = false;
 
+    // check if colliding
     if ((posX + colBoxSize) > (object.x - (object.width / 2))
     && (posX - colBoxSize) < (object.x + (object.width / 2))
     && (posY + colBoxSize) > (object.y - (object.depth / 2))
@@ -55,8 +58,30 @@ function testColPlayer(object) {
     && (posZ - playerHeightStand) < (object.z + (object.height / 2))) {
         unduck = 20;
     }
+}
 
-    /*
+function testColPlayerList(list) {
+    for (let i in list) {
+        let object = list[i];
+        testColPlayer(object);
+    }
+}
+
+function setOldPos(){
+    oldPosX = posX;
+    oldPosY = posY;
+    oldPosZ = posZ;
+}
+
+function collisionNearby(list){
+    for (let i in list){
+        let object = list[i];
+        
+    }
+
+}
+
+    /* OLD COLLISION DETECTION
     // check head colliding
     if ((posZ - (playerHeight - 50)) > (object.z + (object.height / 2))
     && (posZ - playerHeight) < (object.z - (object.height / 2))
@@ -119,19 +144,3 @@ function testColPlayer(object) {
         standing = true;
     }
     */
-
-
-}
-
-function testColPlayerList(list) {
-    for (let i in list) {
-        let object = list[i];
-        testColPlayer(object);
-    }
-}
-
-function setOldPos(){
-    oldPosX = posX;
-    oldPosY = posY;
-    oldPosZ = posZ;
-}
