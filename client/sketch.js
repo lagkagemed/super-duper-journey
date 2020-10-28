@@ -130,37 +130,8 @@ function update() {
 
     controls.update();
 
-    // Movement
-    let move = controls.move;
-    let jump = controls.jump;
-    let duck = controls.duck;
-    let walkDirV = createVector(lookX, lookY);
-    if (move.isMoving) {
-        walkDirV.rotate(move.heading);
-        if (!move.isRunning) {
-            posX += walkDirV.x * spdWalk;
-            posY += walkDirV.y * spdWalk;
-        } else {
-            posX += walkDirV.x * spdRun;
-            posY += walkDirV.y * spdRun;
-        }
-    }
-    if (jump && standing) {
-        physZVel = physJump;
-        standing = false;
-    }
-    if (!playerIsDucking && duck) {
-        playerHeight = playerHeightDuck;
-        posZ -= playerHeightStand - playerHeightDuck;
-        playerIsDucking = true;
-    } else if (playerIsDucking && !duck) {
-        testColPlayerList(PLATFORM_LIST);
-        if (unduck < 0) {
-            playerHeight = playerHeightStand;
-            posZ += playerHeightStand - playerHeightDuck;
-            playerIsDucking = false;
-            }
-    }
+    basicMovement();
+    
 
     updateZVel();
     standing = false;

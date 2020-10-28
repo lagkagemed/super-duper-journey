@@ -40,7 +40,10 @@ function testColPlayer(object) {
         && posZ > (object.z - (object.height / 2))
         && (posZ - playerHeight) < (object.z + (object.height / 2))) {
             changeZ = true;
-            if (oldPosZ < posZ) standing = true;
+            if (oldPosZ < posZ) {
+                standing = true;
+                if (jumpComboTimer > 0) jumpComboTimer--;
+            }
             physZVel = 0;
             }
         }
@@ -76,7 +79,7 @@ function setOldPos(){
 function collisionNearby(list){
     for (let i in list){
         let object = list[i];
-        
+
     }
 
 }

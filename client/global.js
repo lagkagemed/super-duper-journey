@@ -31,8 +31,10 @@ const spdRun = 15;
 const physGravity = 1.5;
 let physZVel = 0;
 const physZVelMax = 20;
-const physJump = -30;
+let physJump = -30;
 let standing = true;
+let jumpComboCounter = 0;
+let jumpComboTimer = 0;
 
 // Duck
 const playerHeightStand = 200;
