@@ -30,7 +30,7 @@ const spdRun = 15;
 // gravity + jump
 const physGravity = 1.5;
 let physZVel = 0;
-const physZVelMax = 20;
+const physZVelMax = 40;
 let physJump = -30;
 let standing = true;
 let jumpComboCounter = 0;

@@ -1,6 +1,8 @@
 function initTestBoxes(){
     ground = Platform(0, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
 
+    ground2 = Platform(6000, 0, 13, 5000, 2000, 5, "GREEN", grassTexture);
+
     plat1 = Platform(0, 1300, 13, 200, 200, 5, "GREEN", grassTexture);
 
     plat2 = Platform(0, 1700, 13, 200, 200, 5, "GREEN", grassTexture);
