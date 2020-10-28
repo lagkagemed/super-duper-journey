@@ -37,7 +37,7 @@ function testColPlayer(object) {
         && posZ > (object.z - (object.height / 2))
         && (posZ - playerHeight) < (object.z + (object.height / 2))) {
             changeZ = true;
-            standing = true;
+            if (oldPosZ < posZ) standing = true;
             physZVel = 0;
             }
         }
