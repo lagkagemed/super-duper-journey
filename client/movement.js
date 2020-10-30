@@ -21,11 +21,15 @@ function basicMovement() {
     if (move.isMoving) {
         walkDirV.rotate(move.heading);
         if (!move.isRunning) {
-            posX += walkDirV.x * spdWalk;
-            posY += walkDirV.y * spdWalk;
+            physXYVel = physMaxSpdWalk;
+            posX += walkDirV.x * physXYVel;
+            posY += walkDirV.y * physXYVel;
         } else {
-            posX += walkDirV.x * spdRun;
-            posY += walkDirV.y * spdRun;
+            if (physXYVel < 10) physXYVel = 10;
+            physXYVel += 0.5;
+            if (physXYVel > physMaxSpdRun) physXYVel = physMaxSpdRun;
+            posX += walkDirV.x * physXYVel;
+            posY += walkDirV.y * physXYVel;
         }
     }
 
@@ -51,4 +55,16 @@ function basicMovement() {
         physZVel = physJump;
         standing = false;
     }
+}
+
+function updateZVel() {
+    physZVel += physGravity;
+    if (physZVel > physZVelMax) physZVel = physZVelMax;
+    posZ += physZVel;
+}
+
+function updateXYVel() {
+    physZVel += physGravity;
+    if (physZVel > physZVelMax) physZVel = physZVelMax;
+    posZ += physZVel;
 }
