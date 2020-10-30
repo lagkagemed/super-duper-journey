@@ -131,7 +131,6 @@ function update() {
     controls.update();
 
     basicMovement();
-    
 
     updateZVel();
     standing = false;
@@ -150,12 +149,23 @@ function update() {
         lookY = lookDirV.y;
     }
 
-    if (lookUpDown != 0) {
+    if (lookUpDown != 0 && jumpSalto == 0) {
         lookZ += lookUpDown;
         if (lookZ > 0.9)
             lookZ = 0.9;
         else if (lookZ < -0.9)
             lookZ = -0.9;
+    }
+
+    // front salto
+    if(jumpSalto > 0 && lookZ <= 4) {
+        lookZ += jumpSalto;
+        jumpSalto += 0.002;
+    }
+
+    if (lookZ > 4) {
+        jumpSalto = 0;
+        lookZ = 0;
     }
 
     let lookScale = cos(abs(lookZ * HALF_PI));

@@ -35,6 +35,7 @@ let physJump = -30;
 let standing = true;
 let jumpComboCounter = 0;
 let jumpComboTimer = 0;
+let jumpSalto = 0;
 
 // Duck
 const playerHeightStand = 200;
