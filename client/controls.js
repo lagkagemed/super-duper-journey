@@ -6,13 +6,17 @@ class Controls {
         const dpadXReal = dpadRReal + (dpadRReal / 4);
         const dpadYReal = windowHeight - (dpadRReal + (dpadRReal / 4));
 
-        const buttonARReal = min(windowWidth / 5, windowHeight / 5);
-        const buttonAXReal = windowWidth - (buttonARReal * 3);
-        const ButtonAYReal = windowHeight - (buttonARReal + (buttonARReal / 4));
+        const buttonDuckJumpRReal = min(windowWidth / 4, windowHeight / 4);
+        const buttonDuckJumpXReal = windowWidth - buttonDuckJumpRReal - (buttonDuckJumpRReal / 4);
+        const ButtonDuckJumpYReal = windowHeight - (buttonDuckJumpRReal + (buttonDuckJumpRReal / 4));
 
-        const buttonBRReal = min(windowWidth / 6, windowHeight / 6);
-        const buttonBXReal = windowWidth - (buttonBRReal + (buttonBRReal / 4));
-        const ButtonBYReal = windowHeight - (buttonBRReal * 3);
+        // const buttonARReal = min(windowWidth / 5, windowHeight / 5);
+        // const buttonAXReal = windowWidth - (buttonARReal * 3);
+        // const ButtonAYReal = windowHeight - (buttonARReal + (buttonARReal / 4));
+
+        // const buttonBRReal = min(windowWidth / 6, windowHeight / 6);
+        // const buttonBXReal = windowWidth - (buttonBRReal + (buttonBRReal / 4));
+        // const ButtonBYReal = windowHeight - (buttonBRReal * 3);
 
         // Scaled values
         const dpadR = min(gameWidth / 4, gameHeight / 4);
@@ -24,19 +28,26 @@ class Controls {
         this.dpadX = dpadX;
         this.dpadY = dpadY;
 
-        const buttonAR = min(gameWidth / 5, gameHeight / 5);
-        const buttonAX = gameWidth - (buttonAR * 3);
-        const ButtonAY = gameHeight - (buttonAR + (buttonAR / 4));
-        this.buttonAR = buttonAR;
-        this.buttonAX = buttonAX;
-        this.ButtonAY = ButtonAY;
+        const buttonDuckJumpR = min(gameWidth / 4, gameHeight / 4);
+        const buttonDuckJumpX = gameWidth - buttonDuckJumpR - (buttonDuckJumpR / 4);
+        const buttonDuckJumpY = gameHeight - (buttonDuckJumpR + (buttonDuckJumpR / 4));
+        this.buttonDuckJumpR = buttonDuckJumpR;
+        this.buttonDuckJumpX = buttonDuckJumpX;
+        this.buttonDuckJumpY = buttonDuckJumpY;
 
-        const buttonBR = min(gameWidth / 6, gameHeight / 6);
-        const buttonBX = gameWidth - (buttonBR + (buttonBR / 4));
-        const ButtonBY = gameHeight - (buttonBR * 3);
-        this.buttonBR = buttonBR;
-        this.buttonBX = buttonBX;
-        this.ButtonBY = ButtonBY;
+        // const buttonAR = min(gameWidth / 5, gameHeight / 5);
+        // const buttonAX = gameWidth - (buttonAR * 3);
+        // const ButtonAY = gameHeight - (buttonAR + (buttonAR / 4));
+        // this.buttonAR = buttonAR;
+        // this.buttonAX = buttonAX;
+        // this.ButtonAY = ButtonAY;
+
+        // const buttonBR = min(gameWidth / 6, gameHeight / 6);
+        // const buttonBX = gameWidth - (buttonBR + (buttonBR / 4));
+        // const ButtonBY = gameHeight - (buttonBR * 3);
+        // this.buttonBR = buttonBR;
+        // this.buttonBX = buttonBX;
+        // this.ButtonBY = ButtonBY;
 
         // Display controls at real values
         let touchControls = document.getElementById("touch-controls");
@@ -55,17 +66,23 @@ class Controls {
             dPadDeadzone.style.width = (dpadDeadzoneRReal * 2) + "px";
             dPadDeadzone.style.height = (dpadDeadzoneRReal * 2) + "px";
 
-            let buttonA = document.getElementById("button-a");
-            buttonA.style.left = buttonAXReal - buttonARReal + "px";
-            buttonA.style.top = ButtonAYReal - buttonARReal + "px";
-            buttonA.style.width = (buttonARReal * 2) + "px";
-            buttonA.style.height = (buttonARReal * 2) + "px";
+            let buttonDuckJump = document.getElementById("button-duck-jump");
+            buttonDuckJump.style.left = buttonDuckJumpXReal - buttonDuckJumpRReal + "px";
+            buttonDuckJump.style.top = ButtonDuckJumpYReal - buttonDuckJumpRReal + "px";
+            buttonDuckJump.style.width = (buttonDuckJumpRReal * 2) + "px";
+            buttonDuckJump.style.height = (buttonDuckJumpRReal * 2) + "px";
 
-            let buttonB = document.getElementById("button-b");
-            buttonB.style.left = buttonBXReal - buttonBRReal + "px";
-            buttonB.style.top = ButtonBYReal - buttonBRReal + "px";
-            buttonB.style.width = (buttonBRReal * 2) + "px";
-            buttonB.style.height = (buttonBRReal * 2) + "px";
+            // let buttonA = document.getElementById("button-a");
+            // buttonA.style.left = buttonAXReal - buttonARReal + "px";
+            // buttonA.style.top = ButtonAYReal - buttonARReal + "px";
+            // buttonA.style.width = (buttonARReal * 2) + "px";
+            // buttonA.style.height = (buttonARReal * 2) + "px";
+
+            // let buttonB = document.getElementById("button-b");
+            // buttonB.style.left = buttonBXReal - buttonBRReal + "px";
+            // buttonB.style.top = ButtonBYReal - buttonBRReal + "px";
+            // buttonB.style.width = (buttonBRReal * 2) + "px";
+            // buttonB.style.height = (buttonBRReal * 2) + "px";
 
             touchControls.style.visibility = "visible";
         }
@@ -77,11 +94,15 @@ class Controls {
         this.touchDPadDoubleTapTimeLast = 0;
         this.touchIsRunning = false;
 
-        this.touchButtonAId = -1;
-        this.touchButtonADown = false;
+        this.touchButtonDuckJumpId = -1;
+        this.touchButtonDuckDown = false;
+        this.touchButtonJumpDown = false;
 
-        this.touchButtonBId = -1;
-        this.touchButtonBDown = false;
+        // this.touchButtonAId = -1;
+        // this.touchButtonADown = false;
+
+        // this.touchButtonBId = -1;
+        // this.touchButtonBDown = false;
 
         // socket.emit('log', "Window width: " + (windowWidth / 2));
         // socket.emit('log', "Window height: " + (windowHeight / 2));
@@ -103,15 +124,22 @@ class Controls {
     }
 
     handleTouchStarted() {
-        if (touches.length > 0 && (this.touchDPadId === -1 || this.touchButtonAId === -1 || this.touchButtonBId === -1 || this.touchLookId === -1)) {
+        if (touches.length > 0 &&
+            (this.touchDPadId === -1 ||
+                this.touchButtonDuckJumpId === -1 ||
+                // this.touchButtonAId === -1 ||
+                // this.touchButtonBId === -1 ||
+                this.touchLookId === -1)) {
             for (let i = 0; i < touches.length; i++) {
                 let id = touches[i].id;
                 if (id === this.touchDPadId)
                     continue;
-                if (id === this.touchButtonAId)
+                if (id === this.touchButtonDuckJumpId)
                     continue;
-                if (id === this.touchButtonBId)
-                    continue;
+                // if (id === this.touchButtonAId)
+                //     continue;
+                // if (id === this.touchButtonBId)
+                //     continue;
                 else if (id === this.touchLookId)
                     continue;
 
@@ -140,25 +168,38 @@ class Controls {
                     }
                 }
 
-                // A
-                if (this.touchButtonAId === -1) {
-                    if (dist(x, y, this.buttonAX, this.ButtonAY) <= this.buttonAR) {
-                        this.touchButtonAId = id;
-                        this.touchButtonADown = true;
-                        // socket.emit('log', "Started touchButtonAId: " + id);
+                // Duck / Jump
+                if (this.touchButtonDuckJumpId === -1) {
+                    if (x >= this.buttonDuckJumpX - this.buttonDuckJumpR &&
+                        x <= this.buttonDuckJumpX + this.buttonDuckJumpR &&
+                        y >= this.buttonDuckJumpY - this.buttonDuckJumpR &&
+                        y <= this.buttonDuckJumpY + this.buttonDuckJumpR) {
+                        this.touchButtonDuckJumpId = id;
+                        this.setTouchButtonDuckJumpDown(y);
+                        // socket.emit('log', "Started touchButtonDuckJumpId: " + id);
                         break;
                     }
                 }
 
-                // B
-                if (this.touchButtonBId === -1) {
-                    if (dist(x, y, this.buttonBX, this.ButtonBY) <= this.buttonBR) {
-                        this.touchButtonBId = id;
-                        this.touchButtonBDown = true;
-                        // socket.emit('log', "Started touchButtonBId: " + id);
-                        break;
-                    }
-                }
+                // // A
+                // if (this.touchButtonAId === -1) {
+                //     if (dist(x, y, this.buttonAX, this.ButtonAY) <= this.buttonAR) {
+                //         this.touchButtonAId = id;
+                //         this.touchButtonADown = true;
+                //         // socket.emit('log', "Started touchButtonAId: " + id);
+                //         break;
+                //     }
+                // }
+
+                // // B
+                // if (this.touchButtonBId === -1) {
+                //     if (dist(x, y, this.buttonBX, this.ButtonBY) <= this.buttonBR) {
+                //         this.touchButtonBId = id;
+                //         this.touchButtonBDown = true;
+                //         // socket.emit('log', "Started touchButtonBId: " + id);
+                //         break;
+                //     }
+                // }
 
                 // Look
                 if (this.touchLookId === -1) {
@@ -191,37 +232,54 @@ class Controls {
                 }
             }
 
-            // A
-            if (this.touchButtonAId != -1) {
+            // Duck / Jump
+            if (this.touchButtonDuckJumpId != -1) {
                 let found = false;
                 for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchButtonAId) {
+                    if (touches[i].id === this.touchButtonDuckJumpId) {
                         found = true;
                         break;
                     }
                 }
                 if (!found) {
-                    this.touchButtonAId = -1;
-                    this.touchButtonADown = false;
-                    // socket.emit('log', "Stopped touchButtonAId");
+                    this.touchButtonDuckJumpId = -1;
+                    this.touchButtonDuckDown = false;
+                    this.touchButtonJumpDown = false;
+                    // socket.emit('log', "Stopped touchButtonDuckJumpId");
                 }
             }
 
-            // B
-            if (this.touchButtonBId != -1) {
-                let found = false;
-                for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchButtonBId) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    this.touchButtonBId = -1;
-                    this.touchButtonBDown = false;
-                    // socket.emit('log', "Stopped touchButtonBId");
-                }
-            }
+            // // A
+            // if (this.touchButtonAId != -1) {
+            //     let found = false;
+            //     for (let i = 0; i < touches.length; i++) {
+            //         if (touches[i].id === this.touchButtonAId) {
+            //             found = true;
+            //             break;
+            //         }
+            //     }
+            //     if (!found) {
+            //         this.touchButtonAId = -1;
+            //         this.touchButtonADown = false;
+            //         // socket.emit('log', "Stopped touchButtonAId");
+            //     }
+            // }
+
+            // // B
+            // if (this.touchButtonBId != -1) {
+            //     let found = false;
+            //     for (let i = 0; i < touches.length; i++) {
+            //         if (touches[i].id === this.touchButtonBId) {
+            //             found = true;
+            //             break;
+            //         }
+            //     }
+            //     if (!found) {
+            //         this.touchButtonBId = -1;
+            //         this.touchButtonBDown = false;
+            //         // socket.emit('log', "Stopped touchButtonBId");
+            //     }
+            // }
 
             // Look
             if (this.touchLookId != -1) {
@@ -242,11 +300,15 @@ class Controls {
             this.touchIsMoving = false;
             this.touchIsRunning = false;
 
-            this.touchButtonAId = -1;
-            this.touchButtonADown = false;
+            this.touchButtonDuckJumpId = -1;
+            this.touchButtonDuckDown = false;
+            this.touchButtonJumpDown = false;
 
-            this.touchButtonBId = -1;
-            this.touchButtonBDown = false;
+            // this.touchButtonAId = -1;
+            // this.touchButtonADown = false;
+
+            // this.touchButtonBId = -1;
+            // this.touchButtonBDown = false;
 
             this.touchLookId = -1;
             // socket.emit('log', "Stopped all ids");
@@ -269,6 +331,16 @@ class Controls {
         // }
     }
 
+    setTouchButtonDuckJumpDown(y) {
+        if (y < this.buttonDuckJumpY) {
+            this.touchButtonDuckDown = false;
+            this.touchButtonJumpDown = true;
+        } else {
+            this.touchButtonDuckDown = true;
+            this.touchButtonJumpDown = false;
+        }
+    }
+
     update() {
         // Touch moved
         if (touches.length > 0) {
@@ -279,6 +351,9 @@ class Controls {
                 if (this.touchDPadId === id) {
                     // Move
                     this.setTouchDPadVector(x, y);
+                } else if (this.touchButtonDuckJumpId === id) {
+                    // Duck / Jump
+                    this.setTouchButtonDuckJumpDown(y);
                 } else if (this.touchLookId === id) {
                     // Look
                     this.touchLookUpDown = (y - this.touchLookYLast) * gameScale;
@@ -346,7 +421,8 @@ class Controls {
     }
 
     get jump() {
-        if (this.touchButtonADown) {
+        // if (this.touchButtonADown) {
+        if (this.touchButtonJumpDown) {
             return true;
         } else {
             return keyIsDown(32); // Space
@@ -354,7 +430,8 @@ class Controls {
     }
 
     get duck() {
-        if (this.touchButtonBDown) {
+        // if (this.touchButtonBDown) {
+        if (this.touchButtonDuckDown) {
             return true;
         } else {
             return keyIsDown(17); // Control

@@ -40,7 +40,14 @@ img {
     top: 0px;
 }
 
-#button-a {
+#button-duck-jump {
+    position: absolute;
+    left: 100px;
+    top: 0px;
+    opacity: 0.7;
+}
+
+/* #button-a {
     position: absolute;
     left: 100px;
     top: 0px;
@@ -52,4 +59,4 @@ img {
     left: 200px;
     top: 0px;
     opacity: 0.7;
-}
+} */
