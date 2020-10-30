@@ -1,11 +1,5 @@
 // Spil på: http://super-duper-journey.herokuapp.com/
 
-function updateZVel() {
-    physZVel += physGravity;
-    if (physZVel > physZVelMax) physZVel = physZVelMax;
-    posZ += physZVel;
-}
-
 socket.on('idGranted', function (data) {
     myId = data;
     // console.log(myId);

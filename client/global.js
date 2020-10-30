@@ -22,8 +22,9 @@ let oldPosY = -200;
 let oldPosZ = -100;
 
 // Walk
-const spdWalk = 6;
-const spdRun = 15;
+let physXYVel = 0;
+const physMaxSpdWalk = 6;
+const physMaxSpdRun = 25;
 
 // gravity + jump
 const physGravity = 1.5;
