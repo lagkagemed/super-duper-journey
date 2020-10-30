@@ -51,8 +51,6 @@ function respawn() {
     lookX = 1;
     lookY = 0;
     lookZ = 0;
-    lookXScaled = 0;
-    lookYScaled = 0;
 }
 
 function drawAllObjectsInList(list) {
@@ -149,7 +147,7 @@ function update() {
         lookY = lookDirV.y;
     }
 
-    if (lookUpDown != 0 && jumpSalto == 0) {
+    if (lookUpDown != 0 && jumpSalto === 0) {
         lookZ += lookUpDown;
         if (lookZ > 0.9)
             lookZ = 0.9;
@@ -158,7 +156,7 @@ function update() {
     }
 
     // front salto
-    if(jumpSalto > 0 && lookZ <= 4) {
+    if (jumpSalto > 0 && lookZ <= 4) {
         lookZ += jumpSalto;
         jumpSalto += 0.002;
     }
@@ -168,11 +166,14 @@ function update() {
         lookZ = 0;
     }
 
-    let lookScale = cos(abs(lookZ * HALF_PI));
-    lookXScaled = lookX * lookScale;
-    lookYScaled = lookY * lookScale;
+    let up = 1;
+    if (lookZ > 1 && lookZ <= 3) up = -1;
 
-    camera.camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, 1);
+    let lookScale = cos(abs(lookZ * HALF_PI));
+    let lookXScaled = lookX * lookScale;
+    let lookYScaled = lookY * lookScale;
+
+    camera.camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, up);
 
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);

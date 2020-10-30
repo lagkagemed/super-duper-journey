@@ -8,7 +8,7 @@ function jumpCombo() {
     if (jumpComboCounter == 3) {
         physJump = -60;
         jumpComboCounter = 0;
-        jumpSalto = 0.01;
+        jumpSalto = 0.002;
     }
 }
 
