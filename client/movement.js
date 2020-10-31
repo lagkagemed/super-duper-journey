@@ -33,33 +33,51 @@ function basicMovement() {
         }
     }
 
-    if (!playerIsDucking && duck) {
-        playerHeight = playerHeightDuck;
-        if (!standing) { // Only pull up legs when jumping.
-            posZ -= playerHeightStand - playerHeightDuck;
-        }
-        playerIsDucking = true;
-    } else if (playerIsDucking && !duck) {
-        testColPlayerList(PLATFORM_LIST);
-        if (unduck < 0) {
-            playerHeight = playerHeightStand;
-            if (!standing) { // Only pull down legs when jumping.
-                posZ += playerHeightStand - playerHeightDuck;
+    if (!noClip) {
+        if (!playerIsDucking && duck) {
+            playerHeight = playerHeightDuck;
+            if (!standing) { // Only pull up legs when jumping.
+                posZ -= playerHeightStand - playerHeightDuck;
             }
-            playerIsDucking = false;
+            playerIsDucking = true;
+        } else if (playerIsDucking && !duck) {
+            testColPlayerList(PLATFORM_LIST);
+            if (unduck < 0) {
+                playerHeight = playerHeightStand;
+                if (!standing) { // Only pull down legs when jumping.
+                    posZ += playerHeightStand - playerHeightDuck;
+                }
+                playerIsDucking = false;
+            }
         }
+
+        if (jump && standing) {
+            jumpCombo();
+            physZVel = physJump;
+            standing = false;
+        }
+    } else {
+        if (jump)
+            physZVel = -10;
+        else if (duck)
+            physZVel = 10;
+        else
+            physZVel = 0;
     }
 
-    if (jump && standing) {
-        jumpCombo();
-        physZVel = physJump;
+    updateZVel();
+    if (!noClip) {
         standing = false;
+        testColPlayerList(PLATFORM_LIST);
+        if (posZ > 3000) respawn();
     }
 }
 
 function updateZVel() {
-    physZVel += physGravity;
-    if (physZVel > physZVelMax) physZVel = physZVelMax;
+    if (!noClip) {
+        physZVel += physGravity;
+        if (physZVel > physZVelMax) physZVel = physZVelMax;
+    }
     posZ += physZVel;
 }
 

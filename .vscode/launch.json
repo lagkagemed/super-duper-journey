@@ -21,10 +21,24 @@
             "webRoot": "${workspaceFolder}"
         },
         {
+            "name": "Launch Chrome Editor",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:2000/?editor=yes",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
             "name": "Launch Edge",
             "request": "launch",
             "type": "pwa-msedge",
             "url": "http://localhost:2000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Launch Edge Editor",
+            "request": "launch",
+            "type": "pwa-msedge",
+            "url": "http://localhost:2000/?editor=yes",
             "webRoot": "${workspaceFolder}"
         }
     ]

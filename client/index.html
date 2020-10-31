@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>3D Game</title>
+    <title>Super Duper Journey</title>
     <link href="./client/favicon.ico" rel="icon" type="image/x-icon" />
 
     <link rel="stylesheet" type="text/css" href="./client/style.css">
@@ -14,16 +14,18 @@
 
 
     <script src="./client/global.js"></script>
+    <script src="./client/globalFunctions.js"></script>
 
+    <script src="./client/editor.js"></script>
     <script src="./client/controls.js"></script>
     <script src="./client/draw_test.js"></script>
-    
+
     <script src="./client/platform.js"></script>
     <script src="./client/test_objects.js"></script>
     <script src="./client/sprite.js"></script>
     <script src="./client/collision.js"></script>
     <script src="./client/movement.js"></script>
-    
+
     <script src="./client/sketch.js"></script>
 </head>
 
@@ -41,6 +43,10 @@
             ondragstart="return false;">
         <img id="button-b" src="./client/assets/ButtonB.png" alt="B Button" draggable="false"
             ondragstart="return false;"> -->
+    </div>
+    <div id="editor">
+        <h1 id="editor-header"></h1>
+        <p id="editor-text"></p>
     </div>
 </body>
 

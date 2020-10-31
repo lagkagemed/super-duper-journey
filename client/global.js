@@ -1,5 +1,7 @@
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
+let editor = null;
+
 let gameScale = 2; // 1 = Original. Bigger number = lower resolution.
 let gameWidth = 0;
 let gameHeight = 0;
@@ -25,6 +27,9 @@ let oldPosZ = -100;
 let physXYVel = 0;
 const physMaxSpdWalk = 6;
 const physMaxSpdRun = 25;
+
+// No clip mode
+let noClip = false;
 
 // gravity + jump
 const physGravity = 1.5;

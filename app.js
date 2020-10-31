@@ -11,7 +11,11 @@ const __dirname = dirname(__filename);
 let app = express();
 let serv = http.Server(app);
 
+let useEditor = false;
+
 app.get('/', function (req, res) {
+    useEditor = req.query.editor;
+
     res.sendFile(__dirname + '/client/index.html');
 });
 app.use('/client', express.static(__dirname + '/client'));
@@ -26,8 +30,12 @@ io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
     socket.name = "Unnamed";
     SOCKET_LIST[socket.id] = socket;
-    socket.emit('idGranted', socket.id)
+    socket.emit('idGranted', socket.id);
     console.log('socket connection');
+
+    if (useEditor === "yes") {
+        socket.emit('useEditor');
+    }
 
     socket.on('helloWorld', function () {
         console.log('Hello World!');
@@ -69,6 +77,4 @@ setInterval(function () {
         var socket = SOCKET_LIST[i];
         socket.emit('newPositions', pack);
     }
-
-
 }, 1000 / 25);

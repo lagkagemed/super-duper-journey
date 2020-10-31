@@ -3,6 +3,11 @@ socket.on('idGranted', function (data) {
     // console.log(myId);
 });
 
+socket.on('useEditor', function () {
+    editor = new Editor();
+    editor.menuMain();
+});
+
 function sendNewPosition() {
     let pack = [];
     pack.push({
@@ -34,15 +39,6 @@ function drawPlayers() {
             pop();
         }
     }
-}
-
-function respawn() {
-    posX = -500;
-    posY = 0;
-    posZ = 0;
-    lookX = 1;
-    lookY = 0;
-    lookZ = 0;
 }
 
 function drawAllObjectsInList(list) {
@@ -122,11 +118,6 @@ function update() {
 
     basicMovement();
 
-    updateZVel();
-    standing = false;
-    testColPlayerList(PLATFORM_LIST);
-    if (posZ > 3000) respawn();
-
     // Look Direction
     let lookUpDown = controls.lookUpDown;
     let lookLeftRight = controls.lookLeftRight;
@@ -193,6 +184,9 @@ function draw() {
 }
 
 function keyPressed() {
+    if (editor != null && ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105))) {
+        editor.handleKeyPresed(keyCode);
+    }
     return false; // prevent any default behaviour.
 }
 
