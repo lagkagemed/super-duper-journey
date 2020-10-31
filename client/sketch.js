@@ -15,7 +15,9 @@ function sendNewPosition() {
         y: posY,
         z: posZ,
         lX: lookX,
-        lY: lookY
+        lY: lookY,
+        color: myColor,
+        model: myModel
     })
     socket.emit('newPosition', pack)
     oldSumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
@@ -29,7 +31,7 @@ function drawPlayers() {
     for (let i = 0; i < SOCKET_LIST.length; i++) {
         if (SOCKET_LIST[i].id != myId) {
             push();
-            fill("RED");
+            fill(SOCKET_LIST[i].color);
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z));
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
             scale(23);
@@ -50,6 +52,7 @@ function drawAllObjectsInList(list) {
 
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
+    penguinModel = loadModel('./client/assets/PenguinModel.obj');
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
     polyTexture = loadImage('./client/assets/Poly.png');
     grassTexture = loadImage('./client/assets/Grass.png');
@@ -88,6 +91,7 @@ function setup() {
     setCamera(camera);
 
     initTestBoxes();
+    initColorChooser();
 
     initTestSprites();
 
@@ -163,6 +167,10 @@ function update() {
     if (sumOfAll != oldSumOfAll) sendNewPosition();
 
     updateTestSprites();
+
+    if (posX < -2500) closeToColor = true;
+    if (posX > -2500) closeToColor = false;
+    if (closeToColor) testColPlayerColList();
 }
 
 function draw() {

@@ -29,6 +29,8 @@ let io = socketio(serv, {});
 io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
     socket.name = "Unnamed";
+    socket.color = "RED";
+    socket.model = humanModel;
     SOCKET_LIST[socket.id] = socket;
     socket.emit('idGranted', socket.id);
     console.log('socket connection');
@@ -51,6 +53,8 @@ io.sockets.on('connection', function (socket) {
         socket.z = data[0].z;
         socket.lX = data[0].lX;
         socket.lY = data[0].lY;
+        socket.color = data[0].color;
+        socket.model = data[0].model;
         // console.log('x: ' + socket.x + ' y: ' + socket.y + ' z: ' + socket.z);
     });
 
@@ -70,7 +74,9 @@ setInterval(function () {
             y: socket.y,
             z: socket.z,
             lX: socket.lX,
-            lY: socket.lY
+            lY: socket.lY,
+            color: socket.color,
+            model: socket.model
         });
     }
     for (var i in SOCKET_LIST) {

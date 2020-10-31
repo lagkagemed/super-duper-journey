@@ -50,6 +50,7 @@ let unduck = 3;
 
 // 3D Models
 let humanModel;
+let penguinModel;
 
 // Texture
 let sm64treeTexture;
@@ -70,6 +71,8 @@ let oldSumOfAll = 0;
 let sumOfAll = 0;
 
 let myId = 0;
+let myColor = "RED";
+let myModel = humanModel;
 let SOCKET_LIST = [];
 let socket = io();
 // socket.emit('helloWorld');

@@ -10,7 +10,7 @@ function initTestBoxes(){
     plat3 = Platform(0, 2100, 13, 200, 200, 5, "GREEN", grassTexture);
 
     plat4 = Platform(0, 300, -100, 200, 200, 5, "Orange", grassTexture);
-    
+
     // Green Box
     box1 = Platform(0, -100, 0, 500, 100, 20, "LightGreen", grassTexture);
 
@@ -36,11 +36,20 @@ function drawTestObjects() {
     // Human
     push();
     fill("RED");
-    translate(0, -400, 0);
+    translate(-2800, -200, 0);
     scale(23);
     rotateX(-HALF_PI);
-    rotateY(-PI);
+    rotateY(-HALF_PI);
     model(humanModel);
+    pop();
+
+    push();
+    fill("RED");
+    translate(-3050, -200, 0);
+    scale(230);
+    rotateX(-HALF_PI);
+    rotateY(0);
+    model(penguinModel);
     pop();
 
     // push();
