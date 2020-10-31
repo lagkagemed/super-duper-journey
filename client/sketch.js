@@ -37,7 +37,7 @@ function drawPlayers() {
             scale(23);
             rotateX(-HALF_PI);
             rotateY(-playerDir.heading());
-            model(humanModel);
+            model(SOCKET_LIST[i].model || humanModel);
             pop();
         }
     }

@@ -30,7 +30,6 @@ io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
     socket.name = "Unnamed";
     socket.color = "RED";
-    socket.model = humanModel;
     SOCKET_LIST[socket.id] = socket;
     socket.emit('idGranted', socket.id);
     console.log('socket connection');
