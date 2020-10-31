@@ -409,6 +409,7 @@ class Controls {
             }
         }
 
+        // TODO BB 2020-10-31. Implement double tap forward to run also on keyboard.
         if (this.touchIsRunning || keyIsDown(16)) { // Shift
             if (heading >= -QUARTER_PI && heading <= QUARTER_PI) {
                 isRunning = true;

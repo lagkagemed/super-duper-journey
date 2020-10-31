@@ -184,7 +184,7 @@ function draw() {
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
-    //drawTest.draw();
+    drawTest.draw();
 
     drawTestObjects();
 
