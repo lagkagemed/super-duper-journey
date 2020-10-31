@@ -1,5 +1,3 @@
-// Spil på: http://super-duper-journey.herokuapp.com/
-
 socket.on('idGranted', function (data) {
     myId = data;
     // console.log(myId);
