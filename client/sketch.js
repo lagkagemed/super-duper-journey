@@ -29,7 +29,7 @@ socket.on('newPositions', function (data) {
 
 function drawPlayers() {
     for (let i = 0; i < SOCKET_LIST.length; i++) {
-        if (SOCKET_LIST[i].id != myId) {
+        if (SOCKET_LIST[i].id != myId && SOCKET_LIST[i].model == 0) {
             push();
             fill(SOCKET_LIST[i].color);
             translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z));
@@ -37,7 +37,18 @@ function drawPlayers() {
             scale(23);
             rotateX(-HALF_PI);
             rotateY(-playerDir.heading());
-            model(SOCKET_LIST[i].model || humanModel);
+            model(humanModel);
+            pop();
+        }
+        if (SOCKET_LIST[i].id != myId && SOCKET_LIST[i].model == 1) {
+            push();
+            fill(SOCKET_LIST[i].color);
+            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z));
+            let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
+            scale(230);
+            rotateX(-HALF_PI);
+            rotateY(-playerDir.heading()+HALF_PI);
+            model(penguinModel);
             pop();
         }
     }

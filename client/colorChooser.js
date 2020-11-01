@@ -27,9 +27,9 @@ function initColorChooser() {
 
     groundColor2 = Platform(-3250, 0, 13, 1500, 200, 5, "GREY", grassTexture);
     
-    groundCol[11] = Platform(-2800, -200, 13, 200, 200, 5, "GREY", humanModel);
+    groundCol[11] = Platform(-2800, -200, 13, 200, 200, 5, "GREY", 1);
 
-    groundCol[12] = Platform(-3050, -200, 13, 200, 200, 5, "GREY", penguinModel);
+    groundCol[12] = Platform(-3050, -200, 13, 200, 200, 5, "GREY", 2);
 
     groundCol[13] = Platform(-3300, -200, 13, 200, 200, 5, "GREY", grassTexture);
 
@@ -46,7 +46,9 @@ function testColPlayerCol(object) {
     && (posY - colBoxSize) < (object.y + (object.depth / 2))
     && posZ + 40 > (object.z - (object.height / 2))) {
         if (object.tex == grassTexture) myColor = object.color;
-        //if (object.tex != grassTexture) myModel = object.tex;
+        if (object.tex == 1) myModel = 0;
+        if (object.tex == 2) myModel = 1;
+
     }
 }
 

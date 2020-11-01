@@ -72,7 +72,7 @@ let sumOfAll = 0;
 
 let myId = 0;
 let myColor = "RED";
-let myModel = humanModel;
+let myModel = 0;
 let SOCKET_LIST = [];
 let socket = io();
 // socket.emit('helloWorld');
