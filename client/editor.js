@@ -30,7 +30,7 @@ class Editor {
             "[?] = Save world. (not ready)";
     }
 
-    handleKeyPresed(key) {
+    handleKeyPressed(key) {
         switch (key) {
             case 48: // 0
             case 96: // 0

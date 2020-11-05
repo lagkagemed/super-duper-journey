@@ -203,13 +203,18 @@ function draw() {
 }
 
 function keyPressed() {
-    if (editor != null && ((keyCode >= 48 && keyCode <= 57) || (keyCode >= 96 && keyCode <= 105))) {
-        editor.handleKeyPresed(keyCode);
+    controls.handleKeyPressed(keyCode);
+
+    if (editor != null) {
+        editor.handleKeyPressed(keyCode);
     }
+
     return false; // prevent any default behaviour.
 }
 
 function keyReleased() {
+    controls.handleKeyReleased();
+
     return false; // prevent any default behavior.
 }
 

@@ -104,6 +104,9 @@ class Controls {
         // this.touchButtonBId = -1;
         // this.touchButtonBDown = false;
 
+        this.keyForwardDoubleTapTimeLast = 0;
+        this.keyIsRunning = false;
+
         // socket.emit('log', "Window width: " + (windowWidth / 2));
         // socket.emit('log', "Window height: " + (windowHeight / 2));
         // socket.emit('log', "Pixel density: " + (pixelDensity()));
@@ -121,6 +124,51 @@ class Controls {
 
         const lookSpeedKeys = 0.04;
         this.lookSpeedKeys = lookSpeedKeys;
+
+        // Keys
+        const keyMoveForward = 87; // W
+        const keyMoveBack = 83; // S
+        const keyMoveLeft = 65; // A
+        const keyMoveRight = 68; // D
+        const keyDuck = 17; // Ctrl
+        const keyJump = 32; // Space
+        const keyLookUp = UP_ARROW; // Arrow Up
+        const keyLookDown = DOWN_ARROW; // Arrow Down
+        const keyLookLeft = LEFT_ARROW; // Arrow Left
+        const keyLookRight = RIGHT_ARROW; // Arrow Right
+        this.keyMoveForward = keyMoveForward;
+        this.keyMoveBack = keyMoveBack;
+        this.keyMoveLeft = keyMoveLeft;
+        this.keyMoveRight = keyMoveRight;
+        this.keyDuck = keyDuck;
+        this.keyJump = keyJump;
+        this.keyLookUp = keyLookUp;
+        this.keyLookDown = keyLookDown;
+        this.keyLookLeft = keyLookLeft;
+        this.keyLookRight = keyLookRight;
+    }
+
+    handleKeyPressed(key) {
+        switch (key) {
+            case this.keyMoveForward:
+                let timeNow = millis();
+                if (timeNow - this.keyForwardDoubleTapTimeLast < 350) {
+                    // Run
+                    this.keyIsRunning = true;
+                } else {
+                    // Walk
+                    this.keyIsRunning = false;
+                }
+                this.keyForwardDoubleTapTimeLast = timeNow;
+                break;
+            default:
+        }
+    }
+
+    handleKeyReleased() {
+        if (!keyIsDown(this.keyMoveForward)) {
+            this.keyIsRunning = false;
+        }
     }
 
     handleTouchStarted() {
@@ -160,8 +208,9 @@ class Controls {
                             // Walk
                             this.touchIsRunning = false;
                         }
-                        this.setTouchDPadVector(x, y);
                         this.touchDPadDoubleTapTimeLast = timeNow;
+
+                        this.setTouchDPadVector(x, y);
 
                         // socket.emit('log', "Started touchDPadId: " + id);
                         break;
@@ -378,10 +427,10 @@ class Controls {
                 isMoving = true;
             }
         } else {
-            let walkForward = keyIsDown(87); // W
-            let walkBack = keyIsDown(83); // S
-            let walkLeft = keyIsDown(65); // A
-            let walkRight = keyIsDown(68); // D
+            let walkForward = keyIsDown(this.keyMoveForward);
+            let walkBack = keyIsDown(this.keyMoveBack);
+            let walkLeft = keyIsDown(this.keyMoveLeft);
+            let walkRight = keyIsDown(this.keyMoveRight);
             if (walkForward && !walkBack && !walkLeft && !walkRight) {
                 isMoving = true;
                 heading = 0;
@@ -406,15 +455,17 @@ class Controls {
             } else if (!walkForward && walkBack && !walkLeft && walkRight) {
                 isMoving = true;
                 heading = -QUARTER_PI - HALF_PI;
+            } else {
+                this.keyIsRunning = false;
             }
         }
 
-        // TODO BB 2020-10-31. Implement double tap forward to run also on keyboard.
-        if (this.touchIsRunning || keyIsDown(16)) { // Shift
+        if (this.touchIsRunning || this.keyIsRunning) {
             if (heading >= -QUARTER_PI && heading <= QUARTER_PI) {
                 isRunning = true;
             } else {
                 this.touchIsRunning = false;
+                this.keyIsRunning = false;
             }
         }
 
@@ -426,7 +477,7 @@ class Controls {
         if (this.touchButtonJumpDown) {
             return true;
         } else {
-            return keyIsDown(32); // Space
+            return keyIsDown(this.keyJump);
         }
     }
 
@@ -435,7 +486,7 @@ class Controls {
         if (this.touchButtonDuckDown) {
             return true;
         } else {
-            return keyIsDown(17); // Control
+            return keyIsDown(this.keyDuck);
         }
     }
 
@@ -445,9 +496,9 @@ class Controls {
         if (this.touchLookUpDown != 0) {
             look = this.touchLookUpDown / this.touchLookSteps;
             this.touchLookUpDown = 0;
-        } else if (keyIsDown(UP_ARROW)) {
+        } else if (keyIsDown(this.keyLookUp)) {
             look = -this.lookSpeedKeys;
-        } else if (keyIsDown(DOWN_ARROW)) {
+        } else if (keyIsDown(this.keyLookDown)) {
             look = this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
             look = movedY / this.touchLookSteps;
@@ -462,9 +513,9 @@ class Controls {
         if (this.touchLookLeftRight != 0) {
             look = this.touchLookLeftRight / this.touchLookSteps;
             this.touchLookLeftRight = 0;
-        } else if (keyIsDown(LEFT_ARROW)) {
+        } else if (keyIsDown(this.keyLookLeft)) {
             look = this.lookSpeedKeys;
-        } else if (keyIsDown(RIGHT_ARROW)) {
+        } else if (keyIsDown(this.keyLookRight)) {
             look = -this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
             look = -movedX / this.touchLookSteps;
