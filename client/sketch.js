@@ -190,10 +190,6 @@ function update() {
     if (sumOfAll != oldSumOfAll) sendNewPosition();
 
     updateTestSprites();
-
-    if (posX < -2500) closeToColor = true;
-    if (posX > -2500) closeToColor = false;
-    if (closeToColor) testColPlayerColList();
 }
 
 function draw() {

@@ -46,10 +46,15 @@ function testColPlayer(object) {
             }
             physZVel = 0;
             }
+            if (object.tex == 0) myColor = object.color;
+            if (object.tex == 1) myModel = 0;
+            if (object.tex == 2) myModel = 1;
+            if (object.tex == 3) myModel = 2;
         }
     if (changeX) posX = oldPosX;
     if (changeY) posY = oldPosY;
     if (changeZ) posZ = oldPosZ;
+
 
     // check unduck
     if (unduck > -10) unduck--;
@@ -83,67 +88,3 @@ function collisionNearby(list){
     }
 
 }
-
-    /* OLD COLLISION DETECTION
-    // check head colliding
-    if ((posZ - (playerHeight - 50)) > (object.z + (object.height / 2))
-    && (posZ - playerHeight) < (object.z - (object.height / 2))
-    && (posX + 25) > (object.x - (object.width / 2))
-    && (posX - 25) < (object.x + (object.width / 2))
-    && (posY + 25) > (object.y - (object.depth / 2))
-    && (posY - 25) < (object.y + (object.depth / 2))) {
-        posZ = (object.z + (object.height / 2) + (playerHeight));
-        physZVel = 10;
-    }
-
-    // check front colliding
-    if ((posX + 50) > (object.x - (object.width / 2))
-    && posX < (object.x + (object.width / 2))
-    && (posY + 25) > (object.y - (object.depth / 2))
-    && (posY - 25) < (object.y + (object.depth / 2))
-    && (posZ - 50) < (object.z + (object.height / 2))
-    && (posZ - (playerHeight - 50)) > (object.z - (object.height / 2))) {
-        posX = (object.x - (object.width / 2) - 50);
-    }
-
-    // check right side colliding
-    if ((posY - 50) < (object.y + (object.depth / 2))
-    && posY > (object.y - (object.depth / 2))
-    && (posX + 25) > (object.x - (object.width / 2))
-    && (posX - 25) < (object.x + (object.width / 2))
-    && (posZ - 50) < (object.z + (object.height / 2))
-    && (posZ - (playerHeight - 50)) > (object.z - (object.height / 2))) {
-        posY = (object.y + (object.depth / 2) + 50);
-    }
-
-    // check left side colliding
-    if ((posY + 50) > (object.y - (object.depth / 2))
-    && posY < (object.y + (object.depth / 2))
-    && (posX + 25) > (object.x - (object.width / 2))
-    && (posX - 25) < (object.x + (object.width / 2))
-    && (posZ - 50) < (object.z + (object.height / 2))
-    && (posZ - (playerHeight - 50)) > (object.z - (object.height / 2))) {
-        posY = (object.y - (object.depth / 2) - 50);
-    }
-
-    // check back colliding
-    if ((posX - 50) < (object.x + (object.width / 2))
-    && posX > (object.x - (object.width / 2))
-    && (posY + 25) > (object.y - (object.depth / 2))
-    && (posY - 25) < (object.y + (object.depth / 2))
-    && (posZ - 50) < (object.z + (object.height / 2))
-    && (posZ - (playerHeight - 50)) > (object.z - (object.height / 2))) {
-        posX = (object.x + (object.width / 2) + 50);
-    }
-
-    // check if feet is colliding
-    if (posZ > (object.z - (object.height / 2))
-    && (posZ - 25) < (object.z + (object.height / 2))
-    && (posX + 25) > (object.x - (object.width / 2))
-    && (posX - 25) < (object.x + (object.width / 2))
-    && (posY + 25) > (object.y - (object.depth / 2))
-    && (posY - 25) < (object.y + (object.depth / 2))) {
-        posZ = (object.z - (object.height / 2));
-        standing = true;
-    }
-    */
