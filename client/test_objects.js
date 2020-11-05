@@ -52,6 +52,15 @@ function drawTestObjects() {
     model(penguinModel);
     pop();
 
+    push();
+    fill("RED");
+    translate(-3300, -200, 0);
+    scale(4);
+    rotateX(PI);
+    rotateY(0);
+    model(duckModel);
+    pop();
+
     // push();
     // texture(sm64treeTexture);
     // translate(0, 600, -320);

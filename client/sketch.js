@@ -51,6 +51,17 @@ function drawPlayers() {
             model(penguinModel);
             pop();
         }
+        if (SOCKET_LIST[i].id != myId && SOCKET_LIST[i].model == 2) {
+            push();
+            fill(SOCKET_LIST[i].color);
+            translate(SOCKET_LIST[i].x, SOCKET_LIST[i].y, (SOCKET_LIST[i].z));
+            let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
+            scale(4);
+            rotateY(PI);
+            rotateZ(-playerDir.heading()-HALF_PI)
+            model(duckModel);
+            pop();
+        }
     }
 }
 
@@ -64,6 +75,7 @@ function drawAllObjectsInList(list) {
 function preload() {
     humanModel = loadModel('./client/assets/HumanModel.obj');
     penguinModel = loadModel('./client/assets/PenguinModel.obj');
+    duckModel = loadModel('./client/assets/DuckModel.obj');
     sm64treeTexture = loadImage('./client/assets/sm64tree.png');
     polyTexture = loadImage('./client/assets/Poly.png');
     grassTexture = loadImage('./client/assets/Grass.png');

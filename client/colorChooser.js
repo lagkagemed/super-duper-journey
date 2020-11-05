@@ -31,7 +31,7 @@ function initColorChooser() {
 
     groundCol[12] = Platform(-3050, -200, 13, 200, 200, 5, "GREY", 2);
 
-    groundCol[13] = Platform(-3300, -200, 13, 200, 200, 5, "GREY", grassTexture);
+    groundCol[13] = Platform(-3300, -200, 13, 200, 200, 5, "GREY", 3);
 
 }
 
@@ -48,6 +48,7 @@ function testColPlayerCol(object) {
         if (object.tex == grassTexture) myColor = object.color;
         if (object.tex == 1) myModel = 0;
         if (object.tex == 2) myModel = 1;
+        if (object.tex == 3) myModel = 2;
 
     }
 }
