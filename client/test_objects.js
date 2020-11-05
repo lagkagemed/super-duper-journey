@@ -45,11 +45,20 @@ function drawTestObjects() {
 
     push();
     fill("RED");
-    translate(-3050, -200, 0);
+    translate(-3100, -200, 0);
     scale(230);
     rotateX(-HALF_PI);
     rotateY(0);
     model(penguinModel);
+    pop();
+
+    push();
+    fill("RED");
+    translate(-3400, -200, 0);
+    scale(4);
+    rotateX(PI);
+    rotateY(0);
+    model(duckModel);
     pop();
 
     // push();

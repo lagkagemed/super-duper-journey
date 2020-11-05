@@ -51,6 +51,7 @@ let unduck = 3;
 // 3D Models
 let humanModel;
 let penguinModel;
+let duckModel;
 
 // Texture
 let sm64treeTexture;
