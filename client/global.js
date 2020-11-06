@@ -54,6 +54,7 @@ let penguinModel;
 let duckModel;
 
 // Texture
+let textureScale = 2; // Bigger number = more detailed (smaller) texture.
 let sm64treeTexture;
 let polyTexture;
 let grassTexture;
