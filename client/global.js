@@ -59,6 +59,7 @@ let polyTexture;
 let grassTexture;
 let testTexture;
 let testTexture2;
+let testTexture3;
 let buttonATexture;
 let buttonBTexture;
 let rabbitSprite;

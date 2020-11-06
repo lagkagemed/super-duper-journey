@@ -81,6 +81,7 @@ function preload() {
     grassTexture = loadImage('./client/assets/Grass.png');
     testTexture = loadImage('./client/assets/TestTexture.png');
     testTexture2 = loadImage('./client/assets/TestTexture2.png');
+    testTexture3 = loadImage('./client/assets/TestTexture3.png');
     buttonATexture = loadImage('./client/assets/ButtonA.png');
     buttonBTexture = loadImage('./client/assets/ButtonB.png');
     rabbitSprite = loadImage('./client/assets/Rabbit.png');
