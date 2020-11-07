@@ -1,6 +1,6 @@
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-let editor = null;
+let editor;
 
 let gameScale = 2; // 1 = Original. Bigger number = lower resolution.
 let gameWidth = 0;

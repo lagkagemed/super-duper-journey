@@ -3,11 +3,6 @@ socket.on('idGranted', function (data) {
     // console.log(myId);
 });
 
-socket.on('useEditor', function () {
-    editor = new Editor();
-    editor.menuMain();
-});
-
 function sendNewPosition() {
     let pack = [];
     pack.push({
@@ -105,6 +100,8 @@ function setup() {
     canvasFillScreen();
 
     controls = new Controls();
+
+    editor = new Editor();
 
     camera = createCamera();
     // camera.defaultCameraNear *= gameScale;
@@ -214,9 +211,7 @@ function draw() {
 function keyPressed() {
     controls.handleKeyPressed(keyCode);
 
-    if (editor != null) {
-        editor.handleKeyPressed(keyCode);
-    }
+    editor.handleKeyPressed(keyCode);
 
     return false; // prevent any default behaviour.
 }
