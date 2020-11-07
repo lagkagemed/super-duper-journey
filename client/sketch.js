@@ -42,7 +42,7 @@ function drawPlayers() {
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
             scale(230);
             rotateX(-HALF_PI);
-            rotateY(-playerDir.heading()+HALF_PI);
+            rotateY(-playerDir.heading() + HALF_PI);
             model(penguinModel);
             pop();
         }
@@ -53,7 +53,7 @@ function drawPlayers() {
             let playerDir = createVector(SOCKET_LIST[i].lX, SOCKET_LIST[i].lY);
             scale(4);
             rotateY(PI);
-            rotateZ(-playerDir.heading()-HALF_PI)
+            rotateZ(-playerDir.heading() - HALF_PI)
             model(duckModel);
             pop();
         }
@@ -181,7 +181,17 @@ function update() {
     let lookXScaled = lookX * lookScale;
     let lookYScaled = lookY * lookScale;
 
-    camera.camera(posX, posY, posZ - playerHeight, posX + lookXScaled, posY + lookYScaled, posZ - playerHeight + sin(lookZ * HALF_PI), 0, 0, up);
+    let posZEyes = posZ - playerHeight;
+    let lookZScaled = sin(lookZ * HALF_PI);
+
+    camera.camera(posX, posY, posZEyes, posX + lookXScaled, posY + lookYScaled, posZEyes + lookZScaled, 0, 0, up);
+
+    pointerX = posX + (lookXScaled * 200);
+    pointerY = posY + (lookYScaled * 200);
+    pointerZ = posZEyes + (lookZScaled * 200);
+    pointerGridX = pointerX - (pointerX % pointerGridSize);
+    pointerGridY = pointerY - (pointerY % pointerGridSize);
+    pointerGridZ = pointerZ - (pointerZ % pointerGridSize);
 
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
@@ -206,6 +216,8 @@ function draw() {
     drawTestObjects();
 
     drawTestSprites();
+
+    editor.draw();
 }
 
 function keyPressed() {
@@ -223,6 +235,12 @@ function keyReleased() {
 }
 
 function keyTyped() {
+    return false; // prevent any default behaviour.
+}
+
+function mouseClicked() {
+    editor.handleMouseClicked();
+
     return false; // prevent any default behaviour.
 }
 

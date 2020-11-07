@@ -10,6 +10,12 @@ class Editor {
         this.editorText = editorText;
 
         this.isStarted = false;
+
+        this.isAddingPlatform = false;
+        this.platformCornerNumber = 0;
+        this.platformCorner0X = 0;
+        this.platformCorner0Y = 0;
+        this.platformCorner0Z = 0;
     }
 
     start() {
@@ -36,8 +42,8 @@ class Editor {
             "1 = Normal mode." + "<br>" +
             "2 = No clip mode." + "<br>" +
             "<br>" +
-            "[?] = Add something. (not ready)" + "<br>" +
-            "[?] = Remove something. (not ready)" + "<br>" +
+            "3 = Add platform." + "<br>" +
+            "[?] = Remove platform. (not ready)" + "<br>" +
             "<br>" +
             "[?] = Load world. (not ready)" + "<br>" +
             "[?] = Save world. (not ready)";
@@ -71,7 +77,7 @@ class Editor {
 
                 case 51: // 3
                 case 99: // 3
-
+                    this.isAddingPlatform = true;
                     break;
                 case 52: // 4
                 case 100: // 4
@@ -98,6 +104,77 @@ class Editor {
 
                     break;
                 default:
+            }
+        }
+    }
+
+    calcPlatform() {
+        let x = this.platformCorner0X + ((pointerGridX - this.platformCorner0X) / 2);
+        let y = this.platformCorner0Y + ((pointerGridY - this.platformCorner0Y) / 2);
+        let z = this.platformCorner0Z + ((pointerGridZ - this.platformCorner0Z) / 2);
+        let sizeX = abs(pointerGridX - this.platformCorner0X);
+        let sizeY = abs(pointerGridY - this.platformCorner0Y);
+        let sizeZ = abs(pointerGridZ - this.platformCorner0Z);
+        if (sizeX === 0) {
+            sizeX = pointerGridSize;
+            x += pointerGridSize / 2;
+        }
+        if (sizeY === 0) {
+            sizeY = pointerGridSize;
+            y += pointerGridSize / 2;
+        }
+        if (sizeZ === 0) {
+            sizeZ = pointerGridSize;
+            z += pointerGridSize / 2;
+        }
+        return {
+            x: x,
+            y: y,
+            z: z,
+            sizeX: sizeX,
+            sizeY: sizeY,
+            sizeZ: sizeZ
+        };
+    }
+
+    handleMouseClicked() {
+        if (this.isAddingPlatform) {
+            if (this.platformCornerNumber === 0) {
+                this.platformCorner0X = pointerGridX;
+                this.platformCorner0Y = pointerGridY;
+                this.platformCorner0Z = pointerGridZ;
+                this.platformCornerNumber = 1;
+            } else if (this.platformCornerNumber === 1) {
+                this.isAddingPlatform = false;
+                this.platformCornerNumber = 0;
+                let calcP = this.calcPlatform();
+                Platform(calcP.x, calcP.y, calcP.z, calcP.sizeX, calcP.sizeY, calcP.sizeZ, "DarkGreen", grassTexture);
+            }
+        }
+    }
+
+    draw() {
+        // Draw pointer
+        if (this.isAddingPlatform) {
+            push();
+            stroke(0);
+            strokeWeight(2);
+            translate(pointerGridX, pointerGridY, pointerGridZ);
+            stroke(0);
+            strokeWeight(2);
+            line(8, 0, 0, -8, 0, 0);
+            line(0, 8, 0, 0, -8, 0);
+            line(0, 0, 8, 0, 0, -8);
+            noStroke();
+            pop();
+
+            if (this.platformCornerNumber === 1) {
+                let calcP = this.calcPlatform();
+                push();
+                translate(calcP.x, calcP.y, calcP.z);
+                fill("DarkGreen");
+                box(calcP.sizeX, calcP.sizeY, calcP.sizeZ);
+                pop();
             }
         }
     }
