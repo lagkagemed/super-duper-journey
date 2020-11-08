@@ -35,18 +35,15 @@ class Editor {
             "Welcome to the Super Duper Editor";
 
         this.editorText.innerHTML =
-            "Here is all the information you need to create your dream world." + "<br>" +
-            "<br>" +
             "Press:" + "<br>" +
             "<br>" +
             "1 = Normal mode." + "<br>" +
             "2 = No clip mode." + "<br>" +
             "<br>" +
             "3 = Add platform." + "<br>" +
-            "[?] = Remove platform. (not ready)" + "<br>" +
-            "<br>" +
-            "[?] = Load world. (not ready)" + "<br>" +
-            "[?] = Save world. (not ready)";
+            "[?] = Resize platform. (not ready)" + "<br>" +
+            "[?] = Move platform. (not ready)" + "<br>" +
+            "[?] = Remove platform. (not ready)";
     }
 
     handleKeyPressed(key) {
@@ -156,26 +153,26 @@ class Editor {
     draw() {
         // Draw pointer
         if (this.isAddingPlatform) {
+            stroke(0);
+            strokeWeight(2);
+            noFill();
+
             push();
-            stroke(0);
-            strokeWeight(2);
             translate(pointerGridX, pointerGridY, pointerGridZ);
-            stroke(0);
-            strokeWeight(2);
             line(8, 0, 0, -8, 0, 0);
             line(0, 8, 0, 0, -8, 0);
             line(0, 0, 8, 0, 0, -8);
-            noStroke();
             pop();
 
             if (this.platformCornerNumber === 1) {
                 let calcP = this.calcPlatform();
                 push();
                 translate(calcP.x, calcP.y, calcP.z);
-                fill("DarkGreen");
                 box(calcP.sizeX, calcP.sizeY, calcP.sizeZ);
                 pop();
             }
+
+            noStroke();
         }
     }
 }

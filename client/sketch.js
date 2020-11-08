@@ -186,9 +186,9 @@ function update() {
 
     camera.camera(posX, posY, posZEyes, posX + lookXScaled, posY + lookYScaled, posZEyes + lookZScaled, 0, 0, up);
 
-    pointerX = posX + (lookXScaled * 200);
-    pointerY = posY + (lookYScaled * 200);
-    pointerZ = posZEyes + (lookZScaled * 200);
+    pointerX = posX + (lookXScaled * pointerDist);
+    pointerY = posY + (lookYScaled * pointerDist);
+    pointerZ = posZEyes + (lookZScaled * pointerDist);
     pointerGridX = pointerX - (pointerX % pointerGridSize);
     pointerGridY = pointerY - (pointerY % pointerGridSize);
     pointerGridZ = pointerZ - (pointerZ % pointerGridSize);
@@ -240,6 +240,14 @@ function keyTyped() {
 
 function mouseClicked() {
     editor.handleMouseClicked();
+
+    return false; // prevent any default behaviour.
+}
+
+function mouseWheel(event) {
+    pointerDist -= event.delta * 0.05;
+    if (pointerDist < pointerDistMin) pointerDist = pointerDistMin;
+    if (pointerDist > pointerDistMax) pointerDist = pointerDistMax;
 
     return false; // prevent any default behaviour.
 }
