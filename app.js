@@ -21,6 +21,7 @@ console.log('Server started.');
 
 let SOCKET_LIST = {};
 
+
 let io = socketio(serv, {});
 io.sockets.on('connection', function (socket) {
     socket.id = Math.random();
@@ -29,6 +30,10 @@ io.sockets.on('connection', function (socket) {
     SOCKET_LIST[socket.id] = socket;
     socket.emit('idGranted', socket.id);
     console.log('socket connection');
+
+    socket.join('Main lobby');
+
+
 
     socket.on('helloWorld', function () {
         console.log('Hello World!');

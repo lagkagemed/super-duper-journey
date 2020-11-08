@@ -1,6 +1,6 @@
 let PLATFORM_LIST = [];
 
-let Platform = function (x, y, z, w, d, h, color, tex) {
+let Platform = function (x, y, z, w, d, h, color, func) {
     let self = {
         x: x,
         y: y,
@@ -9,7 +9,7 @@ let Platform = function (x, y, z, w, d, h, color, tex) {
         depth: d,
         height: h,
         color: color,
-        tex: tex
+        func: func
     }
     self.draw = function () {
         push();
