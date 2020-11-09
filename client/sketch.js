@@ -20,6 +20,7 @@ function sendNewPosition() {
 
 socket.on('newPositions', function (data) {
     SOCKET_LIST = data;
+    console.log(data);
 });
 
 function drawPlayers() {

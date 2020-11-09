@@ -21,6 +21,10 @@ console.log('Server started.');
 
 let SOCKET_LIST = {};
 
+let ROOM_LIST = [];
+ROOM_LIST.mainlobby = [];
+ROOM_LIST.mainlobby.push('mainlobby');
+
 
 let io = socketio(serv, {});
 io.sockets.on('connection', function (socket) {
@@ -31,9 +35,8 @@ io.sockets.on('connection', function (socket) {
     socket.emit('idGranted', socket.id);
     console.log('socket connection');
 
-    socket.join('Main lobby');
-
-
+    ROOM_LIST.mainlobby.push(socket.id);
+    console.log(ROOM_LIST);
 
     socket.on('helloWorld', function () {
         console.log('Hello World!');
@@ -56,10 +59,50 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         delete SOCKET_LIST[socket.id];
+        for (let i in ROOM_LIST) {
+            let room = ROOM_LIST[i];
+            for (let o in room){
+                if (room[o] == socket.id) room.splice(o, 1);
+            }
+        }
         console.log('socket disconnected');
+        console.log(ROOM_LIST);
     });
 });
 
+setInterval(function () {
+    for (let i in ROOM_LIST){
+        let pack = [];
+        let room = ROOM_LIST[i];
+        for (let o in room) {
+            if (o > 0) {
+                let iden = room[o];
+                var socket = SOCKET_LIST[(iden)];
+                pack.push({
+                    id: socket.id,
+                    x: socket.x,
+                    y: socket.y,
+                    z: socket.z,
+                    lX: socket.lX,
+                    lY: socket.lY,
+                    color: socket.color,
+                    model: socket.model
+                });
+            }
+        }
+        for (let o in room) {
+            if (o > 0){
+                let iden = room[o];
+                let socket = SOCKET_LIST[iden];
+                socket.emit('newPositions', pack);
+            }
+        }
+        
+    }
+}, 1000 / 25);
+
+
+/*
 setInterval(function () {
     var pack = [];
     for (var i in SOCKET_LIST) {
@@ -80,3 +123,4 @@ setInterval(function () {
         socket.emit('newPositions', pack);
     }
 }, 1000 / 25);
+*/
