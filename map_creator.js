@@ -27,6 +27,9 @@ fs.readFile('user.json', 'utf-8', (err, data) => {
 });
 */
 
+let HALF_PI = 1.57079632679489661923;
+let PI = 3.14159265358979323846;
+
 let verden = [];
 verden.push({
     "type": 1,
@@ -182,6 +185,208 @@ verden.push({
     "color": "Purple",
     "func": -1
 })
+verden.push({
+    "type": 2,
+    "x": -2800,
+    "y": -200,
+    "z": 0,
+    "scale": 23,
+    "rotateX": -HALF_PI,
+    "rotateY": -HALF_PI,
+    "rotateZ": 0,
+    "model": 'humanModel',
+    "fill": "RED"
+})
+verden.push({
+    "type": 2,
+    "x": -3100,
+    "y": -200,
+    "z": 0,
+    "scale": 230,
+    "rotateX": -HALF_PI,
+    "rotateY": 0,
+    "rotateZ": 0,
+    "model": 'penguinModel',
+    "fill": "RED"
+})
+verden.push({
+    "type": 2,
+    "x": -3400,
+    "y": -200,
+    "z": 0,
+    "scale": 4,
+    "rotateX": PI,
+    "rotateY": 0,
+    "rotateZ": 0,
+    "model": 'duckModel',
+    "fill": "RED"
+})
+verden.push({
+    "type": 1,
+    "x": -4000,
+    "y": -900,
+    "z": 13,
+    "width": 3000,
+    "depth": 200,
+    "height": 5,
+    "color": "GREY",
+    "func": -1
+})
+verden.push({
+    "type": 1,
+    "x": -2800,
+    "y": -1100,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "GREEN",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3100,
+    "y": -1100,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "RED",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3400,
+    "y": -1100,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "BLUE",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3700,
+    "y": -1100,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "ORANGE",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -4000,
+    "y": -1100,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "PURPLE",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -2800,
+    "y": -700,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "Aquamarine",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3100,
+    "y": -700,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "Chartreuse",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3400,
+    "y": -700,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "DarkSlateGray",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3700,
+    "y": -700,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "HotPink",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -4000,
+    "y": -700,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "SandyBrown",
+    "func": 0
+})
+verden.push({
+    "type": 1,
+    "x": -3250,
+    "y": 0,
+    "z": 13,
+    "width": 1500,
+    "depth": 200,
+    "height": 5,
+    "color": "GREY",
+    "func": -1
+})
+verden.push({
+    "type": 1,
+    "x": -2800,
+    "y": -200,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "GREY",
+    "func": 1
+})
+verden.push({
+    "type": 1,
+    "x": -3100,
+    "y": -200,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "GREY",
+    "func": 2
+})
+verden.push({
+    "type": 1,
+    "x": -3400,
+    "y": -200,
+    "z": 13,
+    "width": 200,
+    "depth": 200,
+    "height": 5,
+    "color": "GREY",
+    "func": 3
+})
+
 
 // convert JSON object to string
 let verdendata = JSON.stringify(verden, null, 4);

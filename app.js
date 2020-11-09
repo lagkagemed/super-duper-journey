@@ -25,6 +25,22 @@ let ROOM_LIST = [];
 ROOM_LIST.mainlobby = [];
 ROOM_LIST.mainlobby.push('mainlobby');
 
+//database setup
+import fs from 'fs';
+
+// read JSON object from file
+function openFile(file){
+    let self;
+    fs.readFile(file, 'utf-8', (err, data) => {
+        if (err) {
+            throw err;
+        }
+
+        // parse JSON object
+        self = JSON.parse(data.toString());
+    });
+    return self;
+}
 
 let io = socketio(serv, {});
 io.sockets.on('connection', function (socket) {
@@ -37,6 +53,9 @@ io.sockets.on('connection', function (socket) {
 
     ROOM_LIST.mainlobby.push(socket.id);
     console.log(ROOM_LIST);
+    let mapData = openFile('./user.json');
+    console.log(mapData);
+
 
     socket.on('helloWorld', function () {
         console.log('Hello World!');
