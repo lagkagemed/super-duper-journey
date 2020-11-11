@@ -50,6 +50,7 @@ function testColPlayer(object) {
         if (object.func == 1) myModel = 0;
         if (object.func == 2) myModel = 1;
         if (object.func == 3) myModel = 2;
+        if (object.func == 10002) goToWorld = 'secretroom';
     }
     if (changeX) posX = oldPosX;
     if (changeY) posY = oldPosY;

@@ -40,15 +40,53 @@ io.sockets.on('connection', function (socket) {
     ROOM_LIST.mainlobby.push(socket.id);
     console.log(ROOM_LIST);
     // read JSON object from file
-    fs.readFile('./maps/mainlobby.json', 'utf-8', (err, data) => {
-        if (err) {
-            throw err;
-        }
+    function sendMap(dir) {
+        const path = './maps/' + dir + '.json';
+        fs.readFile(path, 'utf-8', (err, data) => {
+            if (err) {
+                throw err;
+            }
 
-        // parse JSON object
-        let mapData = JSON.parse(data.toString());
-        socket.emit('mapData', mapData);
-        console.log(mapData);
+            // parse JSON object
+            let mapData = JSON.parse(data.toString());
+            socket.emit('mapData', mapData);
+        });
+    }
+    sendMap('mainlobby');
+
+
+    socket.on('goToWorld', function (data) {
+        const path = './maps/' + data + '.json';
+
+        try {
+        if (fs.existsSync(path)) {
+            sendMap(data);
+            for (let i in ROOM_LIST) {
+                let room = ROOM_LIST[i];
+                for (let o in room){
+                    if (room[o] == socket.id) room.splice(o, 1);
+                }
+            }
+            let roomExist = false;
+            for (let i in ROOM_LIST) {
+                let room = ROOM_LIST[i];
+                if (room[0] == data) {
+                    roomExist = true;
+                    (room).push(socket.id);
+                    console.log(ROOM_LIST);
+                }
+            }
+            if (roomExist == false) {
+                let newRoom = [];
+                newRoom.push(data);
+                newRoom.push(socket.id);              
+                ROOM_LIST.push(newRoom);
+                console.log(ROOM_LIST);
+            }
+        }
+        } catch(err) {
+        console.error(err)
+        }
     });
 
     socket.on('helloWorld', function () {

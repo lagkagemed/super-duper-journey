@@ -3,12 +3,27 @@ socket.on('idGranted', function (data) {
 });
 
 socket.on('mapData', function (data) {
+    SOCKET_LIST = [];
+    PLATFORM_LIST = [];
+    TESTMODEL_LIST = [];
+    spriteArray = [];
     for (let i in data) {
         if (data[i].type == 1) {
             let platform = Platform(data[i].x, data[i].y, data[i].z, data[i].width, data[i].depth, data[i].height, data[i].color, data[i].func);
         }
         if (data[i].type == 2) {
-            let testModel = TestModel(data[i].x, data[i].y, data[i].z, data[i].scale, data[i].rotateX, data[i].rotateY, data[i].rotateZ, data[i].model, data[i].fill)
+            let testModel = TestModel(data[i].x, data[i].y, data[i].z, data[i].scale, data[i].rotateX, data[i].rotateY, data[i].rotateZ, data[i].model, data[i].fill);
+        }
+        if (data[i].type == 3) {
+            if (data[i].tex == 0) {
+                spriteArray.push(new Sprite(data[i].x, data[i].y, data[i].z, sm64treeTexture));
+            }
+            if (data[i].tex == 1) {
+                spriteArray.push(new Sprite(data[i].x, data[i].y, data[i].z, polyTexture));
+            }
+            if (data[i].tex == 2) {
+                spriteArray.push(new Sprite(data[i].x, data[i].y, data[i].z, rabbitSprite));
+            }
         }
     }
 });
@@ -121,11 +136,6 @@ function setup() {
     camera.perspective(camera.defaultCameraFOV, camera.defaultAspectRatio, camera.defaultCameraNear, camera.defaultCameraFar);
     setCamera(camera);
 
-    //initTestBoxes();
-    //initColorChooser();
-
-    initTestSprites();
-
     drawTest = new DrawTest();
 
     textureWrap(REPEAT); // REPEAT, CLAMP
@@ -206,6 +216,11 @@ function update() {
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
     if (sumOfAll != oldSumOfAll) sendNewPosition();
+
+    if (goToWorld != '') {
+        socket.emit('goToWorld', goToWorld);
+        goToWorld = '';
+    }
 
     updateTestSprites();
 }

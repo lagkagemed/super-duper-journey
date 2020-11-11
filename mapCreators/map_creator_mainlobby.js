@@ -84,7 +84,7 @@ verden.push({
     "depth": 200,
     "height": 5,
     "color": "GREEN",
-    "func": -1
+    "func": 10002
 })
 verden.push({
     "type": 1,
@@ -191,10 +191,10 @@ verden.push({
     "y": -200,
     "z": 0,
     "scale": 23,
-    "rotateX": -HALF_PI,
-    "rotateY": -HALF_PI,
+    "rotateX": -1,
+    "rotateY": -1,
     "rotateZ": 0,
-    "model": 'humanModel',
+    "model": 0,
     "fill": "RED"
 })
 verden.push({
@@ -203,10 +203,10 @@ verden.push({
     "y": -200,
     "z": 0,
     "scale": 230,
-    "rotateX": -HALF_PI,
+    "rotateX": -1,
     "rotateY": 0,
     "rotateZ": 0,
-    "model": 'penguinModel',
+    "model": 1,
     "fill": "RED"
 })
 verden.push({
@@ -215,10 +215,10 @@ verden.push({
     "y": -200,
     "z": 0,
     "scale": 4,
-    "rotateX": PI,
+    "rotateX": 2,
     "rotateY": 0,
     "rotateZ": 0,
-    "model": 'duckModel',
+    "model": 2,
     "fill": "RED"
 })
 verden.push({
@@ -385,6 +385,104 @@ verden.push({
     "height": 5,
     "color": "GREY",
     "func": 3
+})
+verden.push({
+    "type": 3,
+    "x": 0,
+    "y": 600,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 500,
+    "y": 800,
+    "z": 0,
+    "tex": 1
+})
+verden.push({
+    "type": 3,
+    "x": 1000,
+    "y": 600,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 1000,
+    "y": 200,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 1000,
+    "y": -200,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 1000,
+    "y": -600,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 1500,
+    "y": 600,
+    "z": 0,
+    "tex": 1
+})
+verden.push({
+    "type": 3,
+    "x": 1500,
+    "y": 0,
+    "z": 0,
+    "tex": 1
+})
+verden.push({
+    "type": 3,
+    "x": 1500,
+    "y": -600,
+    "z": 0,
+    "tex": 1
+})
+verden.push({
+    "type": 3,
+    "x": 2000,
+    "y": 600,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 2000,
+    "y": 200,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 2000,
+    "y": -200,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 2000,
+    "y": -600,
+    "z": 0,
+    "tex": 0
+})
+verden.push({
+    "type": 3,
+    "x": 1200,
+    "y": 400,
+    "z": 0,
+    "tex": 2
 })
 
 

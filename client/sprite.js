@@ -1,24 +1,3 @@
-function initTestSprites() {
-    spriteArray.push(new Sprite(0, 600, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(500, 800, 0, polyTexture));
-
-    spriteArray.push(new Sprite(1000, 600, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(1000, 200, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(1000, -200, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(1000, -600, 0, sm64treeTexture));
-
-    spriteArray.push(new Sprite(1500, 600, 0, polyTexture));
-    spriteArray.push(new Sprite(1500, 0, 0, polyTexture));
-    spriteArray.push(new Sprite(1500, -600, 0, polyTexture));
-
-    spriteArray.push(new Sprite(2000, 600, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(2000, 200, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(2000, -200, 0, sm64treeTexture));
-    spriteArray.push(new Sprite(2000, -600, 0, sm64treeTexture));
-
-    spriteArray.push(new Sprite(1200, 400, 0, rabbitSprite));
-}
-
 function updateTestSprites() {
     let playerDir = createVector(lookX, lookY);
     for (let i = 0; i < spriteArray.length; i++) {

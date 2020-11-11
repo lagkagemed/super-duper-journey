@@ -86,6 +86,7 @@ let sumOfAll = 0;
 let myId = 0;
 let myColor = "RED";
 let myModel = 0;
+let goToWorld = '';
 let SOCKET_LIST = [];
 let socket = io();
 // socket.emit('helloWorld');
