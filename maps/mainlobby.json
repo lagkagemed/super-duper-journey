@@ -159,10 +159,10 @@
         "y": -200,
         "z": 0,
         "scale": 23,
-        "rotateX": -1.5707963267948966,
-        "rotateY": -1.5707963267948966,
+        "rotateX": -1,
+        "rotateY": -1,
         "rotateZ": 0,
-        "model": "humanModel",
+        "model": 0,
         "fill": "RED"
     },
     {
@@ -171,10 +171,10 @@
         "y": -200,
         "z": 0,
         "scale": 230,
-        "rotateX": -1.5707963267948966,
+        "rotateX": -1,
         "rotateY": 0,
         "rotateZ": 0,
-        "model": "penguinModel",
+        "model": 1,
         "fill": "RED"
     },
     {
@@ -183,10 +183,10 @@
         "y": -200,
         "z": 0,
         "scale": 4,
-        "rotateX": 3.141592653589793,
+        "rotateX": 2,
         "rotateY": 0,
         "rotateZ": 0,
-        "model": "duckModel",
+        "model": 2,
         "fill": "RED"
     },
     {

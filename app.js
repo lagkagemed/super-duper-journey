@@ -40,13 +40,14 @@ io.sockets.on('connection', function (socket) {
     ROOM_LIST.mainlobby.push(socket.id);
     console.log(ROOM_LIST);
     // read JSON object from file
-    fs.readFile('./user.json', 'utf-8', (err, data) => {
+    fs.readFile('./maps/mainlobby.json', 'utf-8', (err, data) => {
         if (err) {
             throw err;
         }
 
         // parse JSON object
         let mapData = JSON.parse(data.toString());
+        socket.emit('mapData', mapData);
         console.log(mapData);
     });
 

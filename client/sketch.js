@@ -1,6 +1,16 @@
 socket.on('idGranted', function (data) {
     myId = data;
-    // console.log(myId);
+});
+
+socket.on('mapData', function (data) {
+    for (let i in data) {
+        if (data[i].type == 1) {
+            let platform = Platform(data[i].x, data[i].y, data[i].z, data[i].width, data[i].depth, data[i].height, data[i].color, data[i].func);
+        }
+        if (data[i].type == 2) {
+            let testModel = TestModel(data[i].x, data[i].y, data[i].z, data[i].scale, data[i].rotateX, data[i].rotateY, data[i].rotateZ, data[i].model, data[i].fill)
+        }
+    }
 });
 
 function sendNewPosition() {
@@ -20,7 +30,6 @@ function sendNewPosition() {
 
 socket.on('newPositions', function (data) {
     SOCKET_LIST = data;
-    console.log(data);
 });
 
 function drawPlayers() {
@@ -112,8 +121,8 @@ function setup() {
     camera.perspective(camera.defaultCameraFOV, camera.defaultAspectRatio, camera.defaultCameraNear, camera.defaultCameraFar);
     setCamera(camera);
 
-    initTestBoxes();
-    initColorChooser();
+    //initTestBoxes();
+    //initColorChooser();
 
     initTestSprites();
 
@@ -209,12 +218,13 @@ function draw() {
     directionalLight(255, 255, 255, 0.4, 0.4, 0.8);
 
     drawAllObjectsInList(PLATFORM_LIST);
+    drawAllObjectsInList(TESTMODEL_LIST);
 
     if (SOCKET_LIST.length > 0) drawPlayers();
 
     drawTest.draw();
 
-    drawTestObjects();
+    //drawTestObjects();
 
     drawTestSprites();
 

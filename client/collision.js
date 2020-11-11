@@ -46,10 +46,10 @@ function testColPlayer(object) {
             }
             physZVel = 0;
         }
-        if (object.tex == 0) myColor = object.color;
-        if (object.tex == 1) myModel = 0;
-        if (object.tex == 2) myModel = 1;
-        if (object.tex == 3) myModel = 2;
+        if (object.func == 0) myColor = object.color;
+        if (object.func == 1) myModel = 0;
+        if (object.func == 2) myModel = 1;
+        if (object.func == 3) myModel = 2;
     }
     if (changeX) posX = oldPosX;
     if (changeY) posY = oldPosY;
