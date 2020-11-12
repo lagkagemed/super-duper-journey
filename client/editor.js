@@ -76,10 +76,11 @@ class Editor {
                 case 99: // 3
                     this.isAddingPlatform = true;
                     break;
+
                 case 52: // 4
                 case 100: // 4
-
                     break;
+
                 case 53: // 5
                 case 101: // 5
 
@@ -145,7 +146,8 @@ class Editor {
                 this.isAddingPlatform = false;
                 this.platformCornerNumber = 0;
                 let calcP = this.calcPlatform();
-                Platform(calcP.x, calcP.y, calcP.z, calcP.sizeX, calcP.sizeY, calcP.sizeZ, "DarkGreen", grassTexture);
+                addPlatform(calcP.x, calcP.y, calcP.z, calcP.sizeX, calcP.sizeY, calcP.sizeZ, "DarkGreen", -1);
+                //Platform(calcP.x, calcP.y, calcP.z, calcP.sizeX, calcP.sizeY, calcP.sizeZ, "DarkGreen", grassTexture);
             }
         }
     }

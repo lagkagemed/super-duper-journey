@@ -28,6 +28,12 @@ socket.on('mapData', function (data) {
     }
 });
 
+function addPlatform(x, y, z, sizeX, sizeY, sizeZ, color, func) {
+    platform = Platform(x, y, z, sizeX, sizeY, sizeZ, color, func)
+    platform.type = 1;
+    socket.emit('addPlatform', platform);
+}
+
 function sendNewPosition() {
     let pack = [];
     pack.push({
@@ -278,7 +284,7 @@ function mouseWheel(event) {
     return false; // prevent any default behaviour.
 }
 
-/*
+
 function touchStarted() {
     // console.log(touches);
     // socket.emit('log', touches);
@@ -305,12 +311,13 @@ function touchEnded() {
     controls.handleTouchEnded();
     return false; // prevent any default behaviour.
 }
-*/
 
+/* DET HER VIRKER PAA IPHONE!!
 document.addEventListener("touchstart", touchStart, false);
 
 function touchStart(event) {
     // Insert your code here
     jumpSalto = 0.002;
   }
-  
+  */
+
