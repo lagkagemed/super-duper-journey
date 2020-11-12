@@ -278,6 +278,7 @@ function mouseWheel(event) {
     return false; // prevent any default behaviour.
 }
 
+/*
 function touchStarted() {
     // console.log(touches);
     // socket.emit('log', touches);
@@ -304,3 +305,12 @@ function touchEnded() {
     controls.handleTouchEnded();
     return false; // prevent any default behaviour.
 }
+*/
+
+document.addEventListener("touchstart", touchStart, false);
+
+function touchStart(event) {
+    // Insert your code here
+    jumpSalto = 0.002;
+  }
+  
