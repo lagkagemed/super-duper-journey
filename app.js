@@ -105,34 +105,36 @@ io.sockets.on('connection', function (socket) {
             }
         }
         const path = './maps/' + inRoom + '.json';
-        fs.readFile(path, 'utf-8', (err, data) => {
-            if (err) {
-                throw err;
-            }
-
-            // parse JSON object
-            let mapData = JSON.parse(data.toString());
-
-            mapData.push(receivedPlatform);
-
-            // convert JSON object to string
-            let verdendata = JSON.stringify(mapData, null, 4);
-
-            // write JSON string to a file
-            fs.writeFile(path, verdendata, (err) => {
+        if (inRoom != 'mainlobby'){
+            fs.readFile(path, 'utf-8', (err, data) => {
                 if (err) {
                     throw err;
                 }
-                console.log("JSON data is saved.");
-            });
-            for (let i in inRoomSend) {
-                if (i > 0){
-                    let iden = inRoomSend[i];
-                    let socket = SOCKET_LIST[iden];
-                    socket.emit('mapData', mapData);
+
+                // parse JSON object
+                let mapData = JSON.parse(data.toString());
+
+                mapData.push(receivedPlatform);
+
+                // convert JSON object to string
+                let verdendata = JSON.stringify(mapData, null, 4);
+
+                // write JSON string to a file
+                fs.writeFile(path, verdendata, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log("JSON data is saved.");
+                });
+                for (let i in inRoomSend) {
+                    if (i > 0){
+                        let iden = inRoomSend[i];
+                        let socket = SOCKET_LIST[iden];
+                        socket.emit('mapData', mapData);
+                    }
                 }
-            }
-        });
+            });
+        }
 
     });
     
