@@ -18,19 +18,20 @@ class Controls {
         // const buttonBXReal = windowWidth - (buttonBRReal + (buttonBRReal / 4));
         // const ButtonBYReal = windowHeight - (buttonBRReal * 3);
 
+        // TODO BB 2020-11-13. Testing windowWidth & windowHeight instead of gameWidth & gameHeight for scaled values with new touch event.
         // Scaled values
-        const dpadR = min(gameWidth / 4, gameHeight / 4);
+        const dpadR = min(windowWidth / 4, windowHeight / 4);
         const dpadDeadzoneR = dpadR / 4;
         const dpadX = dpadR + (dpadR / 4);
-        const dpadY = gameHeight - (dpadR + (dpadR / 4));
+        const dpadY = windowHeight - (dpadR + (dpadR / 4));
         this.dpadR = dpadR;
         this.dpadDeadzoneR = dpadDeadzoneR;
         this.dpadX = dpadX;
         this.dpadY = dpadY;
 
-        const buttonDuckJumpR = min(gameWidth / 4, gameHeight / 4);
-        const buttonDuckJumpX = gameWidth - buttonDuckJumpR - (buttonDuckJumpR / 4);
-        const buttonDuckJumpY = gameHeight - (buttonDuckJumpR + (buttonDuckJumpR / 4));
+        const buttonDuckJumpR = min(windowWidth / 4, windowHeight / 4);
+        const buttonDuckJumpX = windowWidth - buttonDuckJumpR - (buttonDuckJumpR / 4);
+        const buttonDuckJumpY = windowHeight - (buttonDuckJumpR + (buttonDuckJumpR / 4));
         this.buttonDuckJumpR = buttonDuckJumpR;
         this.buttonDuckJumpX = buttonDuckJumpX;
         this.buttonDuckJumpY = buttonDuckJumpY;
@@ -125,6 +126,9 @@ class Controls {
         const lookSpeedKeys = 0.04;
         this.lookSpeedKeys = lookSpeedKeys;
 
+        this.mouseMovementX = 0;
+        this.mouseMovementY = 0;
+
         // Keys
         const keyMoveForward = 87; // W
         const keyMoveBack = 83; // S
@@ -171,15 +175,15 @@ class Controls {
         }
     }
 
-    handleTouchStarted() {
-        if (touches.length > 0 &&
+    handleTouchStarted(event) {
+        if (event.touches.length > 0 &&
             (this.touchDPadId === -1 ||
                 this.touchButtonDuckJumpId === -1 ||
                 // this.touchButtonAId === -1 ||
                 // this.touchButtonBId === -1 ||
                 this.touchLookId === -1)) {
-            for (let i = 0; i < touches.length; i++) {
-                let id = touches[i].id;
+            for (let i = 0; i < event.touches.length; i++) {
+                let id = event.touches[i].identifier;
                 if (id === this.touchDPadId)
                     continue;
                 if (id === this.touchButtonDuckJumpId)
@@ -191,8 +195,8 @@ class Controls {
                 else if (id === this.touchLookId)
                     continue;
 
-                let x = touches[i].x;
-                let y = touches[i].y;
+                let x = event.touches[i].pageX;
+                let y = event.touches[i].pageY;
 
                 // Move
                 if (this.touchDPadId === -1) {
@@ -253,8 +257,8 @@ class Controls {
                 // Look
                 if (this.touchLookId === -1) {
                     this.touchLookId = id;
-                    this.touchLookXLast = touches[i].x;
-                    this.touchLookYLast = touches[i].y;
+                    this.touchLookXLast = x;
+                    this.touchLookYLast = y;
                     // socket.emit('log', "Started touchLookId: " + id);
                     break;
                 }
@@ -262,13 +266,13 @@ class Controls {
         }
     }
 
-    handleTouchEnded() {
-        if (touches.length > 0) {
+    handleTouchEnded(event) {
+        if (event.touches.length > 0) {
             // Move
             if (this.touchDPadId != -1) {
                 let found = false;
-                for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchDPadId) {
+                for (let i = 0; i < event.touches.length; i++) {
+                    if (event.touches[i].identifier === this.touchDPadId) {
                         found = true;
                         break;
                     }
@@ -284,8 +288,8 @@ class Controls {
             // Duck / Jump
             if (this.touchButtonDuckJumpId != -1) {
                 let found = false;
-                for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchButtonDuckJumpId) {
+                for (let i = 0; i < event.touches.length; i++) {
+                    if (event.touches[i].identifier === this.touchButtonDuckJumpId) {
                         found = true;
                         break;
                     }
@@ -301,8 +305,8 @@ class Controls {
             // // A
             // if (this.touchButtonAId != -1) {
             //     let found = false;
-            //     for (let i = 0; i < touches.length; i++) {
-            //         if (touches[i].id === this.touchButtonAId) {
+            //     for (let i = 0; i < event.touches.length; i++) {
+            //         if (event.touches[i].identifier === this.touchButtonAId) {
             //             found = true;
             //             break;
             //         }
@@ -317,8 +321,8 @@ class Controls {
             // // B
             // if (this.touchButtonBId != -1) {
             //     let found = false;
-            //     for (let i = 0; i < touches.length; i++) {
-            //         if (touches[i].id === this.touchButtonBId) {
+            //     for (let i = 0; i < event.touches.length; i++) {
+            //         if (event.touches[i].identifier === this.touchButtonBId) {
             //             found = true;
             //             break;
             //         }
@@ -333,8 +337,8 @@ class Controls {
             // Look
             if (this.touchLookId != -1) {
                 let found = false;
-                for (let i = 0; i < touches.length; i++) {
-                    if (touches[i].id === this.touchLookId) {
+                for (let i = 0; i < event.touches.length; i++) {
+                    if (event.touches[i].identifier === this.touchLookId) {
                         found = true;
                         break;
                     }
@@ -390,13 +394,12 @@ class Controls {
         }
     }
 
-    update() {
-        // Touch moved
-        if (touches.length > 0) {
-            for (let i = 0; i < touches.length; i++) {
-                let id = touches[i].id;
-                let x = touches[i].x;
-                let y = touches[i].y;
+    handleTouchMoved(event) {
+        if (event.touches.length > 0) {
+            for (let i = 0; i < event.touches.length; i++) {
+                let id = event.touches[i].identifier;
+                let x = event.touches[i].pageX;
+                let y = event.touches[i].pageY;
                 if (this.touchDPadId === id) {
                     // Move
                     this.setTouchDPadVector(x, y);
@@ -412,6 +415,15 @@ class Controls {
                 }
             }
         }
+    }
+
+    handleMouseMoved(event) {
+        this.mouseMovementX = event.movementX;
+        this.mouseMovementY = event.movementY;
+    }
+
+    update() {
+
     }
 
     get move() {
@@ -501,7 +513,8 @@ class Controls {
         } else if (keyIsDown(this.keyLookDown)) {
             look = this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
-            look = movedY / this.touchLookSteps;
+            look = this.mouseMovementY / this.touchLookSteps;
+            this.mouseMovementY = 0;
         }
 
         return look;
@@ -518,7 +531,8 @@ class Controls {
         } else if (keyIsDown(this.keyLookRight)) {
             look = -this.lookSpeedKeys;
         } else if (!isMobile && fullscreen()) {
-            look = -movedX / this.touchLookSteps;
+            look = -this.mouseMovementX / this.touchLookSteps;
+            this.mouseMovementX = 0;
         }
 
         return look;
