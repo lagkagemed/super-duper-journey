@@ -149,10 +149,6 @@ function setup() {
     // noFill();
 
     // frameRate(60);
-
-    document.addEventListener("touchstart", touchStart, false);
-    document.addEventListener("touchmove", touchMove, false);
-    document.addEventListener("touchend", touchEnd, false);
 }
 
 function windowResized() {
@@ -309,58 +305,78 @@ function mouseWheel(event) {
     return false; // prevent any default behaviour.
 }
 
-// function touchStarted() {
-//     // console.log(touches);
-//     // socket.emit('log', touches);
-//     // socket.emit('log', displayDensity());
-//     if (!fullscreen()) {
-//         // socket.emit('log', "Before fullscreen width: " + gameWidth + ", height: " + gameHeight);
-//         fullscreen(true);
-//         requestPointerLock();
-//     }
-// if (controls != null)
-//     controls.handleTouchStarted();
-//     return false; // prevent any default behaviour.
-// }
+function touchStarted(event) {
+    // console.log(event.touches);
+    // socket.emit('log', event.touches);
 
-// function touchMoved() {
-//     // console.log(touches);
-//     // socket.emit('log', touches);
-//     return false; // prevent any default behaviour.
-// }
-
-// function touchEnded() {
-//     // console.log(touches);
-//     // socket.emit('log', touches);
-// if (controls != null)
-//     controls.handleTouchEnded();
-//     return false; // prevent any default behaviour.
-// }
-
-function touchStart(event) {
-    event.preventDefault();
-
-    // socket.emit('log', event.touches.length);
-    // socket.emit('log', event.touches[0].identifier);
-    // socket.emit('log', event.touches[0].pageX);
-    // socket.emit('log', event.touches[0].pageY);
-
-    setFullscreen();
+    if (!fullscreen()) {
+        // socket.emit('log', "Before fullscreen width: " + gameWidth + ", height: " + gameHeight);
+        fullscreen(true);
+        requestPointerLock();
+    }
 
     if (controls != null)
         controls.handleTouchStarted(event);
+
+    return false; // prevent any default behaviour.
 }
 
-function touchMove(event) {
-    event.preventDefault();
+function touchMoved(event) {
+    // console.log(event.touches);
+    // socket.emit('log', event.touches);
 
     if (controls != null)
         controls.handleTouchMoved(event);
+
+    return false; // prevent any default behaviour.
 }
 
-function touchEnd(event) {
-    event.preventDefault();
+function touchEnded(event) {
+    // console.log(event.touches);
+    // socket.emit('log', event.touches);
 
     if (controls != null)
         controls.handleTouchEnded(event);
+
+    return false; // prevent any default behaviour.
 }
+
+// document.body.addEventListener("touchstart", touchStart, false);
+// function touchStart(event) {
+//     event.preventDefault();
+//     event.stopPropagation();
+
+//     // socket.emit('log', event.touches.length);
+//     // socket.emit('log', event.touches[0].identifier);
+//     // socket.emit('log', event.touches[0].pageX);
+//     // socket.emit('log', event.touches[0].pageY);
+
+//     setFullscreen();
+
+//     if (controls != null)
+//         controls.handleTouchStarted(event);
+
+//     return false;
+// }
+
+// document.body.addEventListener("touchmove", touchMove, false);
+// function touchMove(event) {
+//     event.preventDefault();
+//     event.stopPropagation();
+
+//     if (controls != null)
+//         controls.handleTouchMoved(event);
+
+//     return false;
+// }
+
+// document.body.addEventListener("touchend", touchEnd, false);
+// function touchEnd(event) {
+//     event.preventDefault();
+//     event.stopPropagation();
+
+//     if (controls != null)
+//         controls.handleTouchEnded(event);
+
+//     return false;
+// }

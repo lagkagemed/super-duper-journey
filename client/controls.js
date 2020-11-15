@@ -176,195 +176,199 @@ class Controls {
     }
 
     handleTouchStarted(event) {
-        if (event.touches.length > 0 &&
-            (this.touchDPadId === -1 ||
-                this.touchButtonDuckJumpId === -1 ||
-                // this.touchButtonAId === -1 ||
-                // this.touchButtonBId === -1 ||
-                this.touchLookId === -1)) {
-            for (let i = 0; i < event.touches.length; i++) {
-                let id = event.touches[i].identifier;
-                if (id === this.touchDPadId)
-                    continue;
-                if (id === this.touchButtonDuckJumpId)
-                    continue;
-                // if (id === this.touchButtonAId)
-                //     continue;
-                // if (id === this.touchButtonBId)
-                //     continue;
-                else if (id === this.touchLookId)
-                    continue;
+        if (isMobile) {
+            if (event.touches.length > 0 &&
+                (this.touchDPadId === -1 ||
+                    this.touchButtonDuckJumpId === -1 ||
+                    // this.touchButtonAId === -1 ||
+                    // this.touchButtonBId === -1 ||
+                    this.touchLookId === -1)) {
+                for (let i = 0; i < event.touches.length; i++) {
+                    let id = event.touches[i].identifier;
+                    if (id === this.touchDPadId)
+                        continue;
+                    if (id === this.touchButtonDuckJumpId)
+                        continue;
+                    // if (id === this.touchButtonAId)
+                    //     continue;
+                    // if (id === this.touchButtonBId)
+                    //     continue;
+                    else if (id === this.touchLookId)
+                        continue;
 
-                let x = event.touches[i].pageX;
-                let y = event.touches[i].pageY;
+                    let x = event.touches[i].pageX;
+                    let y = event.touches[i].pageY;
 
-                // Move
-                if (this.touchDPadId === -1) {
-                    if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
-                        this.touchDPadId = id;
-                        this.touchIsMoving = true;
+                    // Move
+                    if (this.touchDPadId === -1) {
+                        if (dist(x, y, this.dpadX, this.dpadY) <= this.dpadR) {
+                            this.touchDPadId = id;
+                            this.touchIsMoving = true;
 
-                        let timeNow = millis();
-                        if (timeNow - this.touchDPadDoubleTapTimeLast < 350) {
-                            // Run
-                            this.touchIsRunning = true;
-                        } else {
-                            // Walk
-                            this.touchIsRunning = false;
+                            let timeNow = millis();
+                            if (timeNow - this.touchDPadDoubleTapTimeLast < 350) {
+                                // Run
+                                this.touchIsRunning = true;
+                            } else {
+                                // Walk
+                                this.touchIsRunning = false;
+                            }
+                            this.touchDPadDoubleTapTimeLast = timeNow;
+
+                            this.setTouchDPadVector(x, y);
+
+                            // socket.emit('log', "Started touchDPadId: " + id);
+                            break;
                         }
-                        this.touchDPadDoubleTapTimeLast = timeNow;
+                    }
 
-                        this.setTouchDPadVector(x, y);
+                    // Duck / Jump
+                    if (this.touchButtonDuckJumpId === -1) {
+                        if (x >= this.buttonDuckJumpX - this.buttonDuckJumpR &&
+                            x <= this.buttonDuckJumpX + this.buttonDuckJumpR &&
+                            y >= this.buttonDuckJumpY - this.buttonDuckJumpR &&
+                            y <= this.buttonDuckJumpY + this.buttonDuckJumpR) {
+                            this.touchButtonDuckJumpId = id;
+                            this.setTouchButtonDuckJumpDown(y);
+                            // socket.emit('log', "Started touchButtonDuckJumpId: " + id);
+                            break;
+                        }
+                    }
 
-                        // socket.emit('log', "Started touchDPadId: " + id);
+                    // // A
+                    // if (this.touchButtonAId === -1) {
+                    //     if (dist(x, y, this.buttonAX, this.ButtonAY) <= this.buttonAR) {
+                    //         this.touchButtonAId = id;
+                    //         this.touchButtonADown = true;
+                    //         // socket.emit('log', "Started touchButtonAId: " + id);
+                    //         break;
+                    //     }
+                    // }
+
+                    // // B
+                    // if (this.touchButtonBId === -1) {
+                    //     if (dist(x, y, this.buttonBX, this.ButtonBY) <= this.buttonBR) {
+                    //         this.touchButtonBId = id;
+                    //         this.touchButtonBDown = true;
+                    //         // socket.emit('log', "Started touchButtonBId: " + id);
+                    //         break;
+                    //     }
+                    // }
+
+                    // Look
+                    if (this.touchLookId === -1) {
+                        this.touchLookId = id;
+                        this.touchLookXLast = x;
+                        this.touchLookYLast = y;
+                        // socket.emit('log', "Started touchLookId: " + id);
                         break;
                     }
-                }
-
-                // Duck / Jump
-                if (this.touchButtonDuckJumpId === -1) {
-                    if (x >= this.buttonDuckJumpX - this.buttonDuckJumpR &&
-                        x <= this.buttonDuckJumpX + this.buttonDuckJumpR &&
-                        y >= this.buttonDuckJumpY - this.buttonDuckJumpR &&
-                        y <= this.buttonDuckJumpY + this.buttonDuckJumpR) {
-                        this.touchButtonDuckJumpId = id;
-                        this.setTouchButtonDuckJumpDown(y);
-                        // socket.emit('log', "Started touchButtonDuckJumpId: " + id);
-                        break;
-                    }
-                }
-
-                // // A
-                // if (this.touchButtonAId === -1) {
-                //     if (dist(x, y, this.buttonAX, this.ButtonAY) <= this.buttonAR) {
-                //         this.touchButtonAId = id;
-                //         this.touchButtonADown = true;
-                //         // socket.emit('log', "Started touchButtonAId: " + id);
-                //         break;
-                //     }
-                // }
-
-                // // B
-                // if (this.touchButtonBId === -1) {
-                //     if (dist(x, y, this.buttonBX, this.ButtonBY) <= this.buttonBR) {
-                //         this.touchButtonBId = id;
-                //         this.touchButtonBDown = true;
-                //         // socket.emit('log', "Started touchButtonBId: " + id);
-                //         break;
-                //     }
-                // }
-
-                // Look
-                if (this.touchLookId === -1) {
-                    this.touchLookId = id;
-                    this.touchLookXLast = x;
-                    this.touchLookYLast = y;
-                    // socket.emit('log', "Started touchLookId: " + id);
-                    break;
                 }
             }
         }
     }
 
     handleTouchEnded(event) {
-        if (event.touches.length > 0) {
-            // Move
-            if (this.touchDPadId != -1) {
-                let found = false;
-                for (let i = 0; i < event.touches.length; i++) {
-                    if (event.touches[i].identifier === this.touchDPadId) {
-                        found = true;
-                        break;
+        if (isMobile) {
+            if (event.touches.length > 0) {
+                // Move
+                if (this.touchDPadId != -1) {
+                    let found = false;
+                    for (let i = 0; i < event.touches.length; i++) {
+                        if (event.touches[i].identifier === this.touchDPadId) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        this.touchDPadId = -1;
+                        this.touchIsMoving = false;
+                        this.touchIsRunning = false;
+                        // socket.emit('log', "Stopped touchDPadId");
                     }
                 }
-                if (!found) {
-                    this.touchDPadId = -1;
-                    this.touchIsMoving = false;
-                    this.touchIsRunning = false;
-                    // socket.emit('log', "Stopped touchDPadId");
-                }
-            }
 
-            // Duck / Jump
-            if (this.touchButtonDuckJumpId != -1) {
-                let found = false;
-                for (let i = 0; i < event.touches.length; i++) {
-                    if (event.touches[i].identifier === this.touchButtonDuckJumpId) {
-                        found = true;
-                        break;
+                // Duck / Jump
+                if (this.touchButtonDuckJumpId != -1) {
+                    let found = false;
+                    for (let i = 0; i < event.touches.length; i++) {
+                        if (event.touches[i].identifier === this.touchButtonDuckJumpId) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        this.touchButtonDuckJumpId = -1;
+                        this.touchButtonDuckDown = false;
+                        this.touchButtonJumpDown = false;
+                        // socket.emit('log', "Stopped touchButtonDuckJumpId");
                     }
                 }
-                if (!found) {
-                    this.touchButtonDuckJumpId = -1;
-                    this.touchButtonDuckDown = false;
-                    this.touchButtonJumpDown = false;
-                    // socket.emit('log', "Stopped touchButtonDuckJumpId");
-                }
-            }
 
-            // // A
-            // if (this.touchButtonAId != -1) {
-            //     let found = false;
-            //     for (let i = 0; i < event.touches.length; i++) {
-            //         if (event.touches[i].identifier === this.touchButtonAId) {
-            //             found = true;
-            //             break;
-            //         }
-            //     }
-            //     if (!found) {
-            //         this.touchButtonAId = -1;
-            //         this.touchButtonADown = false;
-            //         // socket.emit('log', "Stopped touchButtonAId");
-            //     }
-            // }
+                // // A
+                // if (this.touchButtonAId != -1) {
+                //     let found = false;
+                //     for (let i = 0; i < event.touches.length; i++) {
+                //         if (event.touches[i].identifier === this.touchButtonAId) {
+                //             found = true;
+                //             break;
+                //         }
+                //     }
+                //     if (!found) {
+                //         this.touchButtonAId = -1;
+                //         this.touchButtonADown = false;
+                //         // socket.emit('log', "Stopped touchButtonAId");
+                //     }
+                // }
 
-            // // B
-            // if (this.touchButtonBId != -1) {
-            //     let found = false;
-            //     for (let i = 0; i < event.touches.length; i++) {
-            //         if (event.touches[i].identifier === this.touchButtonBId) {
-            //             found = true;
-            //             break;
-            //         }
-            //     }
-            //     if (!found) {
-            //         this.touchButtonBId = -1;
-            //         this.touchButtonBDown = false;
-            //         // socket.emit('log', "Stopped touchButtonBId");
-            //     }
-            // }
+                // // B
+                // if (this.touchButtonBId != -1) {
+                //     let found = false;
+                //     for (let i = 0; i < event.touches.length; i++) {
+                //         if (event.touches[i].identifier === this.touchButtonBId) {
+                //             found = true;
+                //             break;
+                //         }
+                //     }
+                //     if (!found) {
+                //         this.touchButtonBId = -1;
+                //         this.touchButtonBDown = false;
+                //         // socket.emit('log', "Stopped touchButtonBId");
+                //     }
+                // }
 
-            // Look
-            if (this.touchLookId != -1) {
-                let found = false;
-                for (let i = 0; i < event.touches.length; i++) {
-                    if (event.touches[i].identifier === this.touchLookId) {
-                        found = true;
-                        break;
+                // Look
+                if (this.touchLookId != -1) {
+                    let found = false;
+                    for (let i = 0; i < event.touches.length; i++) {
+                        if (event.touches[i].identifier === this.touchLookId) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        this.touchLookId = -1;
+                        // socket.emit('log', "Stopped touchLookId");
                     }
                 }
-                if (!found) {
-                    this.touchLookId = -1;
-                    // socket.emit('log', "Stopped touchLookId");
-                }
+            } else {
+                this.touchDPadId = -1;
+                this.touchIsMoving = false;
+                this.touchIsRunning = false;
+
+                this.touchButtonDuckJumpId = -1;
+                this.touchButtonDuckDown = false;
+                this.touchButtonJumpDown = false;
+
+                // this.touchButtonAId = -1;
+                // this.touchButtonADown = false;
+
+                // this.touchButtonBId = -1;
+                // this.touchButtonBDown = false;
+
+                this.touchLookId = -1;
+                // socket.emit('log', "Stopped all ids");
             }
-        } else {
-            this.touchDPadId = -1;
-            this.touchIsMoving = false;
-            this.touchIsRunning = false;
-
-            this.touchButtonDuckJumpId = -1;
-            this.touchButtonDuckDown = false;
-            this.touchButtonJumpDown = false;
-
-            // this.touchButtonAId = -1;
-            // this.touchButtonADown = false;
-
-            // this.touchButtonBId = -1;
-            // this.touchButtonBDown = false;
-
-            this.touchLookId = -1;
-            // socket.emit('log', "Stopped all ids");
         }
     }
 
@@ -395,23 +399,25 @@ class Controls {
     }
 
     handleTouchMoved(event) {
-        if (event.touches.length > 0) {
-            for (let i = 0; i < event.touches.length; i++) {
-                let id = event.touches[i].identifier;
-                let x = event.touches[i].pageX;
-                let y = event.touches[i].pageY;
-                if (this.touchDPadId === id) {
-                    // Move
-                    this.setTouchDPadVector(x, y);
-                } else if (this.touchButtonDuckJumpId === id) {
-                    // Duck / Jump
-                    this.setTouchButtonDuckJumpDown(y);
-                } else if (this.touchLookId === id) {
-                    // Look
-                    this.touchLookUpDown = (y - this.touchLookYLast) * gameScale;
-                    this.touchLookYLast = y;
-                    this.touchLookLeftRight = (this.touchLookXLast - x) * gameScale;
-                    this.touchLookXLast = x;
+        if (isMobile) {
+            if (event.touches.length > 0) {
+                for (let i = 0; i < event.touches.length; i++) {
+                    let id = event.touches[i].identifier;
+                    let x = event.touches[i].pageX;
+                    let y = event.touches[i].pageY;
+                    if (this.touchDPadId === id) {
+                        // Move
+                        this.setTouchDPadVector(x, y);
+                    } else if (this.touchButtonDuckJumpId === id) {
+                        // Duck / Jump
+                        this.setTouchButtonDuckJumpDown(y);
+                    } else if (this.touchLookId === id) {
+                        // Look
+                        this.touchLookUpDown = (y - this.touchLookYLast) * gameScale;
+                        this.touchLookYLast = y;
+                        this.touchLookLeftRight = (this.touchLookXLast - x) * gameScale;
+                        this.touchLookXLast = x;
+                    }
                 }
             }
         }
