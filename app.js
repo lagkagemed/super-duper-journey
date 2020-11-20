@@ -5,6 +5,13 @@ import { dirname } from 'path';
 import socketio from 'socket.io';
 import { fileURLToPath } from 'url';
 
+// node-json-db
+// https://www.npmjs.com/package/node-json-db
+import JsonDBPKG from 'node-json-db';
+const { JsonDB } = JsonDBPKG;
+import ConfigPKG from 'node-json-db/dist/lib/JsonDBConfig.js';
+const { Config } = ConfigPKG;
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -27,6 +34,25 @@ ROOM_LIST.mainlobby.push('mainlobby');
 
 //database setup
 import fs from 'fs';
+
+/*
+BB 2020-11-20, lidt kommentarer til Kennet. :)
+
+Problemet med at importere databasen var at deres vejledning på hjemmesiden ikke var helt rigtig (eller måske fungerede i en gammel version af node.js).
+Ved at starte node.js serveren her inde i Visual Studio Code, kunne jeg se nogle fejl i "DEBUG CONSOLE" fanen her i Visual Studio Code.
+Den guidede mig faktisk til at skrive det på den rigtige måde.
+
+Du sletter bare disse kommentarlinjer her, og flytter koden hen hvor den er relevant. :)
+
+Her under tester jeg at:
+Loade/oprette en databasefil i mappen "maps" med navnet "myDataBase".
+Putter så noget data i den og henter det ud igen.
+Det ser ud til at virke, så det er rigtig fedt! :D
+*/
+let db = new JsonDB(new Config("maps/myDataBase", true, false, '/'));
+db.push("/test1", "super test");
+let data = db.getData("/");
+console.log(data);
 
 let io = socketio(serv, {});
 io.sockets.on('connection', function (socket) {
@@ -59,37 +85,37 @@ io.sockets.on('connection', function (socket) {
         const path = './maps/' + data + '.json';
 
         try {
-        if (fs.existsSync(path)) {
-            sendMap(data);
-            for (let i in ROOM_LIST) {
-                let room = ROOM_LIST[i];
-                for (let o in room){
-                    if (room[o] == socket.id) room.splice(o, 1);
+            if (fs.existsSync(path)) {
+                sendMap(data);
+                for (let i in ROOM_LIST) {
+                    let room = ROOM_LIST[i];
+                    for (let o in room) {
+                        if (room[o] == socket.id) room.splice(o, 1);
+                    }
                 }
-            }
-            let roomExist = false;
-            for (let i in ROOM_LIST) {
-                let room = ROOM_LIST[i];
-                if (room[0] == data) {
-                    roomExist = true;
-                    (room).push(socket.id);
+                let roomExist = false;
+                for (let i in ROOM_LIST) {
+                    let room = ROOM_LIST[i];
+                    if (room[0] == data) {
+                        roomExist = true;
+                        (room).push(socket.id);
+                        console.log(ROOM_LIST);
+                    }
+                }
+                if (roomExist == false) {
+                    let newRoom = [];
+                    newRoom.push(data);
+                    newRoom.push(socket.id);
+                    ROOM_LIST.push(newRoom);
                     console.log(ROOM_LIST);
                 }
             }
-            if (roomExist == false) {
-                let newRoom = [];
-                newRoom.push(data);
-                newRoom.push(socket.id);              
-                ROOM_LIST.push(newRoom);
-                console.log(ROOM_LIST);
-            }
-        }
-        } catch(err) {
-        console.error(err)
+        } catch (err) {
+            console.error(err)
         }
     });
 
-    
+
     socket.on('addPlatform', function (platform) {
         let receivedPlatform = platform;
         console.log(receivedPlatform);
@@ -97,7 +123,7 @@ io.sockets.on('connection', function (socket) {
         let inRoomSend = '';
         for (let i in ROOM_LIST) {
             let room = ROOM_LIST[i];
-            for (let o in room){
+            for (let o in room) {
                 if (room[o] == socket.id) {
                     inRoom = room[0];
                     inRoomSend = room;
@@ -105,7 +131,7 @@ io.sockets.on('connection', function (socket) {
             }
         }
         const path = './maps/' + inRoom + '.json';
-        if (inRoom != 'mainlobby'){
+        if (inRoom != 'mainlobby') {
             fs.readFile(path, 'utf-8', (err, data) => {
                 if (err) {
                     throw err;
@@ -127,7 +153,7 @@ io.sockets.on('connection', function (socket) {
                     console.log("JSON data is saved.");
                 });
                 for (let i in inRoomSend) {
-                    if (i > 0){
+                    if (i > 0) {
                         let iden = inRoomSend[i];
                         let socket = SOCKET_LIST[iden];
                         socket.emit('mapData', mapData);
@@ -137,7 +163,7 @@ io.sockets.on('connection', function (socket) {
         }
 
     });
-    
+
 
     socket.on('helloWorld', function () {
         console.log('Hello World!');
@@ -162,7 +188,7 @@ io.sockets.on('connection', function (socket) {
         delete SOCKET_LIST[socket.id];
         for (let i in ROOM_LIST) {
             let room = ROOM_LIST[i];
-            for (let o in room){
+            for (let o in room) {
                 if (room[o] == socket.id) room.splice(o, 1);
             }
         }
@@ -172,13 +198,13 @@ io.sockets.on('connection', function (socket) {
 });
 
 setInterval(function () {
-    for (let i in ROOM_LIST){
+    for (let i in ROOM_LIST) {
         let pack = [];
         let room = ROOM_LIST[i];
         for (let o in room) {
             if (o > 0) {
                 let iden = room[o];
-                var socket = SOCKET_LIST[(iden)];
+                let socket = SOCKET_LIST[(iden)];
                 pack.push({
                     id: socket.id,
                     x: socket.x,
@@ -192,22 +218,22 @@ setInterval(function () {
             }
         }
         for (let o in room) {
-            if (o > 0){
+            if (o > 0) {
                 let iden = room[o];
                 let socket = SOCKET_LIST[iden];
                 socket.emit('newPositions', pack);
             }
         }
-        
+
     }
 }, 1000 / 25);
 
 
 /*
 setInterval(function () {
-    var pack = [];
-    for (var i in SOCKET_LIST) {
-        var socket = SOCKET_LIST[i];
+    let pack = [];
+    for (let i in SOCKET_LIST) {
+        let socket = SOCKET_LIST[i];
         pack.push({
             id: socket.id,
             x: socket.x,
@@ -219,8 +245,8 @@ setInterval(function () {
             model: socket.model
         });
     }
-    for (var i in SOCKET_LIST) {
-        var socket = SOCKET_LIST[i];
+    for (let i in SOCKET_LIST) {
+        let socket = SOCKET_LIST[i];
         socket.emit('newPositions', pack);
     }
 }, 1000 / 25);
