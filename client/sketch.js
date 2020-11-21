@@ -29,7 +29,16 @@ socket.on('mapData', function (data) {
 });
 
 function addPlatform(x, y, z, sizeX, sizeY, sizeZ, color, func) {
-    platform = Platform(x, y, z, sizeX, sizeY, sizeZ, color, func)
+    //platform = Platform(x, y, z, sizeX, sizeY, sizeZ, color, func)
+    platform = {};
+    platform.x = x;
+    platform.y = y;
+    platform.z = z;
+    platform.width = sizeX;
+    platform.depth = sizeY;
+    platform.height = sizeZ;
+    platform.color = color;
+    platform.func = func;
     platform.type = 1;
     socket.emit('addPlatform', platform);
 }
