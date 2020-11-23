@@ -41,9 +41,11 @@ class Editor {
             "2 = No clip mode." + "<br>" +
             "<br>" +
             "3 = Add platform." + "<br>" +
-            "[?] = Resize platform. (not ready)" + "<br>" +
-            "[?] = Move platform. (not ready)" + "<br>" +
-            "[?] = Remove platform. (not ready)";
+            "4 = Turn gridsize up" + "<br>" +
+            "5 = Turn gridsize down" + "<br>" +
+            "[?] = Remove platform. (not ready)"  + "<br>" +
+            "<br>" +
+            "Gridsize: " + pointerGridSize;
     }
 
     handleKeyPressed(key) {
@@ -79,11 +81,14 @@ class Editor {
 
                 case 52: // 4
                 case 100: // 4
+                    if (pointerGridSize < 256 ) pointerGridSize += 8;
+                    this.menuMain();
                     break;
 
                 case 53: // 5
                 case 101: // 5
-
+                    if (pointerGridSize > 8) pointerGridSize -= 8;
+                    this.menuMain();
                     break;
                 case 54: // 6
                 case 102: // 6
