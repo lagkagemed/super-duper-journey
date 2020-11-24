@@ -81,13 +81,13 @@ class Editor {
 
                 case 52: // 4
                 case 100: // 4
-                    if (pointerGridSize < 256 ) pointerGridSize += 8;
+                    if (pointerGridSize < 256 ) pointerGridSize *= 2; //+= 8;
                     this.menuMain();
                     break;
 
                 case 53: // 5
                 case 101: // 5
-                    if (pointerGridSize > 8) pointerGridSize -= 8;
+                    if (pointerGridSize > 8) pointerGridSize /= 2; //-= 8;
                     this.menuMain();
                     break;
                 case 54: // 6

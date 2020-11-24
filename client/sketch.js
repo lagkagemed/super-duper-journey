@@ -221,12 +221,31 @@ function update() {
 
     camera.camera(posX, posY, posZEyes, posX + lookXScaled, posY + lookYScaled, posZEyes + lookZScaled, 0, 0, up);
 
+    // Set pointer position.
     pointerX = posX + (lookXScaled * pointerDist);
     pointerY = posY + (lookYScaled * pointerDist);
     pointerZ = posZEyes + (lookZScaled * pointerDist);
-    pointerGridX = pointerX - (pointerX % pointerGridSize);
-    pointerGridY = pointerY - (pointerY % pointerGridSize);
-    pointerGridZ = pointerZ - (pointerZ % pointerGridSize);
+
+    // Set pointer position in grid.
+    let halfPointerGridSize = pointerGridSize / 2;
+    let modPointerX = pointerX % pointerGridSize;
+    let modPointerY = pointerY % pointerGridSize;
+    let modPointerZ = pointerZ % pointerGridSize;
+
+    if (modPointerX < halfPointerGridSize)
+        pointerGridX = pointerX - modPointerX;
+    else
+        pointerGridX = pointerX + (pointerGridSize - modPointerX);
+
+    if (modPointerY < halfPointerGridSize)
+        pointerGridY = pointerY - modPointerY;
+    else
+        pointerGridY = pointerY + (pointerGridSize - modPointerY);
+
+    if (modPointerZ < halfPointerGridSize)
+        pointerGridZ = pointerZ - modPointerZ;
+    else
+        pointerGridZ = pointerZ + (pointerGridSize - modPointerZ);
 
     // Send new position.
     sumOfAll = (posX + posY + posZ + lookX + lookY + lookZ);
